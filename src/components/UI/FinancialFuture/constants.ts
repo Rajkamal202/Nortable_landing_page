@@ -10,7 +10,7 @@ export const cardsInfo = [
   {
     title: 'Investor Access',
     details:
-      'Pitch directly to VCs and angel investors. Many NEXUS projects have gone on to raise millions in funding.',
+      'Pitch directly to VCs and angel investors. Many Nortable projects have gone on to raise millions in funding.',
     icon: ic_wallet_minus,
   },
 ];
@@ -37,20 +37,20 @@ export const stats = [
 // For desktop
 export const desktopHeaderPhrase = [
   'Launch Your Next Big',
-  'Thing at NEXUS',
+  'Thing at Nortable',
 ];
 export const desktopParagraphPhrase = [
-  'At NEXUS, we empower builders to turn ideas into reality. Our world-class',
+  'At Nortable, we empower builders to turn ideas into reality. Our world-class',
   'resources and community make shipping products easier than ever.',
 ];
 
 // For mobile
 export const mobileHeaderPhrase = [
   'Launch Your Next',
-  'Big Thing at NEXUS',
+  'Big Thing at Nortable',
 ];
 export const mobileParagraphPhrase = [
-  'At NEXUS, we empower builders to turn ideas',
+  'At Nortable, we empower builders to turn ideas',
   'into reality. Our world-class resources and',
   'community make shipping products easier than',
   'ever.',

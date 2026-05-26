@@ -418,7 +418,7 @@ const RegistrationForm = () => {
               <StatIcon><CalendarIcon /></StatIcon>
               <StatContent>
                 <div className="label">EVENT DATE</div>
-                <div className="value">JUNE 14 - 16</div>
+                <div className="value">JULY 10 - 12</div>
                 <div className="subtext">3 Days of Innovation</div>
               </StatContent>
             </StatCard>
@@ -569,7 +569,7 @@ const RegistrationForm = () => {
                           name="city"
                           value={formData.city}
                           onChange={handleInputChange}
-                          placeholder="Mumbai, USA"
+                          placeholder="San Francisco, USA"
                         />
                       </InputWrapper>
                     </InputGroup>
@@ -773,18 +773,7 @@ const RegistrationForm = () => {
                     </Select>
                   </InputGroup>
 
-                  <CheckboxGroup>
-                    <Checkbox
-                      type="checkbox"
-                      id="needAccommodation"
-                      name="needAccommodation"
-                      checked={formData.needAccommodation}
-                      onChange={handleInputChange}
-                    />
-                    <CheckboxLabel htmlFor="needAccommodation">
-                      I need accommodation assistance
-                    </CheckboxLabel>
-                  </CheckboxGroup>
+                  
                 </FormCard>
               )}
 

@@ -28,19 +28,19 @@ import {
 const rolesData = [
   {
     title: 'Technical Mentoring',
-    desc: 'Guide hackers on codebase setup, debugging, AI integrations, or software architecture.',
+    desc: 'Guide hackers online with codebase setup, debugging, AI integrations, or software architecture.',
   },
   {
     title: 'Operations & Logistics',
-    desc: 'Manage registration, hardware setups, coordinate schedules, and keep the event running smoothly.',
+    desc: 'Manage Discord channels, coordinate schedules, monitor server traffic, and keep the virtual event running smoothly.',
   },
   {
     title: 'Design & Media',
-    desc: 'Capture highlights, assist with branding, social media posts, and video production during the event.',
+    desc: 'Create graphics, assist with social media posts, edit community highlights, and support live streams.',
   },
   {
     title: 'Hospitality & Support',
-    desc: 'Help out in the food court, assist check-ins, and ensure hackers have a welcoming experience.',
+    desc: 'Help out in the Discord helpdesk, assist check-ins/verifications, and ensure hackers have a welcoming online experience.',
   },
 ];
 
@@ -101,7 +101,7 @@ const VolunteerSection = () => {
     email: '',
     phone: '',
     age: '',
-    basedInMumbai: '',
+    internetAndDiscord: '',
     daysAvailable: '',
     prePostAvailability: '',
     linkedin: '',
@@ -149,8 +149,8 @@ const VolunteerSection = () => {
     } else if (isNaN(Number(formData.age)) || Number(formData.age) <= 0) {
       newErrors.age = 'Please enter a valid age';
     }
-    if (!formData.basedInMumbai) {
-      newErrors.basedInMumbai = 'Please answer if you are based in Mumbai';
+    if (!formData.internetAndDiscord) {
+      newErrors.internetAndDiscord = 'Please answer if you have stable internet and Discord access';
     }
     if (!formData.daysAvailable) {
       newErrors.daysAvailable = 'Please select your days of availability';
@@ -190,7 +190,7 @@ const VolunteerSection = () => {
       email: '',
       phone: '',
       age: '',
-      basedInMumbai: '',
+      internetAndDiscord: '',
       daysAvailable: '',
       prePostAvailability: '',
       linkedin: '',
@@ -340,19 +340,19 @@ const VolunteerSection = () => {
                 <FormSectionTitle>Location & Availability</FormSectionTitle>
 
                 <InputGroup>
-                  <Label htmlFor="basedInMumbai">Are you based out of Mumbai and comfortable to travel to BKC? <span>*</span></Label>
+                  <Label htmlFor="internetAndDiscord">Do you have a stable internet connection and Discord access? <span>*</span></Label>
                   <Select
-                    id="basedInMumbai"
-                    name="basedInMumbai"
-                    value={formData.basedInMumbai}
+                    id="internetAndDiscord"
+                    name="internetAndDiscord"
+                    value={formData.internetAndDiscord}
                     onChange={handleInputChange}
-                    $error={!!errors.basedInMumbai}
+                    $error={!!errors.internetAndDiscord}
                   >
                     <option value="">Select an option</option>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                   </Select>
-                  {errors.basedInMumbai && <ErrorText>{errors.basedInMumbai}</ErrorText>}
+                  {errors.internetAndDiscord && <ErrorText>{errors.internetAndDiscord}</ErrorText>}
                 </InputGroup>
 
                 <InputGroup>
@@ -365,16 +365,17 @@ const VolunteerSection = () => {
                     $error={!!errors.daysAvailable}
                   >
                     <option value="">Select availability days</option>
-                    <option value="Friday - 29th May only">Friday - 29th May only</option>
-                    <option value="Saturday - 30th May only">Saturday - 30th May only</option>
-                    <option value="Both days">Both days</option>
+                    <option value="Friday - 10th July only">Friday - 10th July only</option>
+                    <option value="Saturday - 11th July only">Saturday - 11th July only</option>
+                    <option value="Sunday - 12th July only">Sunday - 12th July only</option>
+                    <option value="All days">All days</option>
                   </Select>
-                  <SubText>Volunteering timing for both days would be 8 am to 9 pm</SubText>
+                  <SubText>Volunteering shifts would be coordinated online across time zones</SubText>
                   {errors.daysAvailable && <ErrorText>{errors.daysAvailable}</ErrorText>}
                 </InputGroup>
 
                 <InputGroup>
-                  <Label htmlFor="prePostAvailability">Apart from MTW main days - would you be available to volunteer pre & post event? <span>*</span></Label>
+                  <Label htmlFor="prePostAvailability">Apart from main days - would you be available to volunteer pre & post event? <span>*</span></Label>
                   <Select
                     id="prePostAvailability"
                     name="prePostAvailability"
@@ -386,7 +387,7 @@ const VolunteerSection = () => {
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                   </Select>
-                  <SubText>This would be from 20th May to 3rd June if needed? Location: Powai</SubText>
+                  <SubText>This would be from 1st July to 15th July if needed? (Virtual)</SubText>
                   {errors.prePostAvailability && <ErrorText>{errors.prePostAvailability}</ErrorText>}
                 </InputGroup>
 

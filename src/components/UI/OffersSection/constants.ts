@@ -8,13 +8,13 @@ export const desktopHeaderPhrases = [
   'Build & Ship',
 ];
 export const desktopParagraphPhrase = [
-  'NEXUS provides world-class resources for builders. From workshops to mentors,',
+  'Nortable provides world-class resources for builders. From workshops to mentors,',
   "we've got everything you need to go from idea to launch in 48 hours.",
 ];
 
 // For mobile
 export const mobileParagraphPhrase = [
-  'NEXUS provides world-class resources for builders.',
+  'Nortable provides world-class resources for builders.',
   "From workshops to mentors, we've got everything",
   'you need to go from idea to launch.',
 ];

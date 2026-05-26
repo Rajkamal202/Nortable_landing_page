@@ -12,7 +12,7 @@ import {
 
 export default function Home() {
   return (
-    <main>
+    <main className="landing-page">
       <HeroSection />
       <Featured />
       <OffersSection />

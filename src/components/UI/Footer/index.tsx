@@ -84,7 +84,7 @@ const Footer = () => {
             </OrganizedBy>
             <CopyRight>
               <Image src={ic_copyright} alt="copyright svg" />
-              NEXUS Hackathon 2026 | Nortable
+              Nortable Virtual Hackathon 2026
             </CopyRight>
           </FooterBottom>
         </FooterMainContent>

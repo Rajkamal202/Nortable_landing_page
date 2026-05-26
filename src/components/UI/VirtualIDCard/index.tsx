@@ -226,9 +226,9 @@ const VirtualIDCard = ({ participantData, registrationType, teamName }: VirtualI
                 </ParticipantName>
 
                 <EventDetails>
-                  <span>Mumbai + VIRTUAL</span>
+                  <span>VIRTUAL</span>
                   <span className="dot">-</span>
-                  <span>JUNE 14-16, 2026</span>
+                  <span>JULY 10-12, 2026</span>
                 </EventDetails>
               </TicketContent>
             </TicketCard>
@@ -256,7 +256,7 @@ const VirtualIDCard = ({ participantData, registrationType, teamName }: VirtualI
               level="M"
             />
           </div>
-          <p>Scan for check-in at the venue</p>
+          <p>Scan to verify virtual check-in</p>
         </QRSection>
 
         <CardActions>

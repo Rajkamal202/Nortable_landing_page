@@ -7,7 +7,7 @@ import ic_arrows_left_right from '../../../../public/svgs/ic_arrows_right_left.s
 export const desktopHeaderPhrase = ['$500K+ in Prizes.', 'Your Time to Win.'];
 export const desktopParagraphPhrase = [
   'We believe every builder deserves recognition. From grand prizes to track',
-  'awards, there are countless ways to win big at NEXUS.',
+  'awards, there are countless ways to win big at Nortable.',
 ];
 export const desktopBriefNotePhrase = [
   'World-class mentors,',
@@ -21,7 +21,7 @@ export const mobileHeaderPhrase = ['$500K+ in Prizes.', 'Your Time to Win.'];
 export const mobileParagraphPhrase = [
   'We believe every builder deserves recognition.',
   'From grand prizes to track awards, there are',
-  'countless ways to win big at NEXUS.',
+  'countless ways to win big at Nortable.',
 ];
 
 export const mobileBriefNotePhrase = [

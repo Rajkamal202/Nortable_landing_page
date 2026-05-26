@@ -19,19 +19,19 @@ export const animate = {
 
 export const faqData: FAQItem[] = [
   {
-    question: 'Who can participate in NEXUS?',
+    question: 'Who can participate in Nortable?',
     answer:
-      'Anyone 18+ can participate! Whether you\'re a student, professional developer, designer, or entrepreneur, NEXUS welcomes builders of all backgrounds and skill levels. Teams can have 1-4 members.',
+      'Anyone 18+ can participate! Whether you\'re a student, professional developer, designer, or entrepreneur, Nortable welcomes builders of all backgrounds and skill levels. Teams can have 1-4 members.',
   },
   {
     question: 'Do I need a team to participate?',
     answer:
-      'No! While you can register with a pre-formed team, we also have team formation events before and during the hackathon. Many winning projects have been built by people who met at NEXUS.',
+      'No! While you can register with a pre-formed team, we also have virtual team formation events before and during the hackathon. Many winning projects have been built by people who met at Nortable.',
   },
   {
-    question: 'What should I bring to the in-person event?',
+    question: 'What do I need to participate in the virtual event?',
     answer:
-      'Bring your laptop, chargers, and any hardware you want to hack with. We provide meals, snacks, drinks, WiFi, and sleeping areas. Don\'t forget a sleeping bag if you plan to stay overnight!',
+      'All you need is a stable internet connection, a computer/laptop to develop on, and a Discord account. All hacking, mentorship, and submissions will take place virtually on our official Discord server.',
   },
   {
     question: 'How are projects judged?',

@@ -32,7 +32,7 @@ const HeroSection = () => {
 
 
 
-  // Real-time ticking Countdown clock targeting May 29, 2026 (Mumbai Tech Week / Nortable)
+  // Real-time ticking Countdown clock targeting July 10, 2026 (Nortable Virtual Hackathon)
   const [timeLeft, setTimeLeft] = useState({
     days: '04',
     hours: '10',
@@ -41,7 +41,7 @@ const HeroSection = () => {
   });
 
   useEffect(() => {
-    const targetDate = new Date('2026-05-29T08:00:00');
+    const targetDate = new Date('2026-07-10T08:00:00');
     const updateCountdown = () => {
       const now = new Date();
       const difference = targetDate.getTime() - now.getTime();
@@ -124,7 +124,7 @@ const HeroSection = () => {
         >
           <Pill onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}>
             <IndicatorDot />
-            <span>May 29-30, 2026 | Mumbai + Virtual</span>
+            <span>July 10-12, 2026 | Virtual</span>
             <Image src={ic_chevron_right} alt="chevron-right" />
           </Pill>
         </motion.div>
@@ -166,12 +166,12 @@ const HeroSection = () => {
 
           <InfoBlock>
             <span className="label">Dates</span>
-            <span className="value">May 29 - 30, 2026</span>
+            <span className="value">July 10 - 12, 2026</span>
           </InfoBlock>
 
           <InfoBlock>
             <span className="label">Location</span>
-            <span className="value">Mumbai + Virtual</span>
+            <span className="value">Virtual</span>
           </InfoBlock>
 
           <InfoCTA>

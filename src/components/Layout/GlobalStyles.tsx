@@ -73,4 +73,21 @@ export const GlobalStyles = styled.createGlobalStyle`
 
   .complete {
   }
+
+  main.landing-page {
+    background-image: linear-gradient(
+        to bottom,
+        rgba(7, 6, 6, 0.4) 0%,
+        rgba(7, 6, 6, 0.7) 30%,
+        rgba(7, 6, 6, 0.85) 60%,
+        rgba(7, 6, 6, 0.95) 100%
+      ),
+      url('/images/landing_bg.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    width: 100%;
+    min-height: 100vh;
+  }
 `;
