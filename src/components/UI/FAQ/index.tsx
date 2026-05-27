@@ -53,7 +53,7 @@ const FAQ = () => {
               custom={index}
               key={index}
             >
-              <Question onClick={() => toggleItem(index)}>
+              <Question onClick={() => toggleItem(index)} $isOpen={openItem === index}>
                 {item.question}
                 <Image src={ic_chevron_down} alt="cheveron down" />
               </Question>

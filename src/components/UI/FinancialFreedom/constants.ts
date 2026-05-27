@@ -4,53 +4,53 @@ import ic_circle_stack from '../../../../public/svgs/ic_circle_stack.svg';
 import ic_arrows_left_right from '../../../../public/svgs/ic_arrows_right_left.svg';
 
 // For desktop
-export const desktopHeaderPhrase = ['$500K+ in Prizes.', 'Your Time to Win.'];
+export const desktopHeaderPhrase = ['₹50,000+ Cash Pool.', 'Real Recognition.'];
 export const desktopParagraphPhrase = [
-  'We believe every builder deserves recognition. From grand prizes to track',
-  'awards, there are countless ways to win big at Nortable.',
+  'We reward your hard work and technical excellence. Stand out and win',
+  'cash rewards alongside verified professional credentials.',
 ];
 export const desktopBriefNotePhrase = [
-  'World-class mentors,',
-  'industry connections,',
-  'and career-changing',
-  'opportunities await.',
+  'Judges from JP Morgan &',
+  'Deutsche Telekom, startup',
+  'internships, and premium kits.',
+  'Get it all for only ₹100.',
 ];
 
 // For mobile
-export const mobileHeaderPhrase = ['$500K+ in Prizes.', 'Your Time to Win.'];
+export const mobileHeaderPhrase = ['₹50,000+ Cash Pool.', 'Real Recognition.'];
 export const mobileParagraphPhrase = [
-  'We believe every builder deserves recognition.',
-  'From grand prizes to track awards, there are',
-  'countless ways to win big at Nortable.',
+  'We reward your hard work and technical excellence.',
+  'Stand out and win cash rewards alongside verified',
+  'professional credentials.',
 ];
 
 export const mobileBriefNotePhrase = [
-  'World-class',
-  ' mentors,',
-  'industry',
-  ' connections,',
-  'and career-',
-  'changing',
-  'opportunities.',
+  'JP Morgan &',
+  ' Deutsche Telekom',
+  'judges, startup',
+  ' internships,',
+  'and premium kits.',
+  ' All for',
+  'only ₹100.',
 ];
 
 export const edges = [
   {
-    point: '$100K Grand Prize',
+    point: '₹50,000+ Cash Pool',
     details:
-      'The ultimate recognition. Win the grand prize and launch your project with serious momentum.',
+      'Distributed across 9 winning teams to celebrate outstanding builds and code quality.',
     icon: ic_banknotes,
   },
   {
-    point: '$50K Track Prizes',
+    point: 'LinkedIn Credentials',
     details:
-      'Each track awards $50K to its winner. Dominate your domain and take home the gold.',
+      'Earn a verified digital certificate and domain-specific skill badge verified by industry judges.',
     icon: ic_circle_stack,
   },
   {
-    point: 'Sponsor Bounties',
+    point: "Winner's Spotlight",
     details:
-      'Solve sponsor challenges for additional prizes. Stack bounties and maximize your winnings.',
+      "Get a physical winner's kit delivered, featured as an industry case study, and listed on the Hall of Fame.",
     icon: ic_arrows_left_right,
   },
 ];

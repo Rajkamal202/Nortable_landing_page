@@ -4,44 +4,44 @@ import wealth_management from '../../../../public/images/wealth_management.png';
 import financial_planning from '../../../../public/images/financial_planning.png';
 // For desktop
 export const desktopHeaderPhrases = [
-  'Everything You Need to',
-  'Build & Ship',
+  'Elite Resources for',
+  'Serious Builders',
 ];
 export const desktopParagraphPhrase = [
-  'Nortable provides world-class resources for builders. From workshops to mentors,',
-  "we've got everything you need to go from idea to launch in 48 hours.",
+  'Get access to pre-event prep, premium developer credits, expert reviews, and',
+  'an exclusive community to accelerate your project and career.',
 ];
 
 // For mobile
 export const mobileParagraphPhrase = [
-  'Nortable provides world-class resources for builders.',
-  "From workshops to mentors, we've got everything",
-  'you need to go from idea to launch.',
+  'Get access to pre-event prep, premium developer credits,',
+  'expert reviews, and an exclusive community to',
+  'accelerate your project.',
 ];
 
 export const offers = [
   {
     illustration: seamless_payments,
-    title: 'Technical Workshops',
+    title: 'Pre-Event Workshops',
     details:
-      'Learn from industry experts with hands-on workshops covering AI, Web3, cloud infrastructure, and more.',
+      'Gain access to hands-on, professional preparatory workshops worth ₹2,000—completely free for all registrants.',
   },
   {
     illustration: smart_investing,
-    title: 'Mentorship Sessions',
+    title: '₹15,000+ Developer Kit',
     details:
-      'Book 1-on-1 sessions with engineers from Google, Meta, OpenAI, and top startups throughout the event.',
+      'Deploy your build using premium developer credits, free APIs, and tools from AWS, GitHub, Notion, and more.',
   },
   {
     illustration: wealth_management,
-    title: 'Demo Day Pitch',
+    title: 'Real Written Feedback',
     details:
-      'Present your project to a panel of judges including VCs, founders, and tech leaders on the main stage.',
+      'Every single project receives professional, written code review and constructive feedback directly from industry judges.',
   },
   {
     illustration: financial_planning,
-    title: 'Networking Events',
+    title: 'Lifetime Tech Community',
     details:
-      'Connect with fellow builders, sponsors, and mentors at curated networking sessions and after-parties.',
+      'Gain lifetime access to our exclusive developer community to find future co-founders, collaborators, and mentors.',
   },
 ];

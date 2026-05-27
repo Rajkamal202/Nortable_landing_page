@@ -2,56 +2,55 @@ import ic_money_send from '../../../../public/svgs/ic_money_send.svg';
 import ic_wallet_minus from '../../../../public/svgs/ic_wallet_minus.svg';
 export const cardsInfo = [
   {
-    title: 'Expert Mentors',
+    title: 'Direct Judicial Connections',
     details:
-      'Get 1-on-1 guidance from engineers at top tech companies. Debug faster, build smarter, and level up your skills.',
+      'Top 5 performers connect personally with judges from Deutsche Telekom & JP Morgan for direct career guidance.',
     icon: ic_money_send,
   },
   {
-    title: 'Investor Access',
+    title: 'Startup Internships',
     details:
-      'Pitch directly to VCs and angel investors. Many Nortable projects have gone on to raise millions in funding.',
+      'Fast-track your technical career. Get access to exclusive internship placement opportunities with partner startups.',
     icon: ic_wallet_minus,
   },
 ];
 
 export const stats = [
   {
-    number: '50+',
-    subtitle: 'countries',
+    number: '₹50K+',
+    subtitle: 'Cash Prizes',
   },
   {
-    number: '5,000+',
-    subtitle: 'hackers',
+    number: '9',
+    subtitle: 'Winning Teams',
   },
   {
-    number: '500+',
-    subtitle: 'projects',
+    number: '₹15K+',
+    subtitle: 'Free Dev Credits',
   },
   {
-    number: '100+',
-    subtitle: 'mentors',
+    number: '₹100',
+    subtitle: 'Registration Fee',
   },
 ];
 
 // For desktop
 export const desktopHeaderPhrase = [
-  'Launch Your Next Big',
-  'Thing at Nortable',
+  'Propel Your Career',
+  'to the Next Level',
 ];
 export const desktopParagraphPhrase = [
-  'At Nortable, we empower builders to turn ideas into reality. Our world-class',
-  'resources and community make shipping products easier than ever.',
+  'Connect directly with leading tech companies and startups. Prove your skills,',
+  'get verified feedback, and secure career-changing opportunities.',
 ];
 
 // For mobile
 export const mobileHeaderPhrase = [
-  'Launch Your Next',
-  'Big Thing at Nortable',
+  'Propel Your Career',
+  'to the Next Level',
 ];
 export const mobileParagraphPhrase = [
-  'At Nortable, we empower builders to turn ideas',
-  'into reality. Our world-class resources and',
-  'community make shipping products easier than',
-  'ever.',
+  'Connect directly with leading tech companies. Prove',
+  'your skills, get verified feedback, and secure',
+  'career-changing opportunities.',
 ];

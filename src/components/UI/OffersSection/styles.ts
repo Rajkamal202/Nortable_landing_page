@@ -25,7 +25,10 @@ export const Header = styled.header`
 
   h1 {
     font-size: 4.75rem;
-    font-weight: 400;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--white);
   }
 
   p {
@@ -94,8 +97,10 @@ export const TextCtn = styled.div`
 
   h2 {
     font-size: 2rem;
-    font-weight: 500;
-    line-height: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--white);
   }
 
   p {
@@ -189,10 +194,24 @@ export const OfferCard = styled.div`
   overflow: hidden;
   height: 31.25rem;
   border-radius: 0.75rem;
-  border: 1px solid var(--stroke, rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.04);
   display: flex;
   flex-direction: column;
-  background: url(${grid_background.src}) #131313 no-repeat;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.03) 100%), url(${grid_background.src}) rgba(19, 19, 19, 0.75);
+  background-repeat: no-repeat;
+  background-size: cover;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease,
+              background-color 0.4s ease,
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(72, 214, 76, 0.22);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 0 30px rgba(72, 214, 76, 0.01);
+  }
 
   &:first-child {
     flex: 2;

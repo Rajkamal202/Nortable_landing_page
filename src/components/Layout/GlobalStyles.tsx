@@ -77,10 +77,11 @@ export const GlobalStyles = styled.createGlobalStyle`
   main.landing-page {
     background-image: linear-gradient(
         to bottom,
-        rgba(7, 6, 6, 0.4) 0%,
-        rgba(7, 6, 6, 0.7) 30%,
-        rgba(7, 6, 6, 0.85) 60%,
-        rgba(7, 6, 6, 0.95) 100%
+        rgba(7, 6, 6, 0.65) 0%,
+        rgba(7, 6, 6, 0.85) 25%,
+        rgba(7, 6, 6, 0.92) 50%,
+        rgba(7, 6, 6, 0.97) 75%,
+        rgba(7, 6, 6, 0.99) 100%
       ),
       url('/images/landing_bg.png');
     background-size: cover;

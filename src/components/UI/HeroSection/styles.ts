@@ -445,14 +445,15 @@ export const GrabButton = styled.a`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
-  box-shadow: 3px 3px 0px #000000;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 4px 4px 0px #000000;
   text-decoration: none;
 
   &:hover {
     transform: translate(2px, 2px);
     box-shadow: 1px 1px 0px #000000;
     background: #ffffff;
+    border-color: #ffffff;
   }
 
   @media (max-width: 768px) {

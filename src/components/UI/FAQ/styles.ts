@@ -17,12 +17,16 @@ export const Inner = styled.div`
   h1 {
     max-width: 56rem;
     font-size: 6rem;
-    font-weight: 400;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--white);
   }
 
   @media (max-width: 768px) {
+    gap: 3.5rem;
     h1 {
-      font-size: 3.75rem;
+      font-size: 2.75rem;
     }
   }
 `;
@@ -30,35 +34,54 @@ export const Inner = styled.div`
 export const HeaderText = styled.h1`
   max-width: 56rem;
   font-size: 6rem;
-  font-weight: 400;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 `;
 
 export const Accordion = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 `;
 
 export const AccordionItem = styled(motion.div)`
   display: flex;
   flex-direction: column;
-  padding-bottom: 1rem;
-  border-bottom: 0.0625rem solid #3d3d3d;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 0.75rem;
   overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    border-color: rgba(72, 214, 76, 0.2);
+    background: rgba(72, 214, 76, 0.015);
+  }
 `;
 
-export const Question = styled(motion.div)`
+export const Question = styled(motion.div)<{ $isOpen?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  font-size: 1.5rem;
-  font-weight: 500;
-  margin-bottom: 1.5rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--white);
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--emerald);
+  }
+
+  img {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+  }
 
   @media (max-width: 768px) {
     font-size: 1rem;
-    margin-bottom: 2rem;
     gap: 1rem;
   }
 `;
@@ -67,5 +90,6 @@ export const Answer = styled(motion.div)`
   color: var(--link-color);
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.5rem;
+  line-height: 1.6;
+  margin-top: 1rem;
 `;

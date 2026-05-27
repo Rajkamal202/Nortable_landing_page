@@ -21,7 +21,10 @@ export const Header = styled.header`
 
   h1 {
     font-size: 4.75rem;
-    font-weight: 400;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--white);
   }
 
   p {
@@ -58,8 +61,20 @@ export const CardContainer = styled.div`
 export const Card = styled.div`
   height: 41.875rem;
   border-radius: 0.75rem;
-  border: 1px solid var(--stroke, rgba(255, 255, 255, 0.04));
-  background: #131313;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(19, 19, 19, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease,
+              background-color 0.4s ease,
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(72, 214, 76, 0.22);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 0 30px rgba(72, 214, 76, 0.01);
+  }
 
   @media (max-width: 768px) {
     height: 27.5rem;
@@ -75,8 +90,10 @@ export const TextCtn = styled.div`
 
   h3 {
     font-size: 2rem;
-    font-weight: 500;
-    line-height: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    line-height: 1.2;
   }
 
   p {
@@ -139,24 +156,30 @@ export const Stat = styled.div`
   gap: 1rem;
 
   h1 {
-    font-size: 5rem;
-    font-weight: 600;
+    font-size: 4.5rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--white) 30%, var(--emerald) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   p {
-    color: var(--link-color);
-    font-size: 1.125rem;
-    font-weight: 500;
+    color: #8c8c8c;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
   @media (max-width: 768px) {
     h1 {
-      font-size: 1.25rem;
+      font-size: 1.75rem;
     }
 
     p {
-      font-size: 0.75rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.04em;
     }
   }
 `;

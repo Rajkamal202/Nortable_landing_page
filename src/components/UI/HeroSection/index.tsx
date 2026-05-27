@@ -105,12 +105,24 @@ const HeroSection = () => {
       {/* Top Scrolling Ribbon Ticker (Apple/MTW style) */}
       <MarqueeContainer>
         <MarqueeTrack>
-          {Array(8).fill(null).map((_, idx) => (
-            <MarqueeText key={idx}>
-              <span className="highlight">REGISTER NOW ➔</span>
-              <span>CODE. COLLABORATE. CREATE IMPACT.</span>
-              <span className="star">✦</span>
-            </MarqueeText>
+          {Array(4).fill(null).map((_, idx) => (
+            <span key={idx} style={{ display: 'inline-flex' }}>
+              <MarqueeText>
+                <span className="highlight">₹50,000+ CASH PRIZES</span>
+                <span>VERIFIED CERTIFICATE & SKILL BADGE</span>
+                <span className="star">✦</span>
+              </MarqueeText>
+              <MarqueeText>
+                <span className="highlight">₹15,000+ DEV CREDITS</span>
+                <span>JP MORGAN & DEUTSCHE TELEKOM JUDGES</span>
+                <span className="star">✦</span>
+              </MarqueeText>
+              <MarqueeText>
+                <span className="highlight">STARTUP INTERNSHIPS</span>
+                <span>LIFETIME EXCLUSIVE COMMUNITY</span>
+                <span className="star">✦</span>
+              </MarqueeText>
+            </span>
           ))}
         </MarqueeTrack>
       </MarqueeContainer>
@@ -145,9 +157,9 @@ const HeroSection = () => {
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           >
             {isMobile ? (
-              "48 hours. One mission. Join 5,000+ builders at the world's most ambitious hackathon."
+              "Compete for ₹50,000+ in cash prizes. Judged by JP Morgan & Deutsche Telekom professionals."
             ) : (
-              "48 hours. One mission. Join 5,000+ builders at the world's most ambitious hackathon. Build, ship, and compete for $500K in prizes."
+              "Build, collaborate, and compete for ₹50,000+ in cash prizes. Judged by JP Morgan & Deutsche Telekom professionals. Earn verified certificates, startup internships, and ₹15,000+ in dev credits."
             )}
           </motion.p>
         </HeroTextContainer>
@@ -163,22 +175,22 @@ const HeroSection = () => {
               {timeLeft.days}D : {timeLeft.hours}H : {timeLeft.minutes}M : {timeLeft.seconds}S
             </span>
           </CountdownBadge>
-
+ 
           <InfoBlock>
             <span className="label">Dates</span>
             <span className="value">July 10 - 12, 2026</span>
           </InfoBlock>
-
+ 
           <InfoBlock>
             <span className="label">Location</span>
             <span className="value">Virtual</span>
           </InfoBlock>
-
+ 
           <InfoCTA>
             <GrabButton href="/register">
               Grab Your Pass
             </GrabButton>
-            <span className="price-subtext">Passes start at Rs. 100*</span>
+            <span className="price-subtext">Secure your spot for only ₹100</span>
           </InfoCTA>
         </BottomInfoBar>
       </Inner>
@@ -186,13 +198,17 @@ const HeroSection = () => {
       {/* Bottom Scrolling Ribbon Ticker (Apple/MTW style) */}
       <MarqueeContainer $bottom>
         <MarqueeTrack>
-          {Array(8).fill(null).map((_, idx) => (
-            <MarqueeText key={idx}>
-              <span>NORTABLE 2026</span>
-              <span className="star">✦</span>
-              <span>SHIP IN 36 HOURS</span>
-              <span className="star">✦</span>
-            </MarqueeText>
+          {Array(6).fill(null).map((_, idx) => (
+            <span key={idx} style={{ display: 'inline-flex' }}>
+              <MarqueeText>
+                <span>NORTABLE 2026</span>
+                <span className="star">✦</span>
+                <span>BUILD & SHIP</span>
+                <span className="star">✦</span>
+                <span>₹100 PASS</span>
+                <span className="star">✦</span>
+              </MarqueeText>
+            </span>
           ))}
         </MarqueeTrack>
       </MarqueeContainer>

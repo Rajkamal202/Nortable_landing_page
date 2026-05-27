@@ -33,7 +33,10 @@ export const Header = styled.header`
 
   h1 {
     font-size: 4.75rem;
-    font-weight: 400;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--white);
   }
 
   p {
@@ -80,7 +83,8 @@ export const BannerCtn = styled.div`
 export const Edges = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  gap: 2rem;
+  width: 100%;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -91,25 +95,38 @@ export const Edges = styled.div`
 export const Edge = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.62rem;
+  gap: 0.85rem;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   p {
     max-width: 26rem;
     color: var(--link-color);
     font-size: 1rem;
     font-weight: 400;
-    line-height: 1.5rem;
+    line-height: 1.6;
+  }
+
+  &:hover {
+    background: rgba(72, 214, 76, 0.03);
+    border-color: rgba(72, 214, 76, 0.2);
+    transform: translateY(-2px);
   }
 `;
 
 export const Title = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
   align-items: center;
 
   h3 {
-    font-size: 1.5rem;
-    font-weight: 500;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--white);
   }
 `;
 
@@ -120,15 +137,25 @@ export const BriefNote = styled.div`
 
   p {
     color: var(--Background, #070606);
-    font-size: 8rem;
-    font-weight: 400;
+    font-size: 7rem;
+    font-weight: 900;
     max-width: 1440px;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 1024px) {
+    padding: 4rem 2rem;
+    p {
+      font-size: 3.75rem;
+    }
   }
 
   @media (max-width: 768px) {
-    padding: 2rem 1.5rem;
+    padding: 3rem 1.5rem;
     p {
-      font-size: 3.75rem;
+      font-size: 2.25rem;
     }
   }
 `;

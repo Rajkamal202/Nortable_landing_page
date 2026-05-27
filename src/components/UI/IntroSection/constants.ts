@@ -3,39 +3,37 @@ import ic_identification from '../../../../public/svgs/ic_identification.svg';
 import ic_lock_closed from '../../../../public/svgs/ic_lock_closed.svg';
 
 // For desktop
-export const desktopHeaderPhrase = ['Three Epic Tracks.', 'Infinite Possibilities.'];
+export const desktopHeaderPhrase = ['Three Focused Tracks.', 'Professional Judging.'];
 export const desktopParagraphPhrase = [
-  'Choose your path and build something extraordinary. Each track comes with',
-  'dedicated mentors, specialized workshops, and unique prizes tailored',
-  'to your domain.',
+  'Choose your domain and build solutions evaluated directly by industry',
+  'judges from JP Morgan and Deutsche Telekom. Gain career credibility.',
 ];
 
 // For mobile
-export const mobileHeaderPhrase = ['Three Epic Tracks.', 'Infinite Possibilities.'];
+export const mobileHeaderPhrase = ['Three Focused Tracks.', 'Professional Judging.'];
 export const mobileParagraphPhrase = [
-  'Choose your path and build something',
-  'extraordinary. Each track comes with dedicated',
-  'mentors, specialized workshops, and unique',
-  'prizes.',
+  'Choose your domain and build solutions',
+  'evaluated directly by industry judges from',
+  'JP Morgan & Deutsche Telekom.',
 ];
 
 export const edges = [
   {
-    point: 'AI & Machine Learning',
+    point: 'AI & Advanced Computing',
     details:
-      'Build the next generation of intelligent applications. From LLMs to computer vision, push the boundaries of what AI can do.',
+      'Build intelligent tools and custom integrations. Focus on technical execution and functional applications evaluated by experts.',
     icon: ic_document_duplicate,
   },
   {
-    point: 'Web3 & DeFi',
+    point: 'Fintech & Decentralized Systems',
     details:
-      'Shape the decentralized future. Create innovative protocols, DApps, and financial primitives on the blockchain.',
+      'Create secure payment primitives, transaction protocols, or ledger designs. Judged directly by leading bank and telecom engineers.',
     icon: ic_identification,
   },
   {
-    point: 'Climate & Sustainability',
+    point: 'Open Innovation & Scale',
     details:
-      'Code for the planet. Build solutions that tackle climate change, promote sustainability, and create a greener future.',
+      'Tackle open challenges with highly scalable system architectures. Evaluated on code optimization and actual project stability.',
     icon: ic_lock_closed,
   },
 ];

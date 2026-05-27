@@ -21,21 +21,21 @@ export const faqData: FAQItem[] = [
   {
     question: 'Who can participate in Nortable?',
     answer:
-      'Anyone 18+ can participate! Whether you\'re a student, professional developer, designer, or entrepreneur, Nortable welcomes builders of all backgrounds and skill levels. Teams can have 1-4 members.',
+      'Nortable is open to all developers, designers, and tech students who want to build serious projects. You can participate solo or in teams of up to 4 members.',
   },
   {
-    question: 'Do I need a team to participate?',
+    question: 'What does the ₹100 registration fee include?',
     answer:
-      'No! While you can register with a pre-formed team, we also have virtual team formation events before and during the hackathon. Many winning projects have been built by people who met at Nortable.',
+      'The ₹100 fee grants you full access to the virtual event, pre-event prep workshops worth ₹2,000, developer kits and credits worth ₹15,000+ (AWS, GitHub, Notion, etc.), verified digital certificates/badges to add to LinkedIn, and real written feedback on your project.',
   },
   {
-    question: 'What do I need to participate in the virtual event?',
+    question: 'Who are the judges and how are projects evaluated?',
     answer:
-      'All you need is a stable internet connection, a computer/laptop to develop on, and a Discord account. All hacking, mentorship, and submissions will take place virtually on our official Discord server.',
+      'Projects are judged by experienced industry professionals from JP Morgan and Deutsche Telekom. Submissions are evaluated on technical architecture, design, execution, and code optimization. Every team receives written feedback.',
   },
   {
-    question: 'How are projects judged?',
+    question: 'What are the career opportunities at Nortable?',
     answer:
-      'Projects are evaluated on innovation, technical complexity, design, and potential impact. Each track has domain-specific criteria, and sponsor bounties have their own requirements.',
+      'The top 5 performers will be personally connected with judges from JP Morgan and Deutsche Telekom for career guidance. Additionally, there are exclusive internship placement opportunities with partner startups for registered builders.',
   },
 ];
