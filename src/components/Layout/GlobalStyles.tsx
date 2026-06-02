@@ -19,7 +19,7 @@ export const GlobalStyles = styled.createGlobalStyle`
     -webkit-font-smoothing: antialiased;
   }
 
-  html,
+  html, 
   body {
     max-width: 100vw;
     overflow-x: hidden;
