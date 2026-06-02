@@ -4,7 +4,7 @@ export const cardsInfo = [
   {
     title: 'Direct Judicial Connections',
     details:
-      'Top 5 performers connect personally with judges from Deutsche Telekom & JP Morgan for direct career guidance.',
+      'Top 5 performers connect personally with judges from global MNCs for direct career guidance.',
     icon: ic_money_send,
   },
   {

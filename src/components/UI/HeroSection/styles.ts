@@ -1,6 +1,7 @@
 'use client';
 
 import { styled } from 'styled-components';
+import Image from 'next/image';
 import hero_background from '../../../../public/images/grid_background.png';
 
 export const Wrapper = styled.section`
@@ -89,9 +90,8 @@ export const Inner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 65rem;
+  max-width: 80rem;
   margin: 0 auto;
-  text-align: center;
   background-position: top center;
   background-size: contain;
   position: relative;
@@ -100,86 +100,171 @@ export const Inner = styled.div`
   width: 90%;
 `;
 
-export const Pill = styled.div`
-  display: flex;
-  padding: 0.45rem 1rem;
-  justify-content: center;
+export const HeroGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 4rem;
   align-items: center;
-  gap: 0.625rem;
-  border-radius: 6.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-  z-index: 2;
-  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+
+  @media (max-width: 991px) {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+`;
+
+export const LeftCol = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+
+  @media (max-width: 991px) {
+    align-items: center;
+  }
+`;
+
+export const RightCol = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  overflow: hidden;
+  width: 100%;
+`;
+
+export const HeroCardsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 480px;
+  height: 480px;
+  margin: 0 auto;
+  animation: floatAnimation 4s ease-in-out infinite;
+
+  @keyframes floatAnimation {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+    100% { transform: translateY(0px); }
+  }
 
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: -150%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    transform: skewX(-20deg);
-    animation: shimmer 6s infinite ease-in-out;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(57, 255, 20, 0.15) 0%, transparent 70%);
+    filter: blur(100px);
+    z-index: 0;
+    pointer-events: none;
   }
 
-  @keyframes shimmer {
-    0% { left: -150%; }
-    50% { left: 150%; }
-    100% { left: 150%; }
+  @media (max-width: 1024px) {
+    width: 400px;
+    height: 400px;
   }
 
-  &:hover {
-    border-color: rgba(72, 214, 76, 0.3);
-    background: rgba(255, 255, 255, 0.06);
-    transform: translateY(-1px);
-  }
-
-  span {
-    color: var(--white, #ffffff);
-    font-size: 0.95rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
+  @media (max-width: 576px) {
+    width: 280px;
+    height: 280px;
   }
 `;
 
-export const IndicatorDot = styled.div`
-  width: 8px;
-  height: 8px;
-  background-color: var(--emerald, #48d64c);
-  border-radius: 50%;
-  position: relative;
-  box-shadow: 0 0 10px var(--emerald, #48d64c);
-  flex-shrink: 0;
+export const HeroLeftImage = styled(Image)`
+  width: 13.5rem;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(-50px, 10px) rotate(-8deg) scale(0.92);
+  transform-origin: center center;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+  filter: brightness(0.65) contrast(0.95) blur(0.5px);
+  z-index: 1;
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 1.5px solid var(--emerald, #48d64c);
-    animation: pulseGlow 1.8s ease-out infinite;
+  &.active {
+    transform: translate(-50%, -50%) translate(-155px, 20px) rotate(-20deg) scale(1);
+    filter: brightness(1.05) contrast(1) blur(0px) drop-shadow(0 15px 30px rgba(72, 214, 76, 0.45));
+  }
+  
+  @media (max-width: 1024px) {
+    width: 11rem;
+    transform: translate(-50%, -50%) translate(-40px, 8px) rotate(-8deg) scale(0.92);
+    
+    &.active {
+      transform: translate(-50%, -50%) translate(-125px, 15px) rotate(-18deg) scale(1);
+    }
   }
 
-  @keyframes pulseGlow {
-    0% { transform: scale(0.6); opacity: 1; }
-    100% { transform: scale(1.6); opacity: 0; }
+  @media (max-width: 576px) {
+    width: 8rem;
+    transform: translate(-50%, -50%) translate(-25px, 5px) rotate(-8deg) scale(0.92);
+    
+    &.active {
+      transform: translate(-50%, -50%) translate(-80px, 10px) rotate(-18deg) scale(1);
+    }
+  }
+`;
+
+export const HeroMiddleImage = styled(Image)`
+  position: relative;
+  z-index: 3;
+  cursor: pointer;
+  width: 250px;
+  height: auto;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.5));
+
+  &:hover {
+    transform: scale(1.03);
+    filter: drop-shadow(0 20px 40px rgba(249, 115, 22, 0.55));
+  }
+  
+  @media (max-width: 1024px) {
+    width: 200px;
+  }
+
+  @media (max-width: 576px) {
+    width: 140px;
+  }
+`;
+
+export const HeroRightImage = styled(Image)`
+  width: 13.5rem;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(50px, 10px) rotate(8deg) scale(0.92);
+  transform-origin: center center;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+  filter: brightness(0.65) contrast(0.95) blur(0.5px);
+  z-index: 2;
+
+  &.active {
+    transform: translate(-50%, -50%) translate(155px, 20px) rotate(20deg) scale(1);
+    filter: brightness(1.05) contrast(1) blur(0px) drop-shadow(0 15px 30px rgba(59, 130, 246, 0.45));
+  }
+  
+  @media (max-width: 1024px) {
+    width: 11rem;
+    transform: translate(-50%, -50%) translate(40px, 8px) rotate(8deg) scale(0.92);
+    
+    &.active {
+      transform: translate(-50%, -50%) translate(125px, 15px) rotate(18deg) scale(1);
+    }
+  }
+
+  @media (max-width: 576px) {
+    width: 8rem;
+    transform: translate(-50%, -50%) translate(25px, 5px) rotate(8deg) scale(0.92);
+    
+    &.active {
+      transform: translate(-50%, -50%) translate(80px, 10px) rotate(18deg) scale(1);
+    }
   }
 `;
 
@@ -187,12 +272,12 @@ export const HeroTextContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding-bottom: 2.5rem;
   z-index: 2;
   position: relative;
+  text-align: left;
 
   h1 {
-    font-size: 6.5rem;
+    font-size: 5.5rem;
     font-weight: 900;
     letter-spacing: -0.04em;
     line-height: 0.95;
@@ -221,25 +306,24 @@ export const HeroTextContainer = styled.div`
   }
 
   p {
-    max-width: 42rem;
+    max-width: 38rem;
     color: #bdbdbd;
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     font-weight: 400;
-    margin: 0 auto;
     line-height: 1.6;
   }
 
-  @media (max-width: 768px) {
-    gap: 1.25rem;
-    padding-bottom: 2rem;
+  @media (max-width: 991px) {
+    text-align: center;
     h1 {
-      font-size: 3rem;
+      font-size: 3.5rem;
       line-height: 1.15;
     }
 
     p {
       font-size: 1.05rem;
       line-height: 1.55;
+      margin: 0 auto;
     }
   }
 `;
@@ -274,7 +358,6 @@ export const HeaderGlowLine = styled.div`
   z-index: 2;
 `;
 
-/* Dynamic Scrolling Marquee Ticker Banners (Apple/MTW style) */
 export const MarqueeContainer = styled.div<{ $bottom?: boolean }>`
   width: 100vw;
   background: #000000;
@@ -327,108 +410,56 @@ export const MarqueeText = styled.span`
   }
 `;
 
-/* Premium Bottom Event Info Bar (Structural adaptation of MTW yellow card, styled in green/white Neo-brutalism) */
-export const BottomInfoBar = styled.div`
-  width: 100%;
-  margin: 3rem auto 0;
-  background: rgba(12, 12, 12, 0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 2px solid var(--emerald, #48d64c);
-  border-radius: 0.5rem;
-  padding: 1.75rem 3.5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1.2fr;
-  gap: 2.5rem;
-  align-items: center;
-  position: relative;
-  z-index: 5;
-  box-shadow: 6px 6px 0px var(--emerald, #48d64c);
-
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 2.5rem 1.5rem;
-    text-align: center;
-  }
-`;
-
-export const InfoBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  align-items: flex-start;
-
-  .label {
-    font-size: 0.8rem;
-    font-weight: 800;
-    color: #8c8c8c;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .value {
-    font-size: 1.6rem;
-    font-weight: 900;
-    color: var(--white, #fff);
-    letter-spacing: -0.01em;
-  }
-
-  @media (max-width: 1024px) {
-    align-items: center;
-  }
-`;
-
-export const InfoCTA = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  align-items: flex-end;
-
-  .price-subtext {
-    font-size: 0.75rem;
-    color: #8c8c8c;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-
-  @media (max-width: 1024px) {
-    align-items: center;
-  }
-`;
-
 export const CountdownBadge = styled.div`
-  position: absolute;
-  top: -16px;
-  right: 3.5rem;
-  background: #000000;
+  position: relative;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
   border: 2px solid var(--emerald, #48d64c);
   border-radius: 0.25rem;
-  padding: 0.45rem 1.25rem;
+  padding: 0.55rem 1.25rem;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.8rem;
   font-family: 'SF Pro Display', system-ui, sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 900;
   color: var(--white, #fff);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   box-shadow: 4px 4px 0px var(--emerald, #48d64c);
+  width: fit-content;
 
   span.timer {
     color: var(--emerald, #48d64c);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 900;
     font-variant-numeric: tabular-nums;
   }
 
-  @media (max-width: 1024px) {
-    position: relative;
-    top: 0;
-    right: 0;
+  @media (max-width: 991px) {
     margin: 0 auto;
-    width: fit-content;
+  }
+`;
+
+export const HeroCTAContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: flex-start;
+
+  .price-subtext {
+    font-size: 0.8rem;
+    color: #8c8c8c;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-left: 0.25rem;
+  }
+
+  @media (max-width: 991px) {
+    align-items: center;
+    .price-subtext {
+      margin-left: 0;
+    }
   }
 `;
 

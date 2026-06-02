@@ -16,13 +16,10 @@ import { Div } from '../Featured/styles';
 import { imageVariants } from '../Featured';
 import { useIsMobile } from '../../../../libs/useIsMobile';
 import financial_freedom_banner from '../../../../public/images/financial_freedom_banner.png';
-import freedom_mobile_banner from '../../../../public/images/freedom_mobile_banner.png';
 import {
-  desktopBriefNotePhrase,
   desktopHeaderPhrase,
   desktopParagraphPhrase,
   edges,
-  mobileBriefNotePhrase,
   mobileHeaderPhrase,
   mobileParagraphPhrase,
 } from './constants';
@@ -54,11 +51,7 @@ const FinancialFreedom = () => {
             whileInView="visible"
             viewport={{ amount: 0.25, once: true }}
           >
-            {isMobile ? (
-              <Image src={freedom_mobile_banner} alt="banner_img" fill />
-            ) : (
-              <Image src={financial_freedom_banner} alt="banner_img" fill />
-            )}
+            <Image src={financial_freedom_banner} alt="banner_img" fill />
           </Div>
         </BannerCtn>
         <Edges>
@@ -74,11 +67,18 @@ const FinancialFreedom = () => {
         </Edges>
       </Inner>
       <BriefNote>
-        {isMobile ? (
-          <MaskText phrases={mobileBriefNotePhrase} tag="p" />
-        ) : (
-          <MaskText phrases={desktopBriefNotePhrase} tag="p" />
-        )}
+        <MaskText phrases={['THE ROOM WHERE TALENT GETS DISCOVERED.']} tag="h1" />
+        <MaskText
+          phrases={[
+            "Meet founders, industry experts, and hiring teams. Showcase your skills and compete alongside India's brightest builders.",
+          ]}
+          tag="p"
+        />
+        <div className="cta-wrapper">
+          <a href="/register" className="cta-btn">
+            Secure your spot today
+          </a>
+        </div>
       </BriefNote>
     </Wrapper>
   );

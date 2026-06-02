@@ -6,7 +6,7 @@ import ic_lock_closed from '../../../../public/svgs/ic_lock_closed.svg';
 export const desktopHeaderPhrase = ['Three Focused Tracks.', 'Professional Judging.'];
 export const desktopParagraphPhrase = [
   'Choose your domain and build solutions evaluated directly by industry',
-  'judges from JP Morgan and Deutsche Telekom. Gain career credibility.',
+  'judges from global MNCs. Gain career credibility.',
 ];
 
 // For mobile
@@ -14,7 +14,7 @@ export const mobileHeaderPhrase = ['Three Focused Tracks.', 'Professional Judgin
 export const mobileParagraphPhrase = [
   'Choose your domain and build solutions',
   'evaluated directly by industry judges from',
-  'JP Morgan & Deutsche Telekom.',
+  'global MNCs.',
 ];
 
 export const edges = [

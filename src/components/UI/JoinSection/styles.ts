@@ -45,67 +45,70 @@ export const Inner = styled.div`
 export const Header = styled.header`
   text-align: center;
   max-width: 56rem;
-  margin: 0 auto 2.5rem;
+  margin: 0 auto 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   
   h1 {
     color: var(--white, #ffffff);
-    font-size: 4.75rem;
-    font-weight: 800;
+    font-size: 4.5rem;
+    font-weight: 900;
     letter-spacing: -0.03em;
     line-height: 1.1;
+    text-transform: uppercase;
   }
 
-  /* Highlight second line in brand gradient color */
-  div:nth-child(2) h1 {
-    background: linear-gradient(135deg, var(--emerald, #48d64c) 0%, #2b892e 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  p {
+    font-size: 1.25rem;
+    color: var(--link-color, #bdbdbd);
+    line-height: 1.6;
+    max-width: 38rem;
+    margin: 0 auto;
+    font-weight: 400;
   }
 
   @media (max-width: 768px) {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     h1 {
       font-size: 2.5rem;
+    }
+    p {
+      font-size: 1.05rem;
+      line-height: 1.5;
     }
   }
 `;
 
-export const BentoGrid = styled.div`
+export const PillarsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
+  gap: 2rem;
   width: 100%;
 
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 768px) {
+  @media (max-width: 991px) {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 2.5rem;
   }
 `;
 
-export const BentoCard = styled.div<{ $span?: number }>`
-  /* Luxurious green-tinted dark glassmorphism */
-  background: rgba(12, 16, 13, 0.7);
-  border: 1px solid rgba(72, 214, 76, 0.08);
+export const Pillar = styled.div`
+  background: rgba(12, 16, 13, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 0.75rem;
-  padding: ${({ $span }) => ($span && $span > 1 ? '2.25rem' : '1.75rem 2rem')};
+  padding: 3rem 2.25rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 1.5rem;
-  min-height: ${({ $span }) => ($span && $span > 1 ? '14.5rem' : '12.5rem')};
+  gap: 2.5rem;
+  min-height: 28rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.4s ease,
               background-color 0.4s ease,
               box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  grid-column: span ${({ $span }) => $span || 1};
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
 
   &::before {
     content: '';
@@ -114,119 +117,95 @@ export const BentoCard = styled.div<{ $span?: number }>`
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 10% 10%, rgba(72, 214, 76, 0.05) 0%, transparent 60%);
+    background: radial-gradient(circle at 10% 10%, rgba(72, 214, 76, 0.04) 0%, transparent 60%);
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.5;
     transition: opacity 0.5s ease;
   }
 
-  /* Featured Asymmetry & Visual Highlight */
-  ${({ $span }) =>
-    $span &&
-    $span > 1 &&
-    `
-    background: linear-gradient(135deg, rgba(12, 16, 13, 0.7) 0%, rgba(72, 214, 76, 0.015) 100%);
-    border-color: rgba(72, 214, 76, 0.22);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 25px rgba(72, 214, 76, 0.01), inset 0 0 12px rgba(72, 214, 76, 0.02);
-
-    &::before {
-      background: radial-gradient(circle at top left, rgba(72, 214, 76, 0.08) 0%, transparent 60%);
-    }
-
-    h3 {
-      font-size: 1.6rem;
-      letter-spacing: -0.02em;
-    }
-
-    p {
-      font-size: 1.05rem;
-      line-height: 1.65;
-    }
-  `}
-
   &:hover {
-    transform: translateY(-2px);
-    border-color: rgba(72, 214, 76, 0.45);
-    background: rgba(14, 20, 16, 0.85);
+    transform: translateY(-4px);
+    border-color: rgba(72, 214, 76, 0.22);
+    background: rgba(14, 20, 16, 0.75);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 
-                0 0 35px rgba(72, 214, 76, 0.04), 
-                inset 0 0 20px rgba(72, 214, 76, 0.04);
+                0 0 35px rgba(72, 214, 76, 0.02), 
+                inset 0 0 20px rgba(72, 214, 76, 0.02);
   }
 
   &:hover::before {
     opacity: 1;
   }
 
-  @media (max-width: 1024px) {
-    grid-column: span 1;
-    min-height: 12.5rem;
-    padding: 1.75rem 2rem;
-
-    h3 {
-      font-size: 1.35rem;
-    }
-
-    p {
-      font-size: 0.95rem;
-    }
+  @media (max-width: 991px) {
+    min-height: auto;
+    padding: 2.5rem 1.75rem;
   }
 `;
 
-export const CardHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-export const CardIcon = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(72, 214, 76, 0.05);
-  border: 1px solid rgba(72, 214, 76, 0.15);
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  flex-shrink: 0;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-`;
-
-export const CardTag = styled.span`
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--emerald, #48d64c);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: rgba(72, 214, 76, 0.06);
-  border: 1px solid rgba(72, 214, 76, 0.15);
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-`;
-
-export const CardText = styled.div`
+export const PillarHeader = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 0.8rem;
+  position: relative;
+  z-index: 2;
 `;
 
-export const CardTitle = styled.h3`
-  font-size: 1.35rem;
+export const PillarNumber = styled.span`
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--emerald, #48d64c);
+  letter-spacing: 0.1em;
+  font-family: 'SF Pro Display', system-ui, sans-serif;
+  text-shadow: 0 0 10px rgba(72, 214, 76, 0.15);
+`;
+
+export const PillarTitle = styled.h2`
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: var(--white, #fff);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+`;
+
+export const BenefitList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  position: relative;
+  z-index: 2;
+`;
+
+export const BenefitItem = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+`;
+
+export const BenefitStar = styled.span`
+  color: var(--emerald, #48d64c);
+  font-size: 1.15rem;
+  line-height: 1.25rem;
+  flex-shrink: 0;
+  font-weight: 900;
+`;
+
+export const BenefitText = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+`;
+
+export const BenefitItemTitle = styled.h3`
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--white, #fff);
   letter-spacing: -0.01em;
+  line-height: 1.3;
 `;
 
-export const CardDetails = styled.p`
-  font-size: 0.95rem;
+export const BenefitItemDetails = styled.p`
+  font-size: 0.925rem;
   color: var(--link-color, #bdbdbd);
-  line-height: 1.5;
+  line-height: 1.55;
   font-weight: 400;
 `;

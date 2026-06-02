@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import big_banner from '../../../../public/images/big_banner.png';
-import featured_mobile_banner from '../../../../public/images/featured_mobile_banner.png';
 import ParallaxText from '@/components/Common/ParallaxImages';
 import companies_image from '../../../../public/images/companies.png';
 import { Wrapper, Inner, ImageContainer, ParallaxImages, Div } from './styles';
@@ -34,15 +33,7 @@ const Featured = () => {
             whileInView="visible"
             viewport={{ amount: 0.25, once: true }}
           >
-            {isMobile ? (
-              <Image
-                src={featured_mobile_banner}
-                alt="featured_mobile_banner"
-                fill
-              />
-            ) : (
-              <Image src={big_banner} alt="big_banner" fill />
-            )}
+            <Image src={big_banner} alt="big_banner" fill />
           </Div>
         </ImageContainer>
         <h2>Judged & Verified by Industry Experts</h2>

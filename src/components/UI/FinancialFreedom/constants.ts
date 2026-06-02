@@ -10,9 +10,9 @@ export const desktopParagraphPhrase = [
   'cash rewards alongside verified professional credentials.',
 ];
 export const desktopBriefNotePhrase = [
-  'Judges from JP Morgan &',
-  'Deutsche Telekom, startup',
-  'internships, and premium kits.',
+  'Judges from global MNCs,',
+  'startup internships,',
+  'and premium kits.',
   'Get it all for only ₹100.',
 ];
 
@@ -25,8 +25,7 @@ export const mobileParagraphPhrase = [
 ];
 
 export const mobileBriefNotePhrase = [
-  'JP Morgan &',
-  ' Deutsche Telekom',
+  'Global MNC',
   'judges, startup',
   ' internships,',
   'and premium kits.',

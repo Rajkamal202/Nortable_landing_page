@@ -1,76 +1,66 @@
-import { StaticImageData } from 'next/image';
-import ic_identification from '../../../../public/svgs/ic_identification.svg';
-import ic_arrows_left_right from '../../../../public/svgs/ic_arrows_right_left.svg';
-import ic_document_duplicate from '../../../../public/svgs/ic_document_duplicate.svg';
-import ic_banknotes from '../../../../public/svgs/ic_banknotes.svg';
-import ic_lock_closed from '../../../../public/svgs/ic_lock_closed.svg';
-import ic_circle_stack from '../../../../public/svgs/ic_circle_stack.svg';
-
-export type Props = {
+export type Benefit = {
   title: string;
   details: string;
-  tag: string;
-  icon: StaticImageData;
-  span: number;
 };
 
-export const bentoCards: Props[] = [
+export type PillarProps = {
+  number: string;
+  title: string;
+  benefits: Benefit[];
+};
+
+export const pillars: PillarProps[] = [
   {
-    title: "JP Morgan & Deutsche Telekom Access",
-    details: "Present your build and code architecture directly to active engineering directors. Receive detailed, written feedback from industry leads.",
-    tag: "Judicial Evaluation",
-    icon: ic_identification,
-    span: 1,
+    number: "01",
+    title: "BUILD WITH ELITE TOOLS",
+    benefits: [
+      {
+        title: "₹15,000+ Developer Kit",
+        details: "Immediate access to AWS, GitHub, and Notion credits to deploy at zero cost.",
+      },
+      {
+        title: "₹50,000 Cash Pool",
+        details: "Non-dilutive seed capital distributed across 9 teams to launch your prototype.",
+      },
+    ],
   },
   {
-    title: "Fast-Track Startup Placements",
-    details: "Skip generic resume screens. Your hackathon project serves as a pre-verified technical screening for internships and engineering roles at partner startups.",
-    tag: "Internship Pipeline",
-    icon: ic_arrows_left_right,
-    span: 2,
+    number: "02",
+    title: "GET VERIFIED CREDENTIALS",
+    benefits: [
+      {
+        title: "Direct Code Feedback",
+        details: "Written evaluations directly from senior engineering directors.",
+      },
+      {
+        title: "Verified LinkedIn Badges",
+        details: "Domain-specific skill badges verified by industry judges.",
+      },
+      {
+        title: "Production-Grade Assets",
+        details: "Vetted portfolio items over simple tutorial code.",
+      },
+    ],
   },
   {
-    title: "₹50,000+ Non-Dilutive Capital",
-    details: "Distributed across 9 winning teams. Gain the initial capital needed to launch, host, and scale your project into a viable product.",
-    tag: "Cash Rewards",
-    icon: ic_banknotes,
-    span: 2,
-  },
-  {
-    title: "Verified LinkedIn Credentials",
-    details: "Receive domain-specific skill badges and digital certificates verified by industry judges to instantly boost your professional profile.",
-    tag: "LinkedIn Certifications",
-    icon: ic_document_duplicate,
-    span: 1,
-  },
-  {
-    title: "₹15,000+ Infrastructure Sponsorship",
-    details: "Deploy and host with high-performance tools. Access free developer credits, APIs, and hosting from AWS, GitHub, Notion, and more.",
-    tag: "Developer Kit",
-    icon: ic_circle_stack,
-    span: 1,
-  },
-  {
-    title: "Recruiter Showcase Feature",
-    details: "Get listed in our public Hall of Fame and have your project featured as an industry case study, exposed to active technical recruiters.",
-    tag: "Career Visibility",
-    icon: ic_lock_closed,
-    span: 1,
-  },
-  {
-    title: "Production-Grade Portfolio Assets",
-    details: "Move past simple tutorials. Build fully functional, production-ready prototypes that demonstrate complex system architecture.",
-    tag: "Portfolio Value",
-    icon: ic_circle_stack,
-    span: 1,
-  },
-  {
-    title: "High-Caliber Builder & Founder Network",
-    details: "Secure lifetime access to an invite-only community of active developers, co-founders, and engineers. Find future partners and launch peer collaborations.",
-    tag: "Lifetime Peer Group",
-    icon: ic_arrows_left_right,
-    span: 3,
+    number: "03",
+    title: "SKIP THE RESUME SCREEN",
+    benefits: [
+      {
+        title: "Global MNC Access",
+        details: "Present your project directly to engineering heads.",
+      },
+      {
+        title: "Fast-Track Placements",
+        details: "Skip screening; project serves as technical screening for startup roles.",
+      },
+      {
+        title: "Lifetime Peer Network",
+        details: "Invite-only community of active founders and builders.",
+      },
+    ],
   },
 ];
 
 export const desktopHeaderPhrase = ['Why This Hackathon', 'Feels Different'];
+export const subHeaderPhrase = ["Most hackathons end in 48 hours. Nortable is built to launch your engineering career."];

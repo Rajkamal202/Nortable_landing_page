@@ -1,7 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
-import Image from 'next/image';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Wrapper,
@@ -9,28 +8,33 @@ import {
   Inner,
   GlowBg,
   CenterOrb,
-  Pill,
-  IndicatorDot,
+  HeroGrid,
+  LeftCol,
+  RightCol,
+  HeroCardsContainer,
+  HeroLeftImage,
+  HeroMiddleImage,
+  HeroRightImage,
   HeroTextContainer,
   HeaderGlowLine,
   MarqueeContainer,
   MarqueeTrack,
   MarqueeText,
-  BottomInfoBar,
-  InfoBlock,
-  InfoCTA,
   CountdownBadge,
+  HeroCTAContainer,
   GrabButton,
 } from './styles';
-import ic_chevron_right from '../../../../public/svgs/ic_chevron_right.svg';
-import { GetStartedButton } from '@/components';
 import { useIsMobile } from '../../../../libs/useIsMobile';
+import lola_card from '../../../../public/images/lola_card.png';
+import orange_card from '../../../../public/images/orange_card.png';
+import terry_card from '../../../../public/images/terry_card.png';
+
+
 
 const HeroSection = () => {
   const isMobile = useIsMobile();
   const wrapperRef = useRef<HTMLDivElement>(null);
-
-
+  const [isHovered, setIsHovered] = useState<boolean>(false);
 
   // Real-time ticking Countdown clock targeting July 10, 2026 (Nortable Virtual Hackathon)
   const [timeLeft, setTimeLeft] = useState({
@@ -102,7 +106,7 @@ const HeroSection = () => {
       <CenterOrb />
       <HeaderGlowLine />
 
-      {/* Top Scrolling Ribbon Ticker (Apple/MTW style) */}
+      {/* Top Scrolling Ribbon Ticker */}
       <MarqueeContainer>
         <MarqueeTrack>
           {Array(4).fill(null).map((_, idx) => (
@@ -114,7 +118,7 @@ const HeroSection = () => {
               </MarqueeText>
               <MarqueeText>
                 <span className="highlight">₹15,000+ DEV CREDITS</span>
-                <span>JP MORGAN & DEUTSCHE TELEKOM JUDGES</span>
+                <span>GLOBAL MNC JUDGES</span>
                 <span className="star">✦</span>
               </MarqueeText>
               <MarqueeText>
@@ -128,74 +132,90 @@ const HeroSection = () => {
       </MarqueeContainer>
       
       <Inner>
-        {/* Pulsating Glassmorphic Date Pill with Shimmer Reflection Sweep */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <Pill onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}>
-            <IndicatorDot />
-            <span>July 10-12, 2026 | Virtual</span>
-            <Image src={ic_chevron_right} alt="chevron-right" />
-          </Pill>
-        </motion.div>
+        <HeroGrid>
+          {/* Left Column: Heading, Subtext, Countdown, and CTA */}
+          <LeftCol>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <CountdownBadge>
+                <span>Starts In</span>
+                <span className="timer">
+                  {timeLeft.days}D : {timeLeft.hours}H : {timeLeft.minutes}M : {timeLeft.seconds}S
+                </span>
+              </CountdownBadge>
+            </motion.div>
 
-        {/* Enhanced Hero Typography with Animated Text Gradients */}
-        <HeroTextContainer>
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          >
-            Nortable <span className="gradient-text">2026</span>
-          </motion.h1>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          >
-            {isMobile ? (
-              "Compete for ₹50,000+ in cash prizes. Judged by JP Morgan & Deutsche Telekom professionals."
-            ) : (
-              "Build, collaborate, and compete for ₹50,000+ in cash prizes. Judged by JP Morgan & Deutsche Telekom professionals. Earn verified certificates, startup internships, and ₹15,000+ in dev credits."
-            )}
-          </motion.p>
-        </HeroTextContainer>
+            <HeroTextContainer>
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+              >
+                Nortable <span className="gradient-text">2026</span>
+              </motion.h1>
+              
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              >
+                {isMobile ? (
+                  "Compete for ₹50,000+ in cash prizes. Judged by global MNC professionals."
+                ) : (
+                  "Build, collaborate, and compete for ₹50,000+ in cash prizes. Judged by global MNC professionals. Earn verified certificates, startup internships, and ₹15,000+ in dev credits."
+                )}
+              </motion.p>
+            </HeroTextContainer>
 
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+            >
+              <HeroCTAContainer>
+                <GrabButton href="/register">
+                  Grab Your Pass
+                </GrabButton>
+                <span className="price-subtext">Secure your spot for only ₹100</span>
+              </HeroCTAContainer>
+            </motion.div>
+          </LeftCol>
 
-
-        {/* Bottom Event Info Bar (MTW yellow block adapted with dark-emerald Neo-brutalism) */}
-        <BottomInfoBar>
-          {/* Active Ticking Countdown Badge */}
-          <CountdownBadge>
-            <span>Starts In</span>
-            <span className="timer">
-              {timeLeft.days}D : {timeLeft.hours}H : {timeLeft.minutes}M : {timeLeft.seconds}S
-            </span>
-          </CountdownBadge>
- 
-          <InfoBlock>
-            <span className="label">Dates</span>
-            <span className="value">July 10 - 12, 2026</span>
-          </InfoBlock>
- 
-          <InfoBlock>
-            <span className="label">Location</span>
-            <span className="value">Virtual</span>
-          </InfoBlock>
- 
-          <InfoCTA>
-            <GrabButton href="/register">
-              Grab Your Pass
-            </GrabButton>
-            <span className="price-subtext">Secure your spot for only ₹100</span>
-          </InfoCTA>
-        </BottomInfoBar>
+          {/* Right Column: Interactive Ticket Showcase */}
+          <RightCol>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            >
+              <HeroCardsContainer
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                <HeroLeftImage
+                  className={isHovered ? 'active' : ''}
+                  src={orange_card}
+                  alt="Yuna Kim ticket"
+                />
+                <HeroMiddleImage
+                  src={lola_card}
+                  alt="Arjun Malhotra ticket"
+                />
+                <HeroRightImage
+                  className={isHovered ? 'active' : ''}
+                  src={terry_card}
+                  alt="Ethan Walker ticket"
+                />
+              </HeroCardsContainer>
+            </motion.div>
+          </RightCol>
+        </HeroGrid>
       </Inner>
 
-      {/* Bottom Scrolling Ribbon Ticker (Apple/MTW style) */}
+      {/* Bottom Scrolling Ribbon Ticker */}
       <MarqueeContainer $bottom>
         <MarqueeTrack>
           {Array(6).fill(null).map((_, idx) => (

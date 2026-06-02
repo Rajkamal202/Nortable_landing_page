@@ -31,11 +31,11 @@ export const faqData: FAQItem[] = [
   {
     question: 'Who are the judges and how are projects evaluated?',
     answer:
-      'Projects are judged by experienced industry professionals from JP Morgan and Deutsche Telekom. Submissions are evaluated on technical architecture, design, execution, and code optimization. Every team receives written feedback.',
+      'Projects are judged by experienced industry professionals from global MNCs. Submissions are evaluated on technical architecture, design, execution, and code optimization. Every team receives written feedback.',
   },
   {
     question: 'What are the career opportunities at Nortable?',
     answer:
-      'The top 5 performers will be personally connected with judges from JP Morgan and Deutsche Telekom for career guidance. Additionally, there are exclusive internship placement opportunities with partner startups for registered builders.',
+      'The top 5 performers will be personally connected with judges from global MNCs for career guidance. Additionally, there are exclusive internship placement opportunities with partner startups for registered builders.',
   },
 ];

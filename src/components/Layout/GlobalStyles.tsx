@@ -75,19 +75,6 @@ export const GlobalStyles = styled.createGlobalStyle`
   }
 
   main.landing-page {
-    background-image: linear-gradient(
-        to bottom,
-        rgba(7, 6, 6, 0.65) 0%,
-        rgba(7, 6, 6, 0.85) 25%,
-        rgba(7, 6, 6, 0.92) 50%,
-        rgba(7, 6, 6, 0.97) 75%,
-        rgba(7, 6, 6, 0.99) 100%
-      ),
-      url('/images/landing_bg.png');
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
     width: 100%;
     min-height: 100vh;
   }

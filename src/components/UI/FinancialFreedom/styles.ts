@@ -131,31 +131,96 @@ export const Title = styled.div`
 `;
 
 export const BriefNote = styled.div`
-  max-height: 54.75rem;
   padding: 8.25rem 4.5rem;
   background: var(--emerald);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2.5rem;
+  width: 100%;
 
-  p {
+  h1 {
     color: var(--Background, #070606);
-    font-size: 7rem;
+    font-size: 5rem;
     font-weight: 900;
-    max-width: 1440px;
+    max-width: 1100px;
     letter-spacing: -0.04em;
-    line-height: 0.95;
+    line-height: 1.05;
     text-transform: uppercase;
+    font-family: 'SF Pro Display', system-ui, sans-serif;
+  }
+
+  div:nth-of-type(2) p {
+    color: rgba(7, 6, 6, 0.82);
+    font-size: 1.6rem;
+    font-weight: 600;
+    max-width: 850px;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+
+  /* Custom CTA button style */
+  .cta-wrapper {
+    margin-top: 1rem;
+  }
+
+  .cta-btn {
+    background: var(--Background, #070606);
+    color: var(--white) !important;
+    border-radius: 0.25rem;
+    border: 2px solid var(--Background, #070606);
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+
+    &:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
+      background: #ffffff;
+      color: #070606 !important;
+      border-color: #ffffff;
+    }
   }
 
   @media (max-width: 1024px) {
-    padding: 4rem 2rem;
-    p {
-      font-size: 3.75rem;
+    padding: 7rem 2.5rem;
+    gap: 2rem;
+
+    h1 {
+      font-size: 3.5rem;
+    }
+
+    div:nth-of-type(2) p {
+      font-size: 1.3rem;
     }
   }
 
   @media (max-width: 768px) {
-    padding: 3rem 1.5rem;
-    p {
+    padding: 5rem 1.5rem;
+    gap: 1.5rem;
+
+    h1 {
       font-size: 2.25rem;
+      line-height: 1.1;
+    }
+
+    div:nth-of-type(2) p {
+      font-size: 1.05rem;
+      line-height: 1.4;
+    }
+
+    .cta-btn {
+      padding: 0.85rem 2.25rem;
+      font-size: 0.95rem;
     }
   }
 `;

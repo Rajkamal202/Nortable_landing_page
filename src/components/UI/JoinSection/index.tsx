@@ -1,20 +1,22 @@
 'use client';
-import Image from 'next/image';
 import { MaskText } from '@/components';
 import {
   Wrapper,
   Inner,
   Header,
-  BentoGrid,
-  BentoCard,
-  CardHeader,
-  CardIcon,
-  CardTag,
-  CardText,
-  CardTitle,
-  CardDetails,
+  PillarsGrid,
+  Pillar,
+  PillarHeader,
+  PillarNumber,
+  PillarTitle,
+  BenefitList,
+  BenefitItem,
+  BenefitStar,
+  BenefitText,
+  BenefitItemTitle,
+  BenefitItemDetails,
 } from './styles';
-import { bentoCards, desktopHeaderPhrase } from './constants';
+import { pillars, desktopHeaderPhrase, subHeaderPhrase } from './constants';
 
 const JoinSection = () => {
   return (
@@ -22,23 +24,29 @@ const JoinSection = () => {
       <Inner>
         <Header>
           <MaskText phrases={desktopHeaderPhrase} tag="h1" />
+          <MaskText phrases={subHeaderPhrase} tag="p" />
         </Header>
-        <BentoGrid>
-          {bentoCards.map((card, i) => (
-            <BentoCard key={i} $span={card.span}>
-              <CardHeader>
-                <CardIcon>
-                  <Image src={card.icon} alt={card.title} />
-                </CardIcon>
-                <CardTag>{card.tag}</CardTag>
-              </CardHeader>
-              <CardText>
-                <CardTitle>{card.title}</CardTitle>
-                <CardDetails>{card.details}</CardDetails>
-              </CardText>
-            </BentoCard>
+        <PillarsGrid>
+          {pillars.map((pillar, i) => (
+            <Pillar key={i}>
+              <PillarHeader>
+                <PillarNumber>{pillar.number}</PillarNumber>
+                <PillarTitle>{pillar.title}</PillarTitle>
+              </PillarHeader>
+              <BenefitList>
+                {pillar.benefits.map((benefit, j) => (
+                  <BenefitItem key={j}>
+                    <BenefitStar>✦</BenefitStar>
+                    <BenefitText>
+                      <BenefitItemTitle>{benefit.title}</BenefitItemTitle>
+                      <BenefitItemDetails>{benefit.details}</BenefitItemDetails>
+                    </BenefitText>
+                  </BenefitItem>
+                ))}
+              </BenefitList>
+            </Pillar>
           ))}
-        </BentoGrid>
+        </PillarsGrid>
       </Inner>
     </Wrapper>
   );
