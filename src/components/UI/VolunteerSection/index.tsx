@@ -114,7 +114,7 @@ const VolunteerSection = () => {
               <FormTitle>Apply to Volunteer</FormTitle>
               
               <FormDescription>
-                We're excited to welcome new organizers, mentors, and support crew! Click the link below to open our application form and tell us more about yourself.
+                We&apos;re excited to welcome new organizers, mentors, and support crew! Click the link below to open our application form and tell us more about yourself.
               </FormDescription>
 
               <FeaturesList>
