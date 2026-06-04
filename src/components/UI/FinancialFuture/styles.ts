@@ -161,6 +161,9 @@ export const Stats = styled.div`
 
   @media (max-width: 768px) {
     margin: 3.75rem auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem 1.5rem;
   }
 `;
 
@@ -190,12 +193,12 @@ export const Stat = styled.div`
 
   @media (max-width: 768px) {
     h1 {
-      font-size: 1.75rem;
+      font-size: 2.5rem;
     }
 
     p {
-      font-size: 0.65rem;
-      letter-spacing: 0.04em;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
     }
   }
 `;

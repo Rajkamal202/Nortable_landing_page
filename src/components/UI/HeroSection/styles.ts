@@ -497,6 +497,11 @@ export const GrabButton = styled.a`
     box-shadow: 0 2px 12px rgba(72, 214, 76, 0.2);
   }
 
+  @media (max-width: 991px) {
+    width: 100%;
+    max-width: 20rem;
+  }
+
   @media (max-width: 768px) {
     padding: 0.8rem 1.75rem;
     font-size: 0.9rem;
@@ -523,6 +528,11 @@ export const SecondaryButton = styled.a`
     color: var(--white, #fff);
     border-color: rgba(255, 255, 255, 0.2);
     background: rgba(255, 255, 255, 0.03);
+  }
+
+  @media (max-width: 991px) {
+    width: 100%;
+    max-width: 20rem;
   }
 
   @media (max-width: 768px) {
