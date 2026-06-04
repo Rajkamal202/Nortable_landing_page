@@ -118,20 +118,36 @@ export const TextCtn = styled.div`
   }
 `;
 
-export const SVGCtn = styled.div`
-  background: url(${card_grid.src});
+export const SVGCtn = styled.div<{ $isPhoto?: boolean }>`
+  background: ${props => props.$isPhoto ? 'none' : `url(${card_grid.src})`};
   height: 24.55rem;
-  display: grid;
+  display: ${props => props.$isPhoto ? 'block' : 'grid'};
   place-items: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+
+  img {
+    width: 100%;
+    height: ${props => props.$isPhoto ? '100%' : 'auto'};
+    object-fit: ${props => props.$isPhoto ? 'cover' : 'contain'};
+    object-position: center;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  ${Card}:hover & img {
+    transform: scale(${props => props.$isPhoto ? '1.03' : '1'});
+  }
 
   @media (max-width: 768px) {
     height: 15.28219rem;
     background-position: center center;
-    background-size: contain;
+    background-size: ${props => props.$isPhoto ? 'cover' : 'contain'};
 
     img {
-      width: 7.5rem;
-      height: 7.5rem;
+      width: ${props => props.$isPhoto ? '100%' : '7.5rem'};
+      height: ${props => props.$isPhoto ? '100%' : '7.5rem'};
     }
   }
 `;

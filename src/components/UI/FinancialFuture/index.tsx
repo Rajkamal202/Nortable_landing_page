@@ -50,7 +50,7 @@ const FinancialFuture = () => {
                 <MaskText phrases={new Array(info.title)} tag="h3" />
                 <MaskText phrases={new Array(info.details)} tag="p" />
               </TextCtn>
-              <SVGCtn>
+              <SVGCtn $isPhoto={info.isPhoto}>
                 <Image src={info.icon} alt="icon" />
               </SVGCtn>
             </Card>

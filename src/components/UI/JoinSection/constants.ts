@@ -19,7 +19,7 @@ export const pillars: PillarProps[] = [
         details: "Immediate access to AWS, GitHub, and Notion credits to deploy at zero cost.",
       },
       {
-        title: "₹50,000 Cash Pool",
+        title: "₹1,00,000 Cash Pool",
         details: "Non-dilutive seed capital distributed across 9 teams to launch your prototype.",
       },
     ],

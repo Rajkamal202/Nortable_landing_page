@@ -228,7 +228,7 @@ const VirtualIDCard = ({ participantData, registrationType, teamName }: VirtualI
                 <EventDetails>
                   <span>VIRTUAL</span>
                   <span className="dot">-</span>
-                  <span>JULY 10-12, 2026</span>
+                  <span>JULY 18-19, 2026</span>
                 </EventDetails>
               </TicketContent>
             </TicketCard>

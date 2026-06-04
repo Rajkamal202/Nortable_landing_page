@@ -418,8 +418,8 @@ const RegistrationForm = () => {
               <StatIcon><CalendarIcon /></StatIcon>
               <StatContent>
                 <div className="label">EVENT DATE</div>
-                <div className="value">JULY 10 - 12</div>
-                <div className="subtext">3 Days of Innovation</div>
+                <div className="value">JULY 18 - 19</div>
+                <div className="subtext">36 Hours of Innovation</div>
               </StatContent>
             </StatCard>
 

@@ -132,152 +132,91 @@ export const RightPanel = styled.div`
   width: 100%;
 `;
 
-export const FormCard = styled(motion.form)`
+export const FormCard = styled(motion.div)`
   background: rgba(255, 255, 255, 0.015);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 1.5rem;
-  padding: 3rem;
+  padding: 3.5rem 3rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.75rem;
   box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.4);
 
   @media (max-width: 768px) {
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 1.5rem;
     border-radius: 1rem;
   }
 `;
 
-export const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-`;
-
-export const Label = styled.label`
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--light-gray, #dcdcdc);
-  letter-spacing: -0.01em;
-
-  span {
-    color: var(--emerald, #48d64c);
-  }
-`;
-
-export const InputWrapper = styled.div<{ $error?: boolean }>`
+export const FormIconWrapper = styled.div`
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1.25rem;
+  background: rgba(72, 214, 76, 0.08);
+  border: 1px solid rgba(72, 214, 76, 0.15);
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid ${({ $error }) => ($error ? '#ea4335' : 'rgba(255, 255, 255, 0.08)')};
-  border-radius: 0.75rem;
-  padding: 0 1rem;
-  height: 3.25rem;
-  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-  color: var(--white, #fff);
+  justify-content: center;
+  color: var(--emerald, #48d64c);
+  margin-bottom: 0.25rem;
 
   svg {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-right: 0.75rem;
-    color: #8c8c8c;
-    flex-shrink: 0;
-  }
-
-  input {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--white, #fff);
-    font-size: 0.95rem;
-
-    &::placeholder {
-      color: #5a5a5a;
-    }
-  }
-
-  &:focus-within {
-    border-color: ${({ $error }) => ($error ? '#ea4335' : 'var(--emerald, #48d64c)')};
-    box-shadow: ${({ $error }) =>
-      $error ? '0 0 10px rgba(234, 67, 53, 0.1)' : '0 0 15px rgba(72, 214, 76, 0.15)'};
-    background: rgba(0, 0, 0, 0.35);
-
-    svg {
-      color: var(--emerald, #48d64c);
-    }
+    width: 2rem;
+    height: 2rem;
   }
 `;
 
-export const Select = styled.select<{ $error?: boolean }>`
-  width: 100%;
-  height: 3.25rem;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid ${({ $error }) => ($error ? '#ea4335' : 'rgba(255, 255, 255, 0.08)')};
-  border-radius: 0.75rem;
-  padding: 0 1rem;
+export const FormTitle = styled.h2`
+  font-size: 2rem;
+  font-weight: 700;
   color: var(--white, #fff);
-  font-size: 0.95rem;
-  outline: none;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238c8c8c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1.2rem;
-  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-
-  &:focus {
-    border-color: ${({ $error }) => ($error ? '#ea4335' : 'var(--emerald, #48d64c)')};
-    box-shadow: ${({ $error }) =>
-      $error ? '0 0 10px rgba(234, 67, 53, 0.1)' : '0 0 15px rgba(72, 214, 76, 0.15)'};
-    background-color: rgba(0, 0, 0, 0.35);
-  }
-
-  option {
-    background-color: #111;
-    color: #fff;
-  }
+  letter-spacing: -0.01em;
+  line-height: 1.2;
 `;
 
-export const TextArea = styled.textarea<{ $error?: boolean }>`
-  width: 100%;
-  min-height: 7.5rem;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid ${({ $error }) => ($error ? '#ea4335' : 'rgba(255, 255, 255, 0.08)')};
-  border-radius: 0.75rem;
-  padding: 1rem;
-  color: var(--white, #fff);
+export const FormDescription = styled.p`
+  font-size: 1rem;
+  color: var(--link-color, #bdbdbd);
+  line-height: 1.6;
+  margin: 0;
+`;
+
+export const FeaturesList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin: 0.5rem 0;
+`;
+
+export const FeatureItem = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+`;
+
+export const FeatureIcon = styled.span`
+  color: var(--emerald, #48d64c);
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+`;
+
+export const FeatureText = styled.p`
   font-size: 0.95rem;
-  outline: none;
-  resize: vertical;
+  color: #a0a0a0;
   line-height: 1.5;
-  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  margin: 0 !important;
 
-  &::placeholder {
-    color: #5a5a5a;
-  }
-
-  &:focus {
-    border-color: ${({ $error }) => ($error ? '#ea4335' : 'var(--emerald, #48d64c)')};
-    box-shadow: ${({ $error }) =>
-      $error ? '0 0 10px rgba(234, 67, 53, 0.1)' : '0 0 15px rgba(72, 214, 76, 0.15)'};
-    background: rgba(0, 0, 0, 0.35);
+  strong {
+    color: var(--white, #fff);
+    font-weight: 600;
   }
 `;
 
-export const ErrorText = styled.span`
-  color: #ea4335;
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
-  font-weight: 500;
-`;
-
-export const SubmitButton = styled(motion.button)`
+export const SubmitButton = styled(motion.a)`
   background: linear-gradient(135deg, var(--emerald, #48d64c) 0%, #2b892e 100%);
   color: var(--white, #fff);
   border: none;
@@ -293,119 +232,11 @@ export const SubmitButton = styled(motion.button)`
   margin-top: 1rem;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(72, 214, 76, 0.2);
+  text-decoration: none;
 
   &:hover {
     box-shadow: 0 6px 20px rgba(72, 214, 76, 0.35);
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-`;
-
-export const SuccessCard = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.015);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 1.5rem;
-  padding: 4rem 3rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 1.5rem;
-  box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.4);
-
-  svg {
-    width: 4rem;
-    height: 4rem;
-    color: var(--emerald, #48d64c);
-    margin-bottom: 0.5rem;
-  }
-
-  h2 {
-    font-size: 2.25rem;
-    font-weight: 700;
     color: var(--white, #fff);
   }
-
-  p {
-    font-size: 1.1rem;
-    color: var(--link-color, #bdbdbd);
-    line-height: 1.6;
-    max-width: 25rem;
-  }
-
-  @media (max-width: 768px) {
-    padding: 3rem 1.5rem;
-    h2 {
-      font-size: 1.75rem;
-    }
-    p {
-      font-size: 1rem;
-    }
-  }
 `;
 
-export const SuccessButton = styled.button`
-  background: transparent;
-  color: var(--emerald, #48d64c);
-  border: 1px solid var(--emerald, #48d64c);
-  border-radius: 0.75rem;
-  padding: 0.75rem 2rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 1rem;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(72, 214, 76, 0.05);
-  }
-`;
-
-export const FormSectionTitle = styled.h3`
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--white, #fff);
-  margin-top: 1.25rem;
-  margin-bottom: 0.25rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding-bottom: 0.5rem;
-  width: 100%;
-  
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 4px;
-    height: 16px;
-    background: var(--emerald, #48d64c);
-    border-radius: 2px;
-  }
-`;
-
-export const InputRow = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  width: 100%;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-`;
-
-export const SubText = styled.span`
-  font-size: 0.75rem;
-  color: #7c7c7c;
-  line-height: 1.35;
-  margin-top: 0.15rem;
-  font-weight: 400;
-`;

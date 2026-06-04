@@ -4,7 +4,7 @@ import ic_circle_stack from '../../../../public/svgs/ic_circle_stack.svg';
 import ic_arrows_left_right from '../../../../public/svgs/ic_arrows_right_left.svg';
 
 // For desktop
-export const desktopHeaderPhrase = ['₹50,000+ Cash Pool.', 'Real Recognition.'];
+export const desktopHeaderPhrase = ['₹1,00,000+ Cash Pool.', 'Real Recognition.'];
 export const desktopParagraphPhrase = [
   'We reward your hard work and technical excellence. Stand out and win',
   'cash rewards alongside verified professional credentials.',
@@ -17,7 +17,7 @@ export const desktopBriefNotePhrase = [
 ];
 
 // For mobile
-export const mobileHeaderPhrase = ['₹50,000+ Cash Pool.', 'Real Recognition.'];
+export const mobileHeaderPhrase = ['₹1,00,000+ Cash Pool.', 'Real Recognition.'];
 export const mobileParagraphPhrase = [
   'We reward your hard work and technical excellence.',
   'Stand out and win cash rewards alongside verified',
@@ -35,7 +35,7 @@ export const mobileBriefNotePhrase = [
 
 export const edges = [
   {
-    point: '₹50,000+ Cash Pool',
+    point: '₹1,00,000+ Cash Pool',
     details:
       'Distributed across 9 winning teams to celebrate outstanding builds and code quality.',
     icon: ic_banknotes,

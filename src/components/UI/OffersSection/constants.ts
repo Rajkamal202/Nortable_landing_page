@@ -1,7 +1,7 @@
 import seamless_payments from '../../../../public/images/seamless_payments.png';
-import smart_investing from '../../../../public/images/smart_investing.png';
-import wealth_management from '../../../../public/images/wealth_management.png';
-import financial_planning from '../../../../public/images/financial_planning.png';
+import smart_investing from '../../../../public/images/smart_investing.jpg';
+import real_written_feedback from '../../../../public/images/real_written_feedback.jpg';
+import lifetime_tech_community from '../../../../public/images/lifetime_tech_community.jpg';
 // For desktop
 export const desktopHeaderPhrases = [
   'Elite Resources for',
@@ -33,13 +33,13 @@ export const offers = [
       'Deploy your build using premium developer credits, free APIs, and tools from AWS, GitHub, Notion, and more.',
   },
   {
-    illustration: wealth_management,
+    illustration: real_written_feedback,
     title: 'Real Written Feedback',
     details:
       'Every single project receives professional, written code review and constructive feedback directly from industry judges.',
   },
   {
-    illustration: financial_planning,
+    illustration: lifetime_tech_community,
     title: 'Lifetime Tech Community',
     details:
       'Gain lifetime access to our exclusive developer community to find future co-founders, collaborators, and mentors.',

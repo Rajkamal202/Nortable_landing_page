@@ -21,35 +21,48 @@ import {
   MarqueeTrack,
   MarqueeText,
   CountdownBadge,
+  CountdownLabel,
+  CountdownCells,
+  CountdownCell,
+  CountdownSeparator,
   HeroCTAContainer,
   GrabButton,
+  SecondaryButton,
+  FeaturePillsContainer,
+  FeaturePill,
 } from './styles';
 import { useIsMobile } from '../../../../libs/useIsMobile';
 import lola_card from '../../../../public/images/lola_card.png';
 import orange_card from '../../../../public/images/orange_card.png';
 import terry_card from '../../../../public/images/terry_card.png';
 
-
+const featurePills = [
+  { icon: '💰', label: '₹1,00,000+ Prize Pool' },
+  { icon: '🏢', label: 'Global MNC Judges' },
+  { icon: '🚀', label: 'Startup Internships' },
+  { icon: '🛠️', label: '₹15,000+ Dev Credits' },
+  { icon: '🌐', label: 'Virtual Event' },
+];
 
 const HeroSection = () => {
   const isMobile = useIsMobile();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  // Real-time ticking Countdown clock targeting July 10, 2026 (Nortable Virtual Hackathon)
+  // Real-time ticking Countdown clock targeting July 18, 2026 (Nortable Virtual Hackathon)
   const [timeLeft, setTimeLeft] = useState({
-    days: '04',
+    days: '44',
     hours: '10',
     minutes: '12',
     seconds: '19',
   });
 
   useEffect(() => {
-    const targetDate = new Date('2026-07-10T08:00:00');
+    const targetDate = new Date('2026-07-18T08:00:00');
     const updateCountdown = () => {
       const now = new Date();
       const difference = targetDate.getTime() - now.getTime();
-      
+
       if (difference <= 0) {
         setTimeLeft({ days: '00', hours: '00', minutes: '00', seconds: '00' });
         return;
@@ -100,7 +113,7 @@ const HeroSection = () => {
     <Wrapper ref={wrapperRef}>
       {/* 60fps cursor-following spotlight glow */}
       {!isMobile && <InteractiveSpotlight />}
-      
+
       {/* Dynamic atmospheric layered rotating aurora background */}
       <GlowBg />
       <CenterOrb />
@@ -112,7 +125,7 @@ const HeroSection = () => {
           {Array(4).fill(null).map((_, idx) => (
             <span key={idx} style={{ display: 'inline-flex' }}>
               <MarqueeText>
-                <span className="highlight">₹50,000+ CASH PRIZES</span>
+                <span className="highlight">₹1,00,000+ CASH PRIZES</span>
                 <span>VERIFIED CERTIFICATE & SKILL BADGE</span>
                 <span className="star">✦</span>
               </MarqueeText>
@@ -130,24 +143,44 @@ const HeroSection = () => {
           ))}
         </MarqueeTrack>
       </MarqueeContainer>
-      
+
       <Inner>
         <HeroGrid>
-          {/* Left Column: Heading, Subtext, Countdown, and CTA */}
+          {/* Left Column: Countdown → Headline → Tagline → Feature Pills → CTA */}
           <LeftCol>
+            {/* Countdown */}
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <CountdownBadge>
-                <span>Starts In</span>
-                <span className="timer">
-                  {timeLeft.days}D : {timeLeft.hours}H : {timeLeft.minutes}M : {timeLeft.seconds}S
-                </span>
+                <CountdownLabel>Starts In</CountdownLabel>
+                <CountdownCells>
+                  <CountdownCell>
+                    <span className="value">{timeLeft.days}</span>
+                    <span className="unit">Days</span>
+                  </CountdownCell>
+                  <CountdownSeparator>:</CountdownSeparator>
+                  <CountdownCell>
+                    <span className="value">{timeLeft.hours}</span>
+                    <span className="unit">Hrs</span>
+                  </CountdownCell>
+                  <CountdownSeparator>:</CountdownSeparator>
+                  <CountdownCell>
+                    <span className="value">{timeLeft.minutes}</span>
+                    <span className="unit">Min</span>
+                  </CountdownCell>
+                  <CountdownSeparator>:</CountdownSeparator>
+                  <CountdownCell>
+                    <span className="value">{timeLeft.seconds}</span>
+                    <span className="unit">Sec</span>
+                  </CountdownCell>
+                </CountdownCells>
               </CountdownBadge>
             </motion.div>
 
+            {/* Headline + Tagline */}
             <HeroTextContainer>
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
@@ -156,30 +189,53 @@ const HeroSection = () => {
               >
                 Nortable <span className="gradient-text">2026</span>
               </motion.h1>
-              
+
               <motion.p
+                className="tagline"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
               >
                 {isMobile ? (
-                  "Compete for ₹50,000+ in cash prizes. Judged by global MNC professionals."
+                  <>India&apos;s premier virtual hackathon. Build, compete, and win <strong className="emerald">₹1,00,000+</strong> in prizes.</>
                 ) : (
-                  "Build, collaborate, and compete for ₹50,000+ in cash prizes. Judged by global MNC professionals. Earn verified certificates, startup internships, and ₹15,000+ in dev credits."
+                  <>India&apos;s premier virtual hackathon - <strong>July 18–19, 2026</strong>. Build, collaborate, and compete for <strong className="emerald">₹1,00,000+</strong> in prizes. Judged by global MNC professionals.</>
                 )}
               </motion.p>
             </HeroTextContainer>
 
+            {/* Feature Pills */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+            >
+              <FeaturePillsContainer>
+                {featurePills.map((pill) => (
+                  <FeaturePill key={pill.label}>
+                    <span className="pill-icon">{pill.icon}</span>
+                    {pill.label}
+                  </FeaturePill>
+                ))}
+              </FeaturePillsContainer>
+            </motion.div>
+
+            {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
             >
               <HeroCTAContainer>
-                <GrabButton href="/register">
-                  Grab Your Pass
-                </GrabButton>
-                <span className="price-subtext">Secure your spot for only ₹100</span>
+                <div className="button-row">
+                  <GrabButton href="/register">
+                    Grab Your Pass
+                  </GrabButton>
+                  <SecondaryButton href="#offers">
+                    Explore Prizes
+                  </SecondaryButton>
+                </div>
+                <span className="price-subtext">Secure your spot for only ₹100 · Non-refundable</span>
               </HeroCTAContainer>
             </motion.div>
           </LeftCol>
@@ -187,9 +243,9 @@ const HeroSection = () => {
           {/* Right Column: Interactive Ticket Showcase */}
           <RightCol>
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.93 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             >
               <HeroCardsContainer
                 onMouseEnter={() => setIsHovered(true)}

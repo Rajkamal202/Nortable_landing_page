@@ -1,23 +1,25 @@
-import ic_money_send from '../../../../public/svgs/ic_money_send.svg';
-import ic_wallet_minus from '../../../../public/svgs/ic_wallet_minus.svg';
+import direct_judicial_connections from '../../../../public/images/direct_judicial_connections.jpg';
+import startup_internships from '../../../../public/images/startup_internships.jpg';
 export const cardsInfo = [
   {
     title: 'Direct Judicial Connections',
     details:
       'Top 5 performers connect personally with judges from global MNCs for direct career guidance.',
-    icon: ic_money_send,
+    icon: direct_judicial_connections,
+    isPhoto: true,
   },
   {
     title: 'Startup Internships',
     details:
       'Fast-track your technical career. Get access to exclusive internship placement opportunities with partner startups.',
-    icon: ic_wallet_minus,
+    icon: startup_internships,
+    isPhoto: true,
   },
 ];
 
 export const stats = [
   {
-    number: '₹50K+',
+    number: '₹1L+',
     subtitle: 'Cash Prizes',
   },
   {
