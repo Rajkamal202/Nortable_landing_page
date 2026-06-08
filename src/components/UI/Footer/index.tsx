@@ -4,7 +4,7 @@ import ic_copyright from '../../../../public/svgs/ic_copyright.svg';
 const linksArr = [
   {
     title: 'Event',
-    links: ['Schedule', 'Tracks', 'Prizes'],
+    links: ['About', 'Tracks', 'Prizes'],
   },
   {
     title: 'Resources',

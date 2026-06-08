@@ -5,6 +5,7 @@ import {
   FinancilaFreedom,
   HeroSection,
   IntroSection,
+  AboutSection,
   JoinSection,
   OffersSection,
   VolunteerSection,
@@ -19,9 +20,11 @@ export default function Home() {
       <FinancilaFreedom />
       <FinancialFuture />
       <IntroSection />
+      <AboutSection />
       <JoinSection />
       <VolunteerSection />
       <FAQ />
     </main>
   );
 }
+

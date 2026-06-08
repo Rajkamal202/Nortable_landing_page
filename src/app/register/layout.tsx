@@ -1,17 +1,11 @@
 'use client';
 
-import StyledComponentsRegistry from '../../../libs/registry';
-import { GlobalStyles } from '@/components/Layout/GlobalStyles';
+import Layout from '@/components/Layout';
 
 export default function RegisterLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <StyledComponentsRegistry>
-      <GlobalStyles />
-      {children}
-    </StyledComponentsRegistry>
-  );
+  return <Layout>{children}</Layout>;
 }

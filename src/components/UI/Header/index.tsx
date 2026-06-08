@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../AuthProvider';
 import {
   Wrapper,
   Inner,
@@ -18,6 +19,7 @@ const NortableIcon = () => (
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,16 +40,53 @@ const Header = () => {
 
         {/* Middle: Navigation Links */}
         <Nav $menuOpen={menuOpen}>
+          <a href="#about" onClick={() => setMenuOpen(false)}>About</a>
           <a href="#featured" onClick={() => setMenuOpen(false)}>Tracks</a>
           <a href="#offers" onClick={() => setMenuOpen(false)}>Prizes</a>
           <a href="#volunteer" onClick={() => setMenuOpen(false)}>Volunteer</a>
           <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
         </Nav>
 
+
         {/* Right Side: Action Button */}
-        <CallToActions href="/register">
-          Register
-        </CallToActions>
+        {user ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <CallToActions href="/register">
+              Dashboard
+            </CallToActions>
+            <a
+              onClick={() => { signOut(); setMenuOpen(false); }}
+              style={{
+                color: '#ff4d4d',
+                fontSize: '0.8rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                padding: '0.45rem 0.8rem',
+                borderRadius: '9999px',
+                background: 'rgba(255, 77, 77, 0.08)',
+                border: '1px solid rgba(255, 77, 77, 0.2)',
+                transition: 'all 0.2s ease',
+                textDecoration: 'none',
+                letterSpacing: '0.02em',
+                pointerEvents: 'auto'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 77, 77, 0.15)';
+                e.currentTarget.style.borderColor = 'rgba(255, 77, 77, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 77, 77, 0.08)';
+                e.currentTarget.style.borderColor = 'rgba(255, 77, 77, 0.2)';
+              }}
+            >
+              Sign Out
+            </a>
+          </div>
+        ) : (
+          <CallToActions href="/register">
+            Register
+          </CallToActions>
+        )}
 
         {/* Mobile Menu Toggle Button */}
         <MenuButton onClick={() => setMenuOpen(!menuOpen)} $menuOpen={menuOpen} aria-label="Toggle Menu">

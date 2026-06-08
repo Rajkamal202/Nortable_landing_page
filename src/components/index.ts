@@ -12,6 +12,5 @@ export { default as VolunteerSection } from './UI/VolunteerSection';
 export { default as Footer } from './UI/Footer';
 export { default as Preloader } from './UI/Preloader';
 export { default as MaskText } from './Common/MaskText';
-export { default as RegistrationForm } from './UI/RegistrationForm';
-export { default as PaymentStep } from './UI/PaymentStep';
-export { default as VirtualIDCard } from './UI/VirtualIDCard';
+export { default as AboutSection } from './UI/AboutSection';
+export { AuthProvider, useAuth } from './AuthProvider';
