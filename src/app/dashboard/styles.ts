@@ -24,6 +24,164 @@ export const Container = styled.div`
   padding-bottom: 5rem;
 `;
 
+/* ── Dashboard shell: sticky sidebar + content ── */
+export const Shell = styled.div`
+  width: 94%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 248px 1fr;
+  gap: 2rem;
+  padding: 1.5rem 0 6rem;
+  align-items: start;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+`;
+
+export const Sidebar = styled.aside`
+  position: sticky;
+  top: 6.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (max-width: 1024px) {
+    position: relative;
+    top: 0;
+  }
+`;
+
+export const SideProfile = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  .av {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: #070606;
+    background: linear-gradient(135deg, #2b892e, #48d64c);
+  }
+  .meta {
+    min-width: 0;
+  }
+  .meta .n {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .meta .r {
+    font-size: 0.72rem;
+    color: var(--emerald, #48d64c);
+    font-weight: 600;
+  }
+`;
+
+export const SideNav = styled.nav`
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.5rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  @media (max-width: 1024px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-x: auto;
+  }
+`;
+
+export const SideLink = styled.button<{ $active?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.18s ease;
+  color: ${({ $active }) => ($active ? '#fff' : 'rgba(255,255,255,0.55)')};
+  background: ${({ $active }) => ($active ? 'rgba(72,214,76,0.1)' : 'transparent')};
+  box-shadow: ${({ $active }) =>
+    $active ? 'inset 2px 0 0 var(--emerald, #48d64c)' : 'none'};
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: ${({ $active }) => ($active ? 'var(--emerald, #48d64c)' : 'rgba(255,255,255,0.4)')};
+  }
+
+  &:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+  }
+`;
+
+export const SideStat = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.1rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(72, 214, 76, 0.07), rgba(0, 0, 0, 0.2));
+  border: 1px solid rgba(72, 214, 76, 0.16);
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .row .l {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .row .v {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #fff;
+  }
+  .row .v.green {
+    color: var(--emerald, #48d64c);
+  }
+`;
+
+export const MainCol = styled.div`
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const SectionAnchor = styled.div`
+  scroll-margin-top: 7rem;
+`;
+
 export const SectionTitle = styled.h2`
   font-size: 1.05rem;
   font-weight: 700;
@@ -50,6 +208,11 @@ export const SectionTitle = styled.h2`
 
 export const Block = styled.section`
   margin-top: 3rem;
+  scroll-margin-top: 7rem;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
 
   .spin {
     animation: spin 1s linear infinite;
