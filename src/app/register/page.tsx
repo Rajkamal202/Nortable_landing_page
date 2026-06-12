@@ -62,8 +62,13 @@ import {
   // Registration Form
   RegPageContainer,
   RegPageInner,
+  RegLayout,
+  RegMain,
+  RegAside,
   RegPageHeader,
   RegForm,
+  StepSection,
+  StepHeading,
   RegFieldGroup,
   RegLabel,
   RegHelperText,
@@ -77,7 +82,8 @@ import {
   TeammateCard,
   RemoveTeammateBtn,
   AddTeammateBtn,
-  PricingSummary,
+  OrderSummaryCard,
+  SecureNote,
   EligibilitySection,
   CheckboxRow,
   RegActions,
@@ -688,28 +694,37 @@ export default function RegisterPage() {
         </>
       )}
 
-      {/* ═══ FULL-PAGE REGISTRATION FORM (Devpost style) ═══ */}
+      {/* ═══ FULL-PAGE REGISTRATION FORM (premium dark) ═══ */}
       {pageView === 'register' && (
         <RegPageContainer>
           <RegPageInner>
           {user && (
             <AuthLoggedInAlert>
               <div className="info">
-                <span>🟢 Signed in as <strong>{user.email}</strong></span>
+                <span>Signed in as <strong>{user.email}</strong></span>
               </div>
               <button type="button" className="signout-btn" onClick={async () => { await signOut(); setPageView('overview'); }}>
                 Sign Out
               </button>
             </AuthLoggedInAlert>
           )}
-          <RegPageHeader>
-            <h2>Register</h2>
-            <p>Please respect our <a href="#">community guidelines</a>. Registration fee: ₹100 per person.</p>
-          </RegPageHeader>
 
-          <RegForm onSubmit={handleRegSubmit}>
-            {/* ── Personal Info ── */}
-            <RegFieldGroup>
+          <RegLayout>
+            <RegMain>
+              <RegPageHeader>
+                <div className="eyebrow">Nortable 2026 · Virtual Hackathon</div>
+                <h2>Complete your registration</h2>
+                <p>
+                  Secure your builder pass and lock in your track. Registration is{' '}
+                  <a href="#">₹100 per person</a> — teammates can be added below.
+                </p>
+              </RegPageHeader>
+
+              <RegForm onSubmit={handleRegSubmit}>
+                {/* ── STEP 1: Personal Info ── */}
+                <StepSection>
+                  <StepHeading><span className="num">1</span> Your details</StepHeading>
+                  <RegFieldGroup>
               <RegLabel $required>Full Name</RegLabel>
               <RegInput
                 type="text"
@@ -753,9 +768,12 @@ export default function RegisterPage() {
               />
               {regErrors.college && <RegErrorText>{regErrors.college}</RegErrorText>}
             </RegFieldGroup>
+                </StepSection>
 
-            {/* ── Team Status (Pill Radios) ── */}
-            <RegFieldGroup>
+                {/* ── STEP 2: Team ── */}
+                <StepSection>
+                  <StepHeading><span className="num">2</span> Team setup</StepHeading>
+                  <RegFieldGroup>
               <RegLabel $required>Do you have teammates?</RegLabel>
               <PillRadioGroup>
                 <PillRadio $active={teamStatus === 'solo'}>
@@ -837,9 +855,12 @@ export default function RegisterPage() {
                 </AddTeammateBtn>
               </TeammateSection>
             )}
+                </StepSection>
 
-            {/* ── Track Selection ── */}
-            <RegFieldGroup>
+                {/* ── STEP 3: Project & experience ── */}
+                <StepSection>
+                  <StepHeading><span className="num">3</span> Track &amp; experience</StepHeading>
+                  <RegFieldGroup>
               <RegLabel $required>Select your primary track</RegLabel>
               <RegSelect value={trackSelection} onChange={(e) => setTrackSelection(e.target.value)}>
                 {tracksList.map((t, i) => <option key={i} value={t.title}>{t.title}</option>)}
@@ -878,30 +899,12 @@ export default function RegisterPage() {
               </RegSelect>
               {regErrors.primaryGoal && <RegErrorText>{regErrors.primaryGoal}</RegErrorText>}
             </RegFieldGroup>
+                </StepSection>
 
-            {/* ── Pricing Summary ── */}
-            <PricingSummary>
-              <div className="price-row">
-                <span>Your registration (1 person)</span>
-                <span className="amount">₹{BASE_FEE}</span>
-              </div>
-              {teammates.length > 0 && (
-                <div className="price-row">
-                  <span>Teammates ({teammates.length} × ₹{PER_TEAMMATE_FEE})</span>
-                  <span className="amount">₹{teammates.length * PER_TEAMMATE_FEE}</span>
-                </div>
-              )}
-              <div className="price-divider" />
-              <div className="price-total">
-                <span>Total Amount</span>
-                <span className="total-amount">₹{totalPrice}</span>
-              </div>
-            </PricingSummary>
-
-            {/* ── Eligibility Requirements ── */}
-            <EligibilitySection>
-              <h4>Eligibility requirements</h4>
-
+                {/* ── STEP 4: Eligibility ── */}
+                <StepSection>
+                  <StepHeading><span className="num">4</span> Confirm &amp; agree</StepHeading>
+                  <EligibilitySection>
               <CheckboxRow>
                 <input type="checkbox" checked={agreeEligibility} onChange={(e) => { setAgreeEligibility(e.target.checked); if (regErrors.eligibility) setRegErrors(p => ({ ...p, eligibility: '' })); }} />
                 <span>
@@ -923,7 +926,7 @@ export default function RegisterPage() {
             </EligibilitySection>
 
             {regErrors.database && (
-              <div style={{ color: '#dc2626', background: '#fef2f2', border: '1px solid #fee2e2', borderRadius: '0.4rem', padding: '0.75rem', marginBottom: '1rem', fontSize: '0.85rem' }}>
+              <div style={{ color: '#fca5a5', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '8px', padding: '0.75rem', fontSize: '0.82rem' }}>
                 {regErrors.database}
               </div>
             )}
@@ -935,7 +938,52 @@ export default function RegisterPage() {
               </RegSubmitBtn>
               <RegCancelBtn type="button" onClick={handleCancelReg}>Cancel</RegCancelBtn>
             </RegActions>
-          </RegForm>
+                </StepSection>
+              </RegForm>
+            </RegMain>
+
+            {/* ── Sticky Order Summary ── */}
+            <RegAside>
+              <OrderSummaryCard>
+                <div className="os-title">Order summary</div>
+                <div className="os-rows">
+                  <div className="os-row">
+                    <span>Builder pass (you)</span>
+                    <span className="amount">₹{BASE_FEE}</span>
+                  </div>
+                  {teammates.length > 0 && (
+                    <div className="os-row">
+                      <span>Teammates ({teammates.length} × ₹{PER_TEAMMATE_FEE})</span>
+                      <span className="amount">₹{teammates.length * PER_TEAMMATE_FEE}</span>
+                    </div>
+                  )}
+                  <div className="os-row">
+                    <span>Track</span>
+                    <span className="amount" style={{ textAlign: 'right', maxWidth: '60%' }}>{trackSelection.split(' ')[0]}…</span>
+                  </div>
+                </div>
+                <div className="os-divider" />
+                <div className="os-total">
+                  <span>Total</span>
+                  <span className="total-amount">₹{totalPrice}</span>
+                </div>
+                <SecureNote>
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                    Encrypted, secure checkout
+                  </li>
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                    Instant digital pass on confirmation
+                  </li>
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+                    Access to Discord &amp; mentors
+                  </li>
+                </SecureNote>
+              </OrderSummaryCard>
+            </RegAside>
+          </RegLayout>
           </RegPageInner>
         </RegPageContainer>
       )}

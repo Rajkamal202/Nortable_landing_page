@@ -1123,44 +1123,89 @@ export const AuthTerms = styled.div`
    FULL-PAGE REGISTRATION FORM (Devpost premium white)
    ═══════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════
+   REGISTRATION — PREMIUM DARK "SHIP" THEME
+   palette: #08080a bg · #111114 surface · #26262b border
+            #fafafa text · #8b8b94 muted · #14b8a6 accent
+   ═══════════════════════════════════════════ */
+
 export const RegPageContainer = styled.div`
-  background: #f5f5f5;
-  min-height: 60vh;
-  padding: 0 0 6rem;
+  background:
+    radial-gradient(900px 500px at 85% -5%, rgba(20, 184, 166, 0.08), transparent 60%),
+    #08080a;
+  min-height: 100vh;
+  padding: 0 0 7rem;
+  color: #fafafa;
 `;
 
 export const RegPageInner = styled.div`
   width: 90%;
-  max-width: 720px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding-top: 2.5rem;
+  padding-top: 3rem;
+`;
+
+/* two-column: form + sticky order summary */
+export const RegLayout = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 3rem;
+  align-items: start;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+`;
+
+export const RegMain = styled.div`
+  min-width: 0;
+`;
+
+export const RegAside = styled.aside`
+  position: sticky;
+  top: 2rem;
+
+  @media (max-width: 860px) {
+    position: static;
+  }
 `;
 
 export const RegPageHeader = styled.div`
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 2.5rem;
+
+  .eyebrow {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #14b8a6;
+    margin-bottom: 0.9rem;
+  }
 
   h2 {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #1a1a2e;
-    margin-bottom: 0.4rem;
-    letter-spacing: -0.01em;
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: #fafafa;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.85rem;
   }
 
   p {
-    font-size: 0.85rem;
-    color: #777;
-    line-height: 1.5;
+    font-size: 0.9rem;
+    color: #8b8b94;
+    line-height: 1.6;
+    max-width: 46ch;
 
     a {
-      color: #003e9c;
-      text-decoration: none;
+      color: #fafafa;
+      text-decoration: underline;
+      text-underline-offset: 3px;
       font-weight: 500;
 
       &:hover {
-        text-decoration: underline;
+        color: #14b8a6;
       }
     }
   }
@@ -1169,155 +1214,174 @@ export const RegPageHeader = styled.div`
 export const RegForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.75rem;
+`;
+
+/* numbered step section */
+export const StepSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 2rem;
+  border-top: 1px solid #1c1c20;
+
+  &:first-of-type {
+    padding-top: 0;
+    border-top: none;
+  }
+`;
+
+export const StepHeading = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #fafafa;
+  letter-spacing: -0.01em;
+
+  .num {
+    flex-shrink: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: #14b8a6;
+    color: #04201c;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
 `;
 
 export const RegFieldGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.5rem;
 `;
 
 export const RegLabel = styled.label<{ $required?: boolean }>`
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #1a1a2e;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #c5c5cc;
   display: flex;
   align-items: center;
-  gap: 0.15rem;
+  gap: 0.3rem;
 
-  &::before {
-    content: ${({ $required }) => ($required ? "'* '" : "''")};
-    color: #e53935;
+  &::after {
+    content: ${({ $required }) => ($required ? "'*'" : "''")};
+    color: #14b8a6;
     font-weight: 700;
   }
 `;
 
 export const RegHelperText = styled.span`
   font-size: 0.75rem;
-  color: #999;
-  margin-top: -0.1rem;
+  color: #6b6b73;
+  margin-top: -0.15rem;
+`;
+
+const fieldBase = `
+  background: #111114;
+  border: 1px solid #26262b;
+  border-radius: 8px;
+  padding: 0.8rem 0.95rem;
+  color: #fafafa;
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  width: 100%;
+
+  &::placeholder {
+    color: #5c5c64;
+  }
+
+  &:hover {
+    border-color: #3a3a41;
+  }
+
+  &:focus {
+    border-color: #14b8a6;
+    background: #0d1413;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+  }
 `;
 
 export const RegInput = styled.input`
-  background: #fff;
-  border: 1px solid #d0d5dd;
-  border-radius: 0.35rem;
-  padding: 0.7rem 0.85rem;
-  color: #1a1a2e;
-  font-size: 0.9rem;
-  outline: none;
-  transition: all 0.2s ease;
-  width: 100%;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-
-  &::placeholder {
-    color: #b0b0b0;
-  }
-
-  &:focus {
-    border-color: #003e9c;
-    box-shadow: 0 0 0 3px rgba(0, 62, 156, 0.08);
-  }
+  ${fieldBase}
 `;
 
 export const RegTextarea = styled.textarea`
-  background: #fff;
-  border: 1px solid #d0d5dd;
-  border-radius: 0.35rem;
-  padding: 0.7rem 0.85rem;
-  color: #1a1a2e;
-  font-size: 0.9rem;
-  outline: none;
+  ${fieldBase}
   resize: vertical;
-  min-height: 100px;
+  min-height: 110px;
   font-family: inherit;
-  transition: all 0.2s ease;
-  width: 100%;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-
-  &::placeholder {
-    color: #b0b0b0;
-  }
-
-  &:focus {
-    border-color: #003e9c;
-    box-shadow: 0 0 0 3px rgba(0, 62, 156, 0.08);
-  }
+  line-height: 1.6;
 `;
 
 export const RegSelect = styled.select`
-  background: #fff;
-  border: 1px solid #d0d5dd;
-  border-radius: 0.35rem;
-  padding: 0.7rem 0.85rem;
-  color: #1a1a2e;
-  font-size: 0.9rem;
-  outline: none;
-  width: 100%;
+  ${fieldBase}
   cursor: pointer;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2314b8a6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 0.85rem center;
-  padding-right: 2rem;
+  background-position: right 0.95rem center;
+  padding-right: 2.2rem;
 
   option {
-    background: #fff;
-    color: #1a1a2e;
-  }
-
-  &:focus {
-    border-color: #003e9c;
-    box-shadow: 0 0 0 3px rgba(0, 62, 156, 0.08);
+    background: #111114;
+    color: #fafafa;
   }
 `;
 
-/* Pill-style radio group (Devpost teal pills) */
+/* Pill-style radio group */
 export const PillRadioGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
+  gap: 0.6rem;
+  margin-top: 0.1rem;
 `;
 
 export const PillRadio = styled.label<{ $active: boolean }>`
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.9rem;
-  border-radius: 2rem;
-  border: 1.5px solid ${({ $active }) => ($active ? '#0d9488' : '#d0d5dd')};
-  background: ${({ $active }) => ($active ? '#f0fdfa' : '#fff')};
-  color: ${({ $active }) => ($active ? '#0d9488' : '#555')};
-  font-size: 0.8rem;
-  font-weight: 600;
+  gap: 0.55rem;
+  padding: 0.6rem 1.05rem;
+  border-radius: 8px;
+  border: 1px solid ${({ $active }) => ($active ? '#14b8a6' : '#26262b')};
+  background: ${({ $active }) => ($active ? 'rgba(20, 184, 166, 0.1)' : '#111114')};
+  color: ${({ $active }) => ($active ? '#5eead4' : '#a0a0a8')};
+  font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.18s ease;
   white-space: nowrap;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 
   input {
     display: none;
   }
 
   .check-circle {
-    width: 1rem;
-    height: 1rem;
+    width: 1.05rem;
+    height: 1.05rem;
     border-radius: 50%;
-    border: 2px solid ${({ $active }) => ($active ? '#0d9488' : '#ccc')};
-    background: ${({ $active }) => ($active ? '#0d9488' : '#fff')};
+    border: 2px solid ${({ $active }) => ($active ? '#14b8a6' : '#3a3a41')};
+    background: ${({ $active }) => ($active ? '#14b8a6' : 'transparent')};
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: all 0.18s ease;
     flex-shrink: 0;
 
     svg {
-      width: 0.55rem;
-      height: 0.55rem;
-      stroke: #fff;
+      width: 0.6rem;
+      height: 0.6rem;
+      stroke: #04201c;
       stroke-width: 3;
       fill: none;
       opacity: ${({ $active }) => ($active ? 1 : 0)};
@@ -1325,8 +1389,7 @@ export const PillRadio = styled.label<{ $active: boolean }>`
   }
 
   &:hover {
-    border-color: #0d9488;
-    background: ${({ $active }) => ($active ? '#f0fdfa' : '#fafafa')};
+    border-color: #14b8a6;
   }
 `;
 
@@ -1334,12 +1397,11 @@ export const PillRadio = styled.label<{ $active: boolean }>`
 export const TeammateSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  padding: 1.25rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  gap: 1rem;
+  padding: 1.4rem;
+  background: #0d0d10;
+  border: 1px solid #1f1f24;
+  border-radius: 12px;
 `;
 
 export const TeammateHeader = styled.div`
@@ -1349,16 +1411,16 @@ export const TeammateHeader = styled.div`
 
   .tm-title {
     font-size: 0.9rem;
-    font-weight: 700;
-    color: #1a1a2e;
+    font-weight: 600;
+    color: #fafafa;
   }
 
   .tm-cost {
-    font-size: 0.75rem;
-    color: #e53935;
+    font-size: 0.72rem;
+    color: #5eead4;
     font-weight: 600;
-    background: #fef2f2;
-    padding: 0.2rem 0.6rem;
+    background: rgba(20, 184, 166, 0.12);
+    padding: 0.25rem 0.65rem;
     border-radius: 1rem;
   }
 `;
@@ -1366,20 +1428,21 @@ export const TeammateHeader = styled.div`
 export const TeammateCard = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr auto;
-  gap: 0.65rem;
+  gap: 0.7rem;
   align-items: end;
-  padding: 1rem;
-  background: #fafafa;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.4rem;
+  padding: 1.1rem;
+  background: #111114;
+  border: 1px solid #26262b;
+  border-radius: 10px;
   position: relative;
 
   .teammate-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #0d9488;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #14b8a6;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     grid-column: 1 / -1;
   }
 
@@ -1389,134 +1452,192 @@ export const TeammateCard = styled.div`
 `;
 
 export const RemoveTeammateBtn = styled.button`
-  background: #fff;
-  border: 1px solid #fca5a5;
-  border-radius: 0.35rem;
-  color: #e53935;
-  padding: 0.6rem 0.85rem;
-  font-size: 0.8rem;
-  font-weight: 600;
+  background: transparent;
+  border: 1px solid #3a3a41;
+  border-radius: 8px;
+  color: #a0a0a8;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.82rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.18s ease;
   white-space: nowrap;
 
   &:hover {
-    background: #fef2f2;
-    border-color: #e53935;
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+    color: #fca5a5;
   }
 `;
 
 export const AddTeammateBtn = styled.button`
-  background: #fff;
-  border: 1.5px dashed #0d9488;
-  border-radius: 0.4rem;
-  color: #0d9488;
-  padding: 0.7rem;
+  background: transparent;
+  border: 1px dashed #14b8a6;
+  border-radius: 10px;
+  color: #5eead4;
+  padding: 0.8rem;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.18s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
 
   &:hover {
-    background: #f0fdfa;
+    background: rgba(20, 184, 166, 0.08);
   }
 
   &:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
-    background: #fff;
+    background: transparent;
   }
 `;
 
-/* Pricing Summary */
-export const PricingSummary = styled.div`
-  background: #fff;
-  border: 1.5px solid #0d9488;
-  border-radius: 0.5rem;
-  padding: 1.25rem;
+/* Order Summary (sticky sidebar) */
+export const OrderSummaryCard = styled.div`
+  background: #0d0d10;
+  border: 1px solid #1f1f24;
+  border-radius: 14px;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.06);
+  gap: 1rem;
 
-  .price-row {
+  .os-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #fafafa;
+    letter-spacing: -0.01em;
+  }
+
+  .os-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .os-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
+    gap: 1rem;
     font-size: 0.85rem;
-    color: #666;
+    color: #8b8b94;
 
     .amount {
-      font-weight: 700;
-      color: #1a1a2e;
+      font-weight: 600;
+      color: #d4d4dc;
+      font-variant-numeric: tabular-nums;
     }
   }
 
-  .price-divider {
-    border-top: 1px solid #e5e7eb;
+  .os-divider {
+    border-top: 1px dashed #2a2a30;
+    margin: 0.2rem 0;
   }
 
-  .price-total {
+  .os-total {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: #1a1a2e;
+    align-items: baseline;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    color: #8b8b94;
 
     .total-amount {
-      color: #0d9488;
-      font-size: 1.25rem;
+      color: #5eead4;
+      font-size: 1.6rem;
+      font-family: inherit;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
     }
   }
 `;
+
+/* trust / credibility notes */
+export const SecureNote = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.78rem;
+    color: #8b8b94;
+
+    svg {
+      width: 0.95rem;
+      height: 0.95rem;
+      color: #14b8a6;
+      flex-shrink: 0;
+    }
+  }
+`;
+
+/* legacy alias kept for any remaining references */
+export const PricingSummary = OrderSummaryCard;
 
 /* Eligibility checkboxes */
 export const EligibilitySection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid #e5e7eb;
+  gap: 0.9rem;
 
   h4 {
     font-size: 0.9rem;
-    font-weight: 700;
-    color: #1a1a2e;
+    font-weight: 600;
+    color: #fafafa;
   }
 `;
 
 export const CheckboxRow = styled.label`
   display: flex;
   align-items: flex-start;
-  gap: 0.6rem;
+  gap: 0.7rem;
   cursor: pointer;
+  padding: 0.95rem 1.1rem;
+  background: #0d0d10;
+  border: 1px solid #1f1f24;
+  border-radius: 10px;
+  transition: border-color 0.18s ease;
+
+  &:hover {
+    border-color: #2f2f36;
+  }
 
   input[type='checkbox'] {
-    width: 1rem;
-    height: 1rem;
-    accent-color: #0d9488;
+    width: 1.05rem;
+    height: 1.05rem;
+    accent-color: #14b8a6;
     flex-shrink: 0;
     margin-top: 0.15rem;
     cursor: pointer;
   }
 
   span {
-    font-size: 0.8rem;
-    color: #555;
-    line-height: 1.6;
+    font-size: 0.82rem;
+    color: #a0a0a8;
+    line-height: 1.65;
 
     a {
-      color: #003e9c;
-      text-decoration: none;
+      color: #fafafa;
+      text-decoration: underline;
+      text-underline-offset: 2px;
       font-weight: 500;
 
       &:hover {
-        text-decoration: underline;
+        color: #14b8a6;
       }
     }
   }
@@ -1528,53 +1649,59 @@ export const RegActions = styled.div`
   align-items: center;
   gap: 1rem;
   padding-top: 0.5rem;
+
+  @media (max-width: 480px) {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
 `;
 
 export const RegSubmitBtn = styled.button`
-  background: #0d9488;
-  color: #fff;
+  flex: 1;
+  background: #fafafa;
+  color: #08080a;
   border: none;
-  border-radius: 0.4rem;
-  padding: 0.85rem 2rem;
+  border-radius: 10px;
+  padding: 0.95rem 2rem;
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.2);
+  transition: all 0.18s ease;
 
   &:hover {
-    background: #0f766e;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+    background: #14b8a6;
+    color: #04201c;
   }
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.45;
     cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+    background: #fafafa;
+    color: #08080a;
   }
 `;
 
 export const RegCancelBtn = styled.button`
   background: transparent;
-  color: #777;
-  border: none;
+  color: #8b8b94;
+  border: 1px solid #26262b;
+  border-radius: 10px;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  padding: 0.85rem 1rem;
-  transition: color 0.2s ease;
+  padding: 0.95rem 1.5rem;
+  transition: all 0.18s ease;
 
   &:hover {
-    color: #1a1a2e;
+    color: #fafafa;
+    border-color: #3a3a41;
   }
 `;
 
 /* Registration field error */
 export const RegErrorText = styled.span`
-  color: #e53935;
-  font-size: 0.7rem;
+  color: #f87171;
+  font-size: 0.72rem;
   font-weight: 500;
 `;
 
@@ -1688,34 +1815,41 @@ export const AuthSpinner = styled.div`
 `;
 
 export const AuthLoggedInAlert = styled.div`
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-bottom: 2rem;
+  background: rgba(20, 184, 166, 0.08);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #166534;
-  font-size: 0.9rem;
+  gap: 1rem;
+  color: #5eead4;
+  font-size: 0.85rem;
 
   .info {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     font-weight: 500;
+
+    strong {
+      color: #fafafa;
+    }
   }
 
   .signout-btn {
     background: none;
     border: none;
-    color: #15803d;
+    color: #8b8b94;
     font-weight: 600;
     text-decoration: underline;
+    text-underline-offset: 2px;
     cursor: pointer;
+    white-space: nowrap;
 
     &:hover {
-      color: #166534;
+      color: #fafafa;
     }
   }
 `;
