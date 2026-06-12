@@ -1,14 +1,15 @@
+// Hero section copy constants
 // For desktop
-export const phrases = ['Build the Future.', 'Ship It Live.'];
+export const phrases = ['Build. Ship.', 'Get Discovered.'];
 export const paragraphPhrases = [
-  '48 hours. One mission. Join 5,000+ builders at the world\'s most',
-  'ambitious hackathon. Build, ship, and compete for ₹1,00,000+ in prizes.',
+  'Join India\'s next generation of builders in a 36-hour virtual hackathon',
+  'designed to help you create, compete, and unlock real opportunities.',
 ];
 
 
 // For mobile
-export const mobilePhrases = ['Build the Future.', 'Ship It Live.'];
+export const mobilePhrases = ['Build. Ship.', 'Get Discovered.'];
 export const mobileParagraphPhrases = [
-  '48 hours. One mission. Join 5,000+ builders',
-  'at the world\'s most ambitious hackathon.',
+  'Join India\'s next generation of builders',
+  'in a 36-hour virtual hackathon.',
 ];

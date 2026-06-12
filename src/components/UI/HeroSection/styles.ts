@@ -120,6 +120,55 @@ export const HeaderGlowLine = styled.div`
 `;
 
 /* ═══════════════════════════════════════════
+   MARQUEE TICKER — premium energy bar
+   ═══════════════════════════════════════════ */
+
+export const MarqueeContainer = styled.div<{ $bottom?: boolean }>`
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.85);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  height: 30px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  position: relative;
+  z-index: 5;
+  margin-top: ${({ $bottom }) => ($bottom ? '3rem' : '0')};
+  margin-bottom: ${({ $bottom }) => ($bottom ? '0' : '1.5rem')};
+`;
+
+export const MarqueeTrack = styled.div`
+  display: flex;
+  width: max-content;
+  animation: scrollMarquee 45s linear infinite;
+
+  @keyframes scrollMarquee {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+`;
+
+export const MarqueeText = styled.span`
+  font-family: 'SF Pro Display', system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  span.star {
+    color: rgba(72, 214, 76, 0.35);
+    font-size: 0.65rem;
+  }
+`;
+
+/* ═══════════════════════════════════════════
    INNER LAYOUT
    ═══════════════════════════════════════════ */
 
@@ -134,7 +183,7 @@ export const Inner = styled.div`
   background-size: contain;
   position: relative;
   z-index: 2;
-  padding: 3.5rem 0 2rem;
+  padding: 2.5rem 0 2rem;
   width: 90%;
 `;
 
@@ -156,7 +205,7 @@ export const LeftCol = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2.25rem;
+  gap: 1.75rem;
   width: 100%;
 
   @media (max-width: 991px) {
@@ -166,67 +215,11 @@ export const LeftCol = styled.div`
 
 export const RightCol = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
   width: 100%;
-`;
-
-/* ═══════════════════════════════════════════
-   MARQUEE TICKER
-   ═══════════════════════════════════════════ */
-
-export const MarqueeContainer = styled.div<{ $bottom?: boolean }>`
-  width: 100vw;
-  background: rgba(0, 0, 0, 0.9);
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  padding: 0.85rem 0;
-  overflow: hidden;
-  display: flex;
-  white-space: nowrap;
-  position: relative;
-  z-index: 5;
-  margin-top: ${({ $bottom }) => ($bottom ? '4rem' : '0')};
-  margin-bottom: ${({ $bottom }) => ($bottom ? '0' : '2rem')};
-`;
-
-export const MarqueeTrack = styled.div`
-  display: flex;
-  width: max-content;
-  animation: scrollMarquee 28s linear infinite;
-
-  @keyframes scrollMarquee {
-    0% { transform: translateX(-50%); }
-    100% { transform: translateX(0); }
-  }
-`;
-
-export const MarqueeText = styled.span`
-  font-family: 'SF Pro Display', system-ui, sans-serif;
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: rgba(255, 255, 255, 0.7);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-right: 2.5rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.85rem;
-
-  span.highlight {
-    background: var(--emerald, #48d64c);
-    color: #070606;
-    padding: 0.15rem 0.55rem;
-    border-radius: 0.2rem;
-    font-weight: 800;
-    font-size: 0.85rem;
-  }
-
-  span.star {
-    color: rgba(72, 214, 76, 0.6);
-    font-size: 1.1rem;
-  }
 `;
 
 /* ═══════════════════════════════════════════
@@ -236,7 +229,7 @@ export const MarqueeText = styled.span`
 export const CountdownBadge = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.85rem;
   width: fit-content;
 
   @media (max-width: 991px) {
@@ -245,7 +238,7 @@ export const CountdownBadge = styled.div`
 `;
 
 export const CountdownLabel = styled.span`
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
   color: var(--emerald, #48d64c);
   letter-spacing: 0.15em;
@@ -255,7 +248,7 @@ export const CountdownLabel = styled.span`
 export const CountdownCells = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.3rem;
 `;
 
 export const CountdownCell = styled.div`
@@ -265,12 +258,12 @@ export const CountdownCell = styled.div`
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 0.4rem;
-  padding: 0.4rem 0.6rem;
-  min-width: 3.2rem;
+  padding: 0.35rem 0.5rem;
+  min-width: 2.8rem;
 
   .value {
     font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 800;
     color: var(--white, #fff);
     letter-spacing: 0.05em;
@@ -279,20 +272,20 @@ export const CountdownCell = styled.div`
   }
 
   .unit {
-    font-size: 0.55rem;
+    font-size: 0.5rem;
     font-weight: 600;
     color: #6b6b6b;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-top: 0.2rem;
+    margin-top: 0.15rem;
   }
 `;
 
 export const CountdownSeparator = styled.span`
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.15);
-  padding: 0 0.1rem;
+  color: rgba(255, 255, 255, 0.12);
+  padding: 0 0.05rem;
 `;
 
 /* ═══════════════════════════════════════════
@@ -302,7 +295,7 @@ export const CountdownSeparator = styled.span`
 export const HeroTextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
   z-index: 2;
   position: relative;
   text-align: left;
@@ -336,22 +329,42 @@ export const HeroTextContainer = styled.div`
     }
   }
 
+  .hero-subtitle {
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.5rem;
+  }
+
   .tagline {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 500;
     color: #9a9a9a;
     letter-spacing: 0.01em;
-    line-height: 1.6;
+    line-height: 1.65;
     max-width: 34rem;
+    margin-top: 0.25rem;
 
     strong {
       color: var(--white, #fff);
       font-weight: 600;
     }
+  }
 
-    .emerald {
-      color: var(--emerald, #48d64c);
-      font-weight: 600;
+  .date-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--white, #fff);
+    letter-spacing: 0.04em;
+    margin-top: 0.35rem;
+
+    .separator {
+      color: rgba(72, 214, 76, 0.5);
     }
   }
 
@@ -363,54 +376,19 @@ export const HeroTextContainer = styled.div`
       line-height: 1.05;
     }
 
+    .hero-subtitle {
+      font-size: 1.5rem;
+    }
+
     .tagline {
-      font-size: 1rem;
+      font-size: 0.95rem;
       margin: 0 auto;
     }
-  }
-`;
 
-/* ═══════════════════════════════════════════
-   FEATURE PILLS
-   ═══════════════════════════════════════════ */
-
-export const FeaturePillsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  max-width: 36rem;
-
-  @media (max-width: 991px) {
-    justify-content: center;
-    max-width: 100%;
-  }
-`;
-
-export const FeaturePill = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: rgba(72, 214, 76, 0.04);
-  border: 1px solid rgba(72, 214, 76, 0.12);
-  border-radius: 9999px;
-  padding: 0.35rem 0.85rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #c8c8c8;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-  transition: all 0.3s ease;
-
-  .pill-icon {
-    font-size: 0.85rem;
-    line-height: 1;
-  }
-
-  &:hover {
-    background: rgba(72, 214, 76, 0.08);
-    border-color: rgba(72, 214, 76, 0.25);
-    color: var(--white, #fff);
-    box-shadow: 0 0 16px rgba(72, 214, 76, 0.08);
+    .date-line {
+      justify-content: center;
+      font-size: 0.85rem;
+    }
   }
 `;
 
@@ -421,8 +399,9 @@ export const FeaturePill = styled.div`
 export const HeroCTAContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   align-items: flex-start;
+  margin-top: 0.5rem;
 
   .button-row {
     display: flex;
@@ -436,6 +415,7 @@ export const HeroCTAContainer = styled.div`
     font-weight: 500;
     letter-spacing: 0.02em;
     margin-left: 0.15rem;
+    line-height: 1.5;
   }
 
   @media (max-width: 991px) {
@@ -446,6 +426,7 @@ export const HeroCTAContainer = styled.div`
     }
     .price-subtext {
       margin-left: 0;
+      text-align: center;
     }
   }
 `;
@@ -542,7 +523,21 @@ export const SecondaryButton = styled.a`
 `;
 
 /* ═══════════════════════════════════════════
-   TICKET ARTWORK
+   TICKET LABEL
+   ═══════════════════════════════════════════ */
+
+export const TicketLabel = styled.span`
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: -0.5rem;
+`;
+
+/* ═══════════════════════════════════════════
+   TICKET ARTWORK (scaled down ~15%)
    ═══════════════════════════════════════════ */
 
 export const HeroCardsContainer = styled.div`
@@ -550,8 +545,8 @@ export const HeroCardsContainer = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 500px;
-  height: 500px;
+  width: 420px;
+  height: 420px;
   margin: 0 auto;
   animation: floatAnimation 5s ease-in-out infinite;
 
@@ -565,8 +560,8 @@ export const HeroCardsContainer = styled.div`
   &::before {
     content: '';
     position: absolute;
-    width: 380px;
-    height: 380px;
+    width: 320px;
+    height: 320px;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(57, 255, 20, 0.18) 0%, rgba(72, 214, 76, 0.06) 40%, transparent 70%);
     filter: blur(60px);
@@ -579,8 +574,8 @@ export const HeroCardsContainer = styled.div`
   &::after {
     content: '';
     position: absolute;
-    width: 280px;
-    height: 280px;
+    width: 230px;
+    height: 230px;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(72, 214, 76, 0.08) 0%, transparent 70%);
     filter: blur(40px);
@@ -594,48 +589,48 @@ export const HeroCardsContainer = styled.div`
   }
 
   @media (max-width: 1024px) {
-    width: 420px;
-    height: 420px;
+    width: 360px;
+    height: 360px;
   }
 
   @media (max-width: 576px) {
-    width: 300px;
-    height: 300px;
+    width: 260px;
+    height: 260px;
   }
 `;
 
 export const HeroLeftImage = styled(Image)`
-  width: 14rem;
+  width: 11.5rem;
   height: auto;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translate(-55px, 12px) rotate(-8deg) scale(0.9);
+  transform: translate(-50%, -50%) translate(-46px, 10px) rotate(-8deg) scale(0.9);
   transform-origin: center center;
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s ease;
   filter: brightness(0.6) contrast(0.95) blur(0.5px);
   z-index: 1;
 
   &.active {
-    transform: translate(-50%, -50%) translate(-160px, 22px) rotate(-18deg) scale(1);
+    transform: translate(-50%, -50%) translate(-135px, 19px) rotate(-18deg) scale(1);
     filter: brightness(1.05) contrast(1) blur(0px) drop-shadow(0 20px 40px rgba(72, 214, 76, 0.4));
   }
 
   @media (max-width: 1024px) {
-    width: 11.5rem;
-    transform: translate(-50%, -50%) translate(-45px, 8px) rotate(-8deg) scale(0.9);
+    width: 9.5rem;
+    transform: translate(-50%, -50%) translate(-38px, 7px) rotate(-8deg) scale(0.9);
 
     &.active {
-      transform: translate(-50%, -50%) translate(-130px, 16px) rotate(-16deg) scale(1);
+      transform: translate(-50%, -50%) translate(-110px, 13px) rotate(-16deg) scale(1);
     }
   }
 
   @media (max-width: 576px) {
-    width: 8.5rem;
-    transform: translate(-50%, -50%) translate(-28px, 5px) rotate(-8deg) scale(0.9);
+    width: 7rem;
+    transform: translate(-50%, -50%) translate(-23px, 4px) rotate(-8deg) scale(0.9);
 
     &.active {
-      transform: translate(-50%, -50%) translate(-85px, 10px) rotate(-16deg) scale(1);
+      transform: translate(-50%, -50%) translate(-70px, 8px) rotate(-16deg) scale(1);
     }
   }
 `;
@@ -644,7 +639,7 @@ export const HeroMiddleImage = styled(Image)`
   position: relative;
   z-index: 3;
   cursor: pointer;
-  width: 260px;
+  width: 215px;
   height: auto;
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s ease;
   filter: drop-shadow(0 16px 35px rgba(0, 0, 0, 0.6));
@@ -655,46 +650,46 @@ export const HeroMiddleImage = styled(Image)`
   }
 
   @media (max-width: 1024px) {
-    width: 210px;
+    width: 178px;
   }
 
   @media (max-width: 576px) {
-    width: 150px;
+    width: 125px;
   }
 `;
 
 export const HeroRightImage = styled(Image)`
-  width: 14rem;
+  width: 11.5rem;
   height: auto;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translate(55px, 12px) rotate(8deg) scale(0.9);
+  transform: translate(-50%, -50%) translate(46px, 10px) rotate(8deg) scale(0.9);
   transform-origin: center center;
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s ease;
   filter: brightness(0.6) contrast(0.95) blur(0.5px);
   z-index: 2;
 
   &.active {
-    transform: translate(-50%, -50%) translate(160px, 22px) rotate(18deg) scale(1);
+    transform: translate(-50%, -50%) translate(135px, 19px) rotate(18deg) scale(1);
     filter: brightness(1.05) contrast(1) blur(0px) drop-shadow(0 20px 40px rgba(59, 130, 246, 0.4));
   }
 
   @media (max-width: 1024px) {
-    width: 11.5rem;
-    transform: translate(-50%, -50%) translate(45px, 8px) rotate(8deg) scale(0.9);
+    width: 9.5rem;
+    transform: translate(-50%, -50%) translate(38px, 7px) rotate(8deg) scale(0.9);
 
     &.active {
-      transform: translate(-50%, -50%) translate(130px, 16px) rotate(16deg) scale(1);
+      transform: translate(-50%, -50%) translate(110px, 13px) rotate(16deg) scale(1);
     }
   }
 
   @media (max-width: 576px) {
-    width: 8.5rem;
-    transform: translate(-50%, -50%) translate(28px, 5px) rotate(8deg) scale(0.9);
+    width: 7rem;
+    transform: translate(-50%, -50%) translate(23px, 4px) rotate(8deg) scale(0.9);
 
     &.active {
-      transform: translate(-50%, -50%) translate(85px, 10px) rotate(16deg) scale(1);
+      transform: translate(-50%, -50%) translate(70px, 8px) rotate(16deg) scale(1);
     }
   }
 `;

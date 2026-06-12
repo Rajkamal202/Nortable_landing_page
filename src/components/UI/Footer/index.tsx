@@ -59,7 +59,7 @@ const Footer = () => {
           </FooterMiddle>
           <FooterBottom>
             <OrganizedBy>
-              Organized by <span>Rajkamal Rao</span> · <span>Raghav Bajaj</span> · <span>Raghav Poddar</span>
+              Organized by <span>Rajkamal Rao</span> · <span>Raghav Bajaj</span> · <span>Raghav Poddar</span> · <span>Hitansh Gopani</span>
             </OrganizedBy>
             <CopyRight>
               <Image src={ic_copyright} alt="copyright svg" />

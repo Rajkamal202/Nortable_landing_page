@@ -17,9 +17,6 @@ import {
   HeroRightImage,
   HeroTextContainer,
   HeaderGlowLine,
-  MarqueeContainer,
-  MarqueeTrack,
-  MarqueeText,
   CountdownBadge,
   CountdownLabel,
   CountdownCells,
@@ -28,20 +25,23 @@ import {
   HeroCTAContainer,
   GrabButton,
   SecondaryButton,
-  FeaturePillsContainer,
-  FeaturePill,
+  MarqueeContainer,
+  MarqueeTrack,
+  MarqueeText,
+  TicketLabel,
 } from './styles';
 import { useIsMobile } from '../../../../libs/useIsMobile';
 import lola_card from '../../../../public/images/lola_card.png';
 import orange_card from '../../../../public/images/orange_card.png';
 import terry_card from '../../../../public/images/terry_card.png';
 
-const featurePills = [
-  { icon: '💰', label: '₹1,00,000+ Prize Pool' },
-  { icon: '🏢', label: 'Global MNC Judges' },
-  { icon: '🚀', label: 'Startup Internships' },
-  { icon: '🛠️', label: '₹15,000+ Dev Credits' },
-  { icon: '🌐', label: 'Virtual Event' },
+const marqueeItems = [
+  '5000+ BUILDERS',
+  '₹1L+ PRIZE POOL',
+  '50+ INDUSTRY MENTORS',
+  '36 HOURS',
+  'BUILD • SHIP • COMPETE',
+  'GET DISCOVERED',
 ];
 
 const HeroSection = () => {
@@ -119,25 +119,18 @@ const HeroSection = () => {
       <CenterOrb />
       <HeaderGlowLine />
 
-      {/* Top Scrolling Ribbon Ticker */}
+      {/* Premium Energy Marquee */}
       <MarqueeContainer>
         <MarqueeTrack>
           {Array(4).fill(null).map((_, idx) => (
             <span key={idx} style={{ display: 'inline-flex' }}>
               <MarqueeText>
-                <span className="highlight">₹1,00,000+ CASH PRIZES</span>
-                <span>VERIFIED CERTIFICATE & SKILL BADGE</span>
-                <span className="star">✦</span>
-              </MarqueeText>
-              <MarqueeText>
-                <span className="highlight">₹15,000+ DEV CREDITS</span>
-                <span>GLOBAL MNC JUDGES</span>
-                <span className="star">✦</span>
-              </MarqueeText>
-              <MarqueeText>
-                <span className="highlight">STARTUP INTERNSHIPS</span>
-                <span>LIFETIME EXCLUSIVE COMMUNITY</span>
-                <span className="star">✦</span>
+                {marqueeItems.map((item, i) => (
+                  <React.Fragment key={i}>
+                    <span>{item}</span>
+                    <span className="star">✦</span>
+                  </React.Fragment>
+                ))}
               </MarqueeText>
             </span>
           ))}
@@ -146,7 +139,7 @@ const HeroSection = () => {
 
       <Inner>
         <HeroGrid>
-          {/* Left Column: Countdown → Headline → Tagline → Feature Pills → CTA */}
+          {/* Left Column: Countdown → Heading → Subtitle → Paragraph → Date → CTA → Registration Note */}
           <LeftCol>
             {/* Countdown */}
             <motion.div
@@ -155,7 +148,7 @@ const HeroSection = () => {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <CountdownBadge>
-                <CountdownLabel>Starts In</CountdownLabel>
+                <CountdownLabel>Event Starts In</CountdownLabel>
                 <CountdownCells>
                   <CountdownCell>
                     <span className="value">{timeLeft.days}</span>
@@ -180,7 +173,7 @@ const HeroSection = () => {
               </CountdownBadge>
             </motion.div>
 
-            {/* Headline + Tagline */}
+            {/* Heading + Subtitle + Paragraph + Date */}
             <HeroTextContainer>
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
@@ -191,36 +184,35 @@ const HeroSection = () => {
               </motion.h1>
 
               <motion.p
+                className="hero-subtitle"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+              >
+                Build. Ship. Get Discovered.
+              </motion.p>
+
+              <motion.p
                 className="tagline"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
               >
-                {isMobile ? (
-                  <>India&apos;s premier virtual hackathon. Build, compete, and win <strong className="emerald">₹1,00,000+</strong> in prizes.</>
-                ) : (
-                  <>India&apos;s premier virtual hackathon - <strong>July 18–19, 2026</strong>. Build, collaborate, and compete for <strong className="emerald">₹1,00,000+</strong> in prizes. Judged by global MNC professionals.</>
-                )}
+                Join India&apos;s next generation of builders in a 36-hour virtual hackathon
+                designed to help you create, compete, and unlock real opportunities.
+              </motion.p>
+
+              <motion.p
+                className="date-line"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+              >
+                July 18–19, 2026 <span className="separator">·</span> Online
               </motion.p>
             </HeroTextContainer>
 
-            {/* Feature Pills */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
-            >
-              <FeaturePillsContainer>
-                {featurePills.map((pill) => (
-                  <FeaturePill key={pill.label}>
-                    <span className="pill-icon">{pill.icon}</span>
-                    {pill.label}
-                  </FeaturePill>
-                ))}
-              </FeaturePillsContainer>
-            </motion.div>
-
-            {/* CTA Buttons */}
+            {/* CTA Buttons + Registration Note */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -229,24 +221,29 @@ const HeroSection = () => {
               <HeroCTAContainer>
                 <div className="button-row">
                   <GrabButton href="/register">
-                    Grab Your Pass
+                    Register Now
                   </GrabButton>
-                  <SecondaryButton href="#offers">
-                    Explore Prizes
+                  <SecondaryButton href="#about">
+                    Learn More
                   </SecondaryButton>
                 </div>
-                <span className="price-subtext">Secure your spot for only ₹100 · Non-refundable</span>
+                <span className="price-subtext">
+                  ₹100 Early Bird Registration<br />
+                  Limited spots available.
+                </span>
               </HeroCTAContainer>
             </motion.div>
           </LeftCol>
 
-          {/* Right Column: Interactive Ticket Showcase */}
+          {/* Right Column: Ticket Label + Interactive Ticket Showcase */}
           <RightCol>
             <motion.div
               initial={{ opacity: 0, scale: 0.93 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
             >
+              <TicketLabel>Official Participant Pass</TicketLabel>
               <HeroCardsContainer
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
@@ -271,18 +268,18 @@ const HeroSection = () => {
         </HeroGrid>
       </Inner>
 
-      {/* Bottom Scrolling Ribbon Ticker */}
+      {/* Bottom Energy Marquee */}
       <MarqueeContainer $bottom>
         <MarqueeTrack>
-          {Array(6).fill(null).map((_, idx) => (
+          {Array(4).fill(null).map((_, idx) => (
             <span key={idx} style={{ display: 'inline-flex' }}>
               <MarqueeText>
-                <span>NORTABLE 2026</span>
-                <span className="star">✦</span>
-                <span>BUILD & SHIP</span>
-                <span className="star">✦</span>
-                <span>₹100 PASS</span>
-                <span className="star">✦</span>
+                {marqueeItems.map((item, i) => (
+                  <React.Fragment key={i}>
+                    <span>{item}</span>
+                    <span className="star">✦</span>
+                  </React.Fragment>
+                ))}
               </MarqueeText>
             </span>
           ))}
