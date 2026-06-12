@@ -8,8 +8,6 @@ import {
   Trophy,
   Users,
   ListChecks,
-  LifeBuoy,
-  Gift,
   Rocket,
 } from 'lucide-react';
 import { useAuth } from '@/components/AuthProvider';
@@ -22,7 +20,6 @@ import {
   SideProfile,
   SideNav,
   SideLink,
-  SideStat,
   MainCol,
   SectionAnchor,
   Loading,
@@ -33,8 +30,6 @@ import Cockpit from './components/Cockpit';
 import LeaderboardHub from './components/LeaderboardHub';
 import TeamHub from './components/TeamHub';
 import Milestones from './components/Milestones';
-import MentorPortal from './components/MentorPortal';
-import Bounties from './components/Bounties';
 import SubmissionSuite from './components/SubmissionSuite';
 
 interface RegData {
@@ -48,8 +43,6 @@ const NAV = [
   { id: 'leaderboard', label: 'XP & Leaderboard', Icon: Trophy },
   { id: 'team', label: 'Team & Matchmaking', Icon: Users },
   { id: 'milestones', label: 'Milestones', Icon: ListChecks },
-  { id: 'mentor', label: 'Mentor Portal', Icon: LifeBuoy },
-  { id: 'bounties', label: 'Bounties & Perks', Icon: Gift },
   { id: 'submission', label: 'Submission Suite', Icon: Rocket },
 ];
 
@@ -202,21 +195,6 @@ export default function DashboardPage() {
               </SideLink>
             ))}
           </SideNav>
-
-          <SideStat>
-            <div className="row">
-              <span className="l">Track</span>
-              <span className="v green">{reg.track}</span>
-            </div>
-            <div className="row">
-              <span className="l">Pass</span>
-              <span className="v">#{reg.serial}</span>
-            </div>
-            <div className="row">
-              <span className="l">Milestones</span>
-              <span className="v">3 / 5</span>
-            </div>
-          </SideStat>
         </Sidebar>
 
         <MainCol>
@@ -236,12 +214,6 @@ export default function DashboardPage() {
             </SectionAnchor>
             <SectionAnchor id="milestones">
               <Milestones />
-            </SectionAnchor>
-            <SectionAnchor id="mentor">
-              <MentorPortal />
-            </SectionAnchor>
-            <SectionAnchor id="bounties">
-              <Bounties />
             </SectionAnchor>
             <SectionAnchor id="submission">
               <SubmissionSuite serial={reg.serial} />
