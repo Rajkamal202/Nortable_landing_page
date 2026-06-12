@@ -232,6 +232,47 @@ export default function RegisterPage() {
   const [regSubmitting, setRegSubmitting] = useState(false);
   const [ticketData, setTicketData] = useState<{ name: string; track: string; serial: string; totalPaid: number } | null>(null);
 
+  // Registration checker: existing registration lookup
+  const [existingReg, setExistingReg] = useState<any | null>(null);
+  const [regCheckLoading, setRegCheckLoading] = useState(false);
+
+  // On load (and whenever the user changes), check if they already registered.
+  useEffect(() => {
+    let cancelled = false;
+    const checkRegistration = async () => {
+      if (!user) {
+        setExistingReg(null);
+        return;
+      }
+      setRegCheckLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('registrations')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        if (!cancelled) {
+          if (error) {
+            console.error('[v0] Registration lookup error:', error.message);
+            setExistingReg(null);
+          } else {
+            setExistingReg(data ?? null);
+          }
+        }
+      } catch (err) {
+        if (!cancelled) setExistingReg(null);
+      } finally {
+        if (!cancelled) setRegCheckLoading(false);
+      }
+    };
+    checkRegistration();
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
+
   // Auto-fill registration form with authenticated user details
   useEffect(() => {
     if (user) {
@@ -253,9 +294,25 @@ export default function RegisterPage() {
   // Auth handlers
   const handleJoinClick = () => {
     if (user) {
-      setPageView('register');
+      if (existingReg) {
+        handleViewTicket();
+      } else {
+        setPageView('register');
+      }
     } else {
       setPageView('auth');
+    }
+  };
+
+  const handleViewTicket = () => {
+    if (existingReg) {
+      setTicketData({
+        name: existingReg.full_name,
+        track: existingReg.track_selection,
+        serial: existingReg.ticket_serial,
+        totalPaid: existingReg.total_price,
+      });
+      setPageView('success');
     }
   };
 
@@ -397,7 +454,7 @@ export default function RegisterPage() {
 
     try {
       if (user) {
-        const { error } = await supabase.from('registrations').insert({
+        const payload = {
           user_id: user.id,
           full_name: fullName,
           email: email,
@@ -412,7 +469,8 @@ export default function RegisterPage() {
           primary_goal: primaryGoal,
           total_price: totalPrice,
           ticket_serial: serial,
-        });
+        };
+        const { error } = await supabase.from('registrations').insert(payload);
 
         if (error) {
           console.error('Supabase DB Insert Error:', error);
@@ -420,6 +478,9 @@ export default function RegisterPage() {
           setRegSubmitting(false);
           return;
         }
+
+        // Mark user as registered so the hub CTA switches to "View Ticket".
+        setExistingReg({ ...payload, created_at: new Date().toISOString() });
       } else {
         setRegErrors({ auth: 'You must be signed in to submit this registration.' });
         setRegSubmitting(false);
@@ -575,7 +636,9 @@ export default function RegisterPage() {
                 <h2>Nortable 2026</h2>
                 <p className="subtitle">36-Hour Virtual Hackathon — AI · Fintech · Open Innovation</p>
                 <HeaderMeta>
-                  <JoinButton onClick={handleJoinClick}>Join Hackathon</JoinButton>
+                  <JoinButton onClick={handleJoinClick}>
+                    {existingReg ? 'View Ticket' : 'Join Hackathon'}
+                  </JoinButton>
                   <EligibilityBox>
                     <div className="eligibility-title">Who can participate</div>
                     <ul>
@@ -615,7 +678,9 @@ export default function RegisterPage() {
               <TagsSection><TagIcon /><Tag>AI/ML</Tag><Tag>Fintech</Tag><Tag>Open Source</Tag><Tag>Hackathon</Tag></TagsSection>
               <ManagedBy><UsersIcon /><span>Managed by <a href="#">Nortable Team</a></span></ManagedBy>
               <SidebarCTA>
-                <JoinCTAButton onClick={handleJoinClick}>Join Hackathon — ₹100</JoinCTAButton>
+                <JoinCTAButton onClick={handleJoinClick}>
+                  {existingReg ? 'View Your Ticket' : 'Join Hackathon — ₹100'}
+                </JoinCTAButton>
                 <p className="questions">Questions? <a href="#">Contact organizers</a></p>
               </SidebarCTA>
             </SidebarCard>
@@ -879,8 +944,12 @@ export default function RegisterPage() {
       {pageView === 'success' && ticketData && (
         <RegPageContainer>
           <SuccessWrapper>
-            <h3>Registration Confirmed!</h3>
-            <p className="sub">Your pass has been generated successfully</p>
+            <h3>{existingReg ? "You're Registered!" : 'Registration Confirmed!'}</h3>
+            <p className="sub">
+              {existingReg
+                ? 'Here is your digital pass and submitted details'
+                : 'Your pass has been generated successfully'}
+            </p>
 
             <TicketCard>
               <div className="top">
@@ -897,6 +966,34 @@ export default function RegisterPage() {
                 </div>
               </div>
             </TicketCard>
+
+            {existingReg && (
+              <SectionBlock style={{ width: '100%', maxWidth: '480px', marginTop: '1.5rem' }}>
+                <h3>Your Registration</h3>
+                <InfoGrid>
+                  <InfoCell $border><span>Email</span><strong>{existingReg.email}</strong></InfoCell>
+                  <InfoCell><span>Phone</span><strong>{existingReg.phone || '—'}</strong></InfoCell>
+                </InfoGrid>
+                <InfoGrid>
+                  <InfoCell $border><span>College / Company</span><strong>{existingReg.college || '—'}</strong></InfoCell>
+                  <InfoCell><span>Track</span><strong>{existingReg.track_selection}</strong></InfoCell>
+                </InfoGrid>
+                <InfoGrid>
+                  <InfoCell $border><span>Team Status</span><strong>{existingReg.team_status}</strong></InfoCell>
+                  <InfoCell><span>Experience</span><strong>{existingReg.experience || '—'}</strong></InfoCell>
+                </InfoGrid>
+                {Array.isArray(existingReg.teammates) && existingReg.teammates.length > 0 && (
+                  <div style={{ marginTop: '1rem' }}>
+                    <strong>Teammates</strong>
+                    <ul>
+                      {existingReg.teammates.map((t: Teammate, i: number) => (
+                        <li key={i}>{t.name} — {t.email}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </SectionBlock>
+            )}
 
             <SubmitButton style={{ width: '100%', maxWidth: '340px' }} onClick={() => setPageView('overview')}>
               Back to Hub
