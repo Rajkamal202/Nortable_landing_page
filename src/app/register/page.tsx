@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAuth } from '@/components';
+import TicketPass from '@/components/TicketPass';
 import { supabase } from '@/libs/supabaseClient';
 import {
   PageWrapper,
@@ -37,7 +38,6 @@ import {
   TrackCard,
   JudgeCard,
   SuccessWrapper,
-  TicketCard,
   SubmitButton,
   // Auth
   AuthOverlay,
@@ -999,21 +999,12 @@ export default function RegisterPage() {
                 : 'Your pass has been generated successfully'}
             </p>
 
-            <TicketCard>
-              <div className="top">
-                <div className="logo">NORTABLE 2026</div>
-                <div className="avatar-circle">👨‍💻</div>
-                <div className="name">{ticketData.name}</div>
-                <div className="track">{ticketData.track}</div>
-              </div>
-              <div className="bottom">
-                <div className="serial">{ticketData.serial}</div>
-                <div className="info-row">
-                  <span>Access<strong>VIRTUAL</strong></span>
-                  <span>Entry<strong>₹{ticketData.totalPaid} PAID</strong></span>
-                </div>
-              </div>
-            </TicketCard>
+            <TicketPass
+              name={ticketData.name}
+              track={ticketData.track}
+              serial={ticketData.serial}
+              totalPaid={ticketData.totalPaid}
+            />
 
             {existingReg && (
               <SectionBlock style={{ width: '100%', maxWidth: '480px', marginTop: '1.5rem' }}>
