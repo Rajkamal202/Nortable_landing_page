@@ -51,7 +51,7 @@ const Header = () => {
         {/* Right Side: Action Button */}
         {user ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <CallToActions href="/register">
+            <CallToActions href="/dashboard">
               Dashboard
             </CallToActions>
             <a
