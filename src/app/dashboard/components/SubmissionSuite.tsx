@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { GitBranch, Video, CheckCircle2, GitCommit } from 'lucide-react';
+import { GitBranch, Video, CheckCircle2, GitCommit, Globe, ExternalLink } from 'lucide-react';
 import {
   Block,
   SectionTitle,
@@ -41,6 +41,7 @@ interface Props {
 export default function SubmissionSuite({ serial }: Props) {
   const [repo, setRepo] = useState('');
   const [synced, setSynced] = useState(false);
+  const [liveUrl, setLiveUrl] = useState('');
   const [video, setVideo] = useState('');
   const [tab, setTab] = useState<'write' | 'preview'>('write');
   const [md, setMd] = useState(
@@ -100,6 +101,40 @@ export default function SubmissionSuite({ serial }: Props) {
               ))}
             </div>
           )}
+
+          <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+            <Field>
+              <label>Live Demo URL</label>
+              <input
+                value={liveUrl}
+                onChange={(e) => setLiveUrl(e.target.value)}
+                placeholder="https://your-project.vercel.app"
+              />
+            </Field>
+            {liveUrl.trim() ? (
+              <a
+                href={liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.45rem',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  color: '#48d64c',
+                  textDecoration: 'none',
+                }}
+              >
+                <Globe size={14} /> {liveUrl.replace(/^https?:\/\//, '')}
+                <ExternalLink size={13} />
+              </a>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)' }}>
+                <Globe size={14} /> No live deployment linked yet
+              </div>
+            )}
+          </div>
         </Card>
 
         <Card>
@@ -159,10 +194,15 @@ export default function SubmissionSuite({ serial }: Props) {
             />
           )}
         </MdEditor>
-        <div style={{ marginTop: '1.25rem', maxWidth: 240 }}>
-          <Btn>
+        <div style={{ marginTop: '1.25rem', maxWidth: 280 }}>
+          <Btn disabled={!synced || !liveUrl.trim()}>
             <CheckCircle2 size={15} /> Submit Project
           </Btn>
+          {(!synced || !liveUrl.trim()) && (
+            <div style={{ marginTop: '0.5rem', fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)' }}>
+              Sync your GitHub repo and add a live demo URL to submit.
+            </div>
+          )}
         </div>
       </Card>
     </Block>
