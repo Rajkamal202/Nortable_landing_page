@@ -126,26 +126,30 @@ const NameText = styled.h1`
   right: 33%;
   margin: 0;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(1.8rem, 6.4vw, 4.4rem);
+  font-size: clamp(1.9rem, 6.8vw, 4.7rem);
   font-weight: 400;
-  line-height: 0.86;
-  letter-spacing: 0.01em;
+  line-height: 0.84;
+  letter-spacing: 0.015em;
   text-transform: uppercase;
   word-break: break-word;
   background: linear-gradient(
-    100deg,
-    #fff7e6 0%,
-    #ffe9c2 25%,
-    #ffd9f0 45%,
-    #d9c2ff 62%,
-    #c2e0ff 80%,
-    #f5faff 100%
+    175deg,
+    #ffffff 0%,
+    #fff3d6 14%,
+    #ffd9ef 30%,
+    #b9a6ff 46%,
+    #ffffff 54%,
+    #cfe6ff 66%,
+    #ffd5b0 82%,
+    #ffffff 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0 10px rgba(255, 200, 120, 0.35))
-    drop-shadow(0 0 18px rgba(150, 180, 255, 0.25));
+  -webkit-text-stroke: 0.6px rgba(255, 255, 255, 0.35);
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.5))
+    drop-shadow(0 0 14px rgba(255, 210, 140, 0.45))
+    drop-shadow(0 0 26px rgba(160, 190, 255, 0.35));
 `;
 
 /* Registration id - sits just above the QR block */
