@@ -29,3 +29,7 @@ create policy "Allow public insert (for registrations)" on public.registrations
 drop policy if exists "Users can view their own registrations" on public.registrations;
 create policy "Users can view their own registrations" on public.registrations
   for select using (auth.uid() = user_id);
+
+drop policy if exists "Users can update their own registrations" on public.registrations;
+create policy "Users can update their own registrations" on public.registrations
+  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);

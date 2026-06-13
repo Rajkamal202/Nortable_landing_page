@@ -124,7 +124,7 @@ export default function TeamHub({ name, track, teamStatus, teamBio, teammates }:
       </SubmitBanner>
 
       <div style={{ maxWidth: 220, marginTop: '1rem' }}>
-        <Btn $variant="ghost" onClick={() => router.push('/register')}>
+        <Btn $variant="ghost" onClick={() => router.push('/register?edit=1')}>
           <Pencil size={15} /> Edit Registration
         </Btn>
       </div>

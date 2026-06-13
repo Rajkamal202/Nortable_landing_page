@@ -242,6 +242,10 @@ export default function RegisterPage() {
   const [existingReg, setExistingReg] = useState<any | null>(null);
   const [regCheckLoading, setRegCheckLoading] = useState(false);
 
+  // Edit mode: when true, the form updates the existing registration instead of inserting a new one.
+  const [isEditing, setIsEditing] = useState(false);
+  const [editPrefilled, setEditPrefilled] = useState(false);
+
   // On load (and whenever the user changes), check if they already registered.
   useEffect(() => {
     let cancelled = false;
@@ -278,6 +282,37 @@ export default function RegisterPage() {
       cancelled = true;
     };
   }, [user]);
+
+  // Prefill the form with an existing registration and switch to edit mode.
+  const startEditing = (reg: any) => {
+    setFullName(reg.full_name || '');
+    setEmail(reg.email || '');
+    setPhone(reg.phone || '');
+    setCollege(reg.college || '');
+    setTeamStatus(reg.team_status || 'solo');
+    setTeamBio(reg.team_bio || '');
+    setTeammates(Array.isArray(reg.teammates) ? reg.teammates : []);
+    setTrackSelection(reg.track_selection || tracksList[0].title);
+    setExperience(reg.experience || '');
+    setHearAbout(reg.hear_about || '');
+    setPrimaryGoal(reg.primary_goal || '');
+    setAgreeEligibility(true);
+    setAgreeRules(true);
+    setRegErrors({});
+    setIsEditing(true);
+    setPageView('register');
+  };
+
+  // When arriving from the dashboard "Edit Registration" link (/register?edit=1),
+  // open the form prefilled with the user's existing registration.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const wantsEdit = new URLSearchParams(window.location.search).get('edit') === '1';
+    if (wantsEdit && existingReg && !editPrefilled) {
+      setEditPrefilled(true);
+      startEditing(existingReg);
+    }
+  }, [existingReg, editPrefilled]);
 
   // Auto-fill registration form with authenticated user details
   useEffect(() => {
@@ -456,7 +491,11 @@ export default function RegisterPage() {
     if (!validateReg()) return;
 
     setRegSubmitting(true);
-    const serial = 'NRT-' + Math.floor(1000 + Math.random() * 9000) + '-' + Math.floor(1000 + Math.random() * 9000);
+    const editing = isEditing && existingReg;
+    // Keep the same pass serial when editing; only generate a new one on first registration.
+    const serial = editing
+      ? existingReg.ticket_serial
+      : 'NRT-' + Math.floor(1000 + Math.random() * 9000) + '-' + Math.floor(1000 + Math.random() * 9000);
 
     try {
       if (user) {
@@ -476,24 +515,29 @@ export default function RegisterPage() {
           total_price: totalPrice,
           ticket_serial: serial,
         };
-        const { error } = await supabase.from('registrations').insert(payload);
+
+        const { error } = editing
+          ? await supabase.from('registrations').update(payload).eq('id', existingReg.id)
+          : await supabase.from('registrations').insert(payload);
 
         if (error) {
-          console.error('Supabase DB Insert Error:', error);
-          setRegErrors({ database: `Auth succeeded, but database write failed: ${error.message}. Please make sure you have executed the schema SQL in your Supabase SQL editor.` });
+          console.error('Supabase DB Write Error:', error);
+          setRegErrors({ database: `Database write failed: ${error.message}. Please make sure you have executed the schema SQL in your Supabase SQL editor.` });
           setRegSubmitting(false);
           return;
         }
 
-        // Mark user as registered so the hub CTA switches to "View Ticket".
-        setExistingReg({ ...payload, created_at: new Date().toISOString() });
+        // Keep local state in sync so the hub/success view reflect the latest details.
+        setExistingReg({ ...existingReg, ...payload, created_at: existingReg?.created_at || new Date().toISOString() });
 
-        // Fire-and-forget confirmation email (won't block the success screen).
-        fetch('/api/send-confirmation', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ serial, email }),
-        }).catch(() => {});
+        // Only send the confirmation email on first registration, not on edits.
+        if (!editing) {
+          fetch('/api/send-confirmation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ serial, email }),
+          }).catch(() => {});
+        }
       } else {
         setRegErrors({ auth: 'You must be signed in to submit this registration.' });
         setRegSubmitting(false);
@@ -510,7 +554,11 @@ export default function RegisterPage() {
     }
   };
 
-  const handleCancelReg = () => setPageView('overview');
+  const handleCancelReg = () => {
+    setIsEditing(false);
+    setPageView(existingReg ? 'success' : 'overview');
+    if (existingReg) handleViewTicket();
+  };
 
   /* ──────── Tab Content Renderers ──────── */
   const renderOverview = () => (
@@ -720,10 +768,16 @@ export default function RegisterPage() {
             <RegMain>
               <RegPageHeader>
                 <div className="eyebrow">Nortable 2026 · Virtual Hackathon</div>
-                <h2>Complete your registration</h2>
+                <h2>{isEditing ? 'Edit your registration' : 'Complete your registration'}</h2>
                 <p>
-                  Secure your builder pass and lock in your track. Registration is{' '}
-                  <a href="#">₹100 per person</a> — teammates can be added below.
+                  {isEditing ? (
+                    <>Update your details below and save your changes. Your pass serial stays the same.</>
+                  ) : (
+                    <>
+                      Secure your builder pass and lock in your track. Registration is{' '}
+                      <a href="#">₹100 per person</a> — teammates can be added below.
+                    </>
+                  )}
                 </p>
               </RegPageHeader>
 
@@ -941,7 +995,11 @@ export default function RegisterPage() {
             {/* ── Action Buttons ── */}
             <RegActions>
               <RegSubmitBtn type="submit" disabled={regSubmitting}>
-                {regSubmitting ? 'Processing...' : `Register — Pay ₹${totalPrice}`}
+                {regSubmitting
+                  ? 'Processing...'
+                  : isEditing
+                  ? 'Save Changes'
+                  : `Register — Pay ₹${totalPrice}`}
               </RegSubmitBtn>
               <RegCancelBtn type="button" onClick={handleCancelReg}>Cancel</RegCancelBtn>
             </RegActions>
@@ -999,9 +1057,11 @@ export default function RegisterPage() {
       {pageView === 'success' && ticketData && (
         <RegPageContainer>
           <SuccessWrapper>
-            <h3>{existingReg ? "You're Registered!" : 'Registration Confirmed!'}</h3>
+            <h3>{isEditing ? 'Registration Updated!' : existingReg ? "You're Registered!" : 'Registration Confirmed!'}</h3>
             <p className="sub">
-              {existingReg
+              {isEditing
+                ? 'Your changes have been saved'
+                : existingReg
                 ? 'Here is your digital pass and submitted details'
                 : 'Your pass has been generated successfully'}
             </p>
@@ -1041,9 +1101,18 @@ export default function RegisterPage() {
               </SectionBlock>
             )}
 
-            <SubmitButton style={{ width: '100%', maxWidth: '340px' }} onClick={() => setPageView('overview')}>
+            {existingReg && (
+              <SubmitButton
+                style={{ width: '100%', maxWidth: '340px' }}
+                onClick={() => startEditing(existingReg)}
+              >
+                Edit Registration
+              </SubmitButton>
+            )}
+
+            <RegCancelBtn style={{ width: '100%', maxWidth: '340px' }} onClick={() => { setIsEditing(false); setPageView('overview'); }}>
               Back to Hub
-            </SubmitButton>
+            </RegCancelBtn>
           </SuccessWrapper>
         </RegPageContainer>
       )}
