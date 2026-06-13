@@ -179,22 +179,19 @@ const QRSlot = styled.div`
   top: 73.5%;
   width: 10.5%;
   aspect-ratio: 1;
-  padding: 7%;
   background: linear-gradient(135deg, #ffe9c9 0%, #ffd6e6 45%, #d6c9ff 75%, #c9eaff 100%);
   border: 1px solid rgba(255, 210, 160, 0.55);
   border-radius: 3px;
   box-shadow:
     inset 0 0 12px rgba(255, 255, 255, 0.4),
     0 0 16px rgba(255, 150, 90, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   svg {
+    position: absolute;
+    inset: 7%;
+    width: 86%;
+    height: 86%;
     display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1;
   }
 `;
 
