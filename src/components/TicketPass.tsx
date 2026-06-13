@@ -123,15 +123,16 @@ const NameText = styled.h1`
   position: absolute;
   top: 30%;
   left: 11%;
-  right: 33%;
+  right: 45%;
   margin: 0;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(1.9rem, 6.8vw, 4.7rem);
+  font-size: clamp(1.7rem, 6vw, 4.1rem);
   font-weight: 400;
   line-height: 0.84;
   letter-spacing: 0.015em;
   text-transform: uppercase;
   word-break: break-word;
+  overflow-wrap: anywhere;
   background: linear-gradient(
     175deg,
     #ffffff 0%,
