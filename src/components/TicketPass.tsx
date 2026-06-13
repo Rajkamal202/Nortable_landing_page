@@ -23,11 +23,106 @@ const PassWrapper = styled.div`
   background-color: #000;
 `;
 
+/* Top-left branding: holographic "N" logo + presenter text */
+const Branding = styled.div`
+  position: absolute;
+  top: 21.5%;
+  left: 11%;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+
+  .logo {
+    width: clamp(1.6rem, 3.4vw, 2.4rem);
+    aspect-ratio: 1;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1rem, 2.2vw, 1.6rem);
+    color: #1a0a2e;
+    background: linear-gradient(135deg, #c9a8ff, #8a5cff 55%, #5ce0ff);
+    box-shadow: 0 0 14px rgba(150, 110, 255, 0.5);
+  }
+
+  .text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.35;
+    color: #f3e9ff;
+    font-size: clamp(0.5rem, 1.15vw, 0.78rem);
+  }
+`;
+
+/* Top-right holographic "N" badge */
+const Badge = styled.div`
+  position: absolute;
+  top: 21%;
+  left: 58.5%;
+  width: clamp(2.4rem, 6.4vw, 4.4rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.1rem, 3vw, 2rem);
+  color: #2a0a1a;
+  background:
+    radial-gradient(circle at 32% 28%, #ffffff 0%, #ffd9f0 22%, #b9a8ff 50%, #7fd6ff 78%, #ffd0a0 100%);
+  box-shadow:
+    inset 0 0 14px rgba(255, 255, 255, 0.6),
+    0 0 22px rgba(180, 140, 255, 0.45);
+`;
+
+/* "CODE. INNOVATE. DISRUPT." tagline with trailing dashes */
+const Tagline = styled.div`
+  position: absolute;
+  top: 35.5%;
+  left: 58%;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(0.5rem, 1.1vw, 0.74rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ff8a5c;
+  line-height: 1.7;
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .dash {
+    width: clamp(0.7rem, 1.6vw, 1.1rem);
+    height: 1px;
+    background: #ff8a5c;
+  }
+`;
+
+/* Footer tagline on the stub */
+const StubFooter = styled.div`
+  position: absolute;
+  bottom: 11.5%;
+  left: 72%;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(0.4rem, 0.85vw, 0.6rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #d9b0ff;
+  white-space: nowrap;
+`;
+
 /* Participant name - placed in the large empty area on the left */
 const NameText = styled.h1`
   position: absolute;
-  top: 26%;
-  left: 7%;
+  top: 30%;
+  left: 11%;
   right: 33%;
   margin: 0;
   font-family: 'Bebas Neue', sans-serif;
@@ -53,11 +148,11 @@ const NameText = styled.h1`
     drop-shadow(0 0 18px rgba(150, 180, 255, 0.25));
 `;
 
-/* Registration id - sits just under the name */
+/* Registration id - sits just above the QR block */
 const RegSection = styled.div`
   position: absolute;
-  top: 58%;
-  left: 7%;
+  top: 63%;
+  left: 11%;
   font-family: 'Space Mono', monospace;
 
   .label {
@@ -85,18 +180,21 @@ const QRSlot = styled.div`
   width: 10.5%;
   aspect-ratio: 1;
   padding: 7%;
-  background: rgba(8, 4, 10, 0.55);
-  border: 1px solid rgba(255, 170, 120, 0.28);
+  background: linear-gradient(135deg, #ffe9c9 0%, #ffd6e6 45%, #d6c9ff 75%, #c9eaff 100%);
+  border: 1px solid rgba(255, 210, 160, 0.55);
   border-radius: 3px;
-  backdrop-filter: blur(2px);
-  box-shadow: inset 0 0 18px rgba(255, 120, 60, 0.18);
+  box-shadow:
+    inset 0 0 12px rgba(255, 255, 255, 0.4),
+    0 0 16px rgba(255, 150, 90, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
 
   svg {
+    display: block;
     width: 100%;
-    height: 100%;
+    height: auto;
+    aspect-ratio: 1;
   }
 `;
 
@@ -122,6 +220,29 @@ export default function TicketPass({ name, serial }: TicketPassProps) {
 
   return (
     <PassWrapper role="img" aria-label={`Nortable Hackathon 2026 pass for ${name}`}>
+      <Branding>
+        <div className="logo">N</div>
+        <div className="text">
+          NORTABLE PRESENTS
+          <br />
+          GLOBAL HACKATHON 2026
+        </div>
+      </Branding>
+
+      <Badge aria-hidden="true">N</Badge>
+
+      <Tagline aria-hidden="true">
+        <div className="row">
+          CODE. <span className="dash" />
+        </div>
+        <div className="row">
+          INNOVATE. <span className="dash" />
+        </div>
+        <div className="row">
+          DISRUPT. <span className="dash" />
+        </div>
+      </Tagline>
+
       <NameText>{name}</NameText>
 
       <RegSection>
@@ -136,7 +257,7 @@ export default function TicketPass({ name, serial }: TicketPassProps) {
           size={120}
           includeMargin={false}
           bgColor="transparent"
-          fgColor="#ffd9a0"
+          fgColor="#1a0a14"
         />
       </QRSlot>
 
@@ -147,6 +268,8 @@ export default function TicketPass({ name, serial }: TicketPassProps) {
           ADMIT <span className="accent">ONE</span>
         </div>
       </EventDetails>
+
+      <StubFooter aria-hidden="true">BE EXCEPTIONAL OR BE FORGOTTEN</StubFooter>
     </PassWrapper>
   );
 }
