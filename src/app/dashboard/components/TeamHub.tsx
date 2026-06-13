@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Users, Copy, Check, LogOut, Plus, LogIn, Crown } from 'lucide-react';
 import { supabase } from '@/libs/supabaseClient';
+import { MAX_TEAM_SIZE } from '@/libs/eventConfig';
 import {
   Block,
   SectionTitle,
@@ -157,6 +158,17 @@ export default function TeamHub({ userId, name, track }: Props) {
         return;
       }
 
+      // Reject if the team is already full (enforced again by a DB trigger).
+      const { count } = await supabase
+        .from('team_members')
+        .select('user_id', { count: 'exact', head: true })
+        .eq('team_id', found.id);
+
+      if ((count ?? 0) >= MAX_TEAM_SIZE) {
+        setError(`That team is full (max ${MAX_TEAM_SIZE} members).`);
+        return;
+      }
+
       const { error: memErr } = await supabase.from('team_members').insert({
         team_id: found.id,
         user_id: userId,
@@ -166,6 +178,8 @@ export default function TeamHub({ userId, name, track }: Props) {
       if (memErr) {
         if (memErr.code === '23505') {
           setError('You are already in this team.');
+        } else if (memErr.message?.toLowerCase().includes('full')) {
+          setError(`That team is full (max ${MAX_TEAM_SIZE} members).`);
         } else {
           throw memErr;
         }

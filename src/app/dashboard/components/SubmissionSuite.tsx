@@ -19,9 +19,7 @@ import {
   Btn,
   SubmitBanner,
 } from '../styles';
-
-// Submission deadline — 20 July 2026, 02:00 PM
-const DEADLINE = new Date('2026-07-20T14:00:00');
+import { DEADLINE } from '@/libs/eventConfig';
 
 interface Submission {
   id: string;

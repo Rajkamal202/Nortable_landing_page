@@ -14,18 +14,9 @@ import {
   Timeline,
   TimelineItem,
 } from '../styles';
+import { KICKOFF, DEADLINE, SCHEDULE, BUILD_WINDOW_HOURS } from '@/libs/eventConfig';
 
-// Hacking start target — 18 July 2026
-const KICKOFF = new Date('2026-07-18T10:00:00');
-// Submission deadline — 20 July 2026
-const DEADLINE = new Date('2026-07-20T14:00:00');
-
-const SCHEDULE = [
-  { Icon: Calendar, date: 'Jul 18, 10:00 AM', title: 'Opening Ceremony & Kickoff', note: 'Hacking begins' },
-  { Icon: Code2, date: 'Jul 18 – 20', title: 'Build Window', note: '52 hours to ship' },
-  { Icon: Flag, date: 'Jul 20, 02:00 PM', title: 'Submission Deadline', note: 'Repo + live link due' },
-  { Icon: Trophy, date: 'Jul 20, 05:00 PM', title: 'Judging & Awards', note: 'Winners announced' },
-];
+const ICONS = { Calendar, Code2, Flag, Trophy } as const;
 
 function getRemaining() {
   const diff = Math.max(0, DEADLINE.getTime() - Date.now());
@@ -109,7 +100,7 @@ export default function Cockpit({ name, track }: Props) {
         </Stat>
         <Stat>
           <div className="v">
-            52<span> hrs</span>
+            {BUILD_WINDOW_HOURS}<span> hrs</span>
           </div>
           <div className="k">Build Window</div>
         </Stat>
@@ -117,18 +108,21 @@ export default function Cockpit({ name, track }: Props) {
 
       <Timeline>
         <div className="head">Event Schedule</div>
-        {SCHEDULE.map((s, i) => (
-          <TimelineItem key={i}>
-            <div className="ic">
-              <s.Icon size={16} />
-            </div>
-            <div className="body">
-              <div className="title">{s.title}</div>
-              <div className="note">{s.note}</div>
-            </div>
-            <div className="date">{s.date}</div>
-          </TimelineItem>
-        ))}
+        {SCHEDULE.map((s, i) => {
+          const Icon = ICONS[s.icon];
+          return (
+            <TimelineItem key={i}>
+              <div className="ic">
+                <Icon size={16} />
+              </div>
+              <div className="body">
+                <div className="title">{s.title}</div>
+                <div className="note">{s.note}</div>
+              </div>
+              <div className="date">{s.date}</div>
+            </TimelineItem>
+          );
+        })}
       </Timeline>
     </CockpitWrap>
   );
