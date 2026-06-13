@@ -5,9 +5,9 @@ import { QRCodeSVG } from 'qrcode.react';
 
 interface TicketPassProps {
   name: string;
-  track: string;
+  track?: string;
   serial: string;
-  totalPaid: number;
+  totalPaid?: number;
 }
 
 /* Main pass container - uses the provided artwork as the background */

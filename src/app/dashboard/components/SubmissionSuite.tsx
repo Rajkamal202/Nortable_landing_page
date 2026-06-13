@@ -1,210 +1,296 @@
 'use client';
 
-import { useState } from 'react';
-import { GitBranch, Video, CheckCircle2, GitCommit, Globe, ExternalLink } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import {
+  GitBranch,
+  Globe,
+  CheckCircle2,
+  ExternalLink,
+  Users,
+  Lock,
+  Clock,
+} from 'lucide-react';
+import { supabase } from '@/libs/supabaseClient';
 import {
   Block,
   SectionTitle,
-  SubmitGrid,
   Card,
   Field,
-  MdEditor,
-  CommitRow,
   Btn,
+  SubmitBanner,
 } from '../styles';
 
-const MOCK_COMMITS = [
-  { hash: 'a3f9c2e', msg: 'feat: add submission suite UI', time: '2m ago' },
-  { hash: '7b1d4a0', msg: 'fix: resolve auth redirect loop', time: '1h ago' },
-  { hash: 'e9c5f31', msg: 'chore: scaffold dashboard route', time: '3h ago' },
-  { hash: '2d8a6bf', msg: 'init: project bootstrap', time: '6h ago' },
-];
+// Submission deadline — 20 July 2026, 02:00 PM
+const DEADLINE = new Date('2026-07-20T14:00:00');
 
-// Tiny markdown -> HTML for preview
-function renderMd(md: string): string {
-  return md
-    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
-    .replace(/`(.*?)`/gim, '<code>$1</code>')
-    .replace(/^\s*-\s(.*$)/gim, '<li>$1</li>')
-    .replace(/(<li>[\s\S]*?<\/li>)/gi, '<ul>$1</ul>')
-    .replace(/\n{2,}/g, '</p><p>')
-    .replace(/^(?!<[hlu])(.+)$/gim, '$1');
+interface Submission {
+  id: string;
+  team_id: string;
+  project_name: string;
+  description: string | null;
+  github_url: string;
+  live_url: string;
+  track: string | null;
+  updated_at: string;
 }
 
 interface Props {
+  userId: string;
   serial: string;
+  track: string;
 }
 
-export default function SubmissionSuite({ serial }: Props) {
-  const [repo, setRepo] = useState('');
-  const [synced, setSynced] = useState(false);
-  const [liveUrl, setLiveUrl] = useState('');
-  const [video, setVideo] = useState('');
-  const [tab, setTab] = useState<'write' | 'preview'>('write');
-  const [md, setMd] = useState(
-    '# Project Title\n\nDescribe your project here.\n\n## Inspiration\nWhat sparked the idea?\n\n## Challenges\n- First challenge\n- Second challenge\n\n## Built With\n`Next.js` `Supabase` `OpenAI`'
-  );
+const isUrl = (v: string) => /^https?:\/\/.+\..+/.test(v.trim());
+
+export default function SubmissionSuite({ userId, serial, track }: Props) {
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [teamId, setTeamId] = useState<string | null>(null);
+  const [submission, setSubmission] = useState<Submission | null>(null);
+  const [justSaved, setJustSaved] = useState(false);
+  const [error, setError] = useState('');
+
+  const [projectName, setProjectName] = useState('');
+  const [description, setDescription] = useState('');
+  const [github, setGithub] = useState('');
+  const [live, setLive] = useState('');
+
+  const pastDeadline = Date.now() > DEADLINE.getTime();
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { data: membership } = await supabase
+        .from('team_members')
+        .select('team_id')
+        .eq('user_id', userId)
+        .limit(1)
+        .maybeSingle();
+
+      if (!membership) {
+        setTeamId(null);
+        setSubmission(null);
+        return;
+      }
+      setTeamId(membership.team_id);
+
+      const { data: sub } = await supabase
+        .from('submissions')
+        .select('*')
+        .eq('team_id', membership.team_id)
+        .maybeSingle();
+
+      if (sub) {
+        const s = sub as Submission;
+        setSubmission(s);
+        setProjectName(s.project_name);
+        setDescription(s.description || '');
+        setGithub(s.github_url);
+        setLive(s.live_url);
+      }
+    } catch (err) {
+      console.error('[v0] submission load failed', err);
+      setError('Could not load submission.');
+    } finally {
+      setLoading(false);
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const save = async () => {
+    setError('');
+    if (!teamId) return;
+    if (!projectName.trim()) return setError('Project name is required.');
+    if (!isUrl(github)) return setError('Enter a valid GitHub URL (https://…).');
+    if (!isUrl(live)) return setError('Enter a valid live demo URL (https://…).');
+
+    setBusy(true);
+    try {
+      const payload = {
+        team_id: teamId,
+        project_name: projectName.trim(),
+        description: description.trim() || null,
+        github_url: github.trim(),
+        live_url: live.trim(),
+        track,
+        submitted_by: userId,
+        updated_at: new Date().toISOString(),
+      };
+      const { data, error: upErr } = await supabase
+        .from('submissions')
+        .upsert(payload, { onConflict: 'team_id' })
+        .select()
+        .single();
+      if (upErr) throw upErr;
+
+      setSubmission(data as Submission);
+      setJustSaved(true);
+      setTimeout(() => setJustSaved(false), 2500);
+    } catch (err) {
+      console.error('[v0] submission save failed', err);
+      setError('Could not save submission. Please retry.');
+    } finally {
+      setBusy(false);
+    }
+  };
 
   return (
     <Block>
       <SectionTitle>
-        Project Submission Suite <span className="tag">#{serial}</span>
+        Submission <span className="tag">#{serial}</span>
       </SectionTitle>
 
-      <SubmitGrid>
+      {loading ? (
         <Card>
-          <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff', marginBottom: '1rem' }}>
-            GitHub Repository
+          <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>Loading…</div>
+        </Card>
+      ) : !teamId ? (
+        <SubmitBanner $variant="info">
+          <Users size={18} />
+          <div>
+            <div className="t">Join or create a team first</div>
+            <div className="s">Project submissions are made by a team. Head to the Team section to set one up.</div>
           </div>
-          <Field>
-            <label>Repository URL</label>
-            <input
-              value={repo}
-              onChange={(e) => {
-                setRepo(e.target.value);
-                setSynced(false);
-              }}
-              placeholder="https://github.com/team/project"
-            />
-          </Field>
-          <Btn
-            onClick={() => repo.trim() && setSynced(true)}
-            disabled={!repo.trim()}
-            $variant={synced ? 'ghost' : 'solid'}
-          >
-            {synced ? (
-              <>
-                <CheckCircle2 size={15} /> Repository Synced
-              </>
-            ) : (
-              <>
-                <GitBranch size={15} /> Validate &amp; Sync
-              </>
-            )}
-          </Btn>
-
-          {synced && (
-            <div style={{ marginTop: '1.25rem' }}>
-              <div style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', marginBottom: '0.4rem' }}>
-                Latest Commits
+        </SubmitBanner>
+      ) : (
+        <>
+          {submission && (
+            <SubmitBanner $variant="ok">
+              <CheckCircle2 size={18} />
+              <div>
+                <div className="t">Project submitted</div>
+                <div className="s">
+                  Last updated {new Date(submission.updated_at).toLocaleString()}.{' '}
+                  {!pastDeadline && 'You can keep editing until the deadline.'}
+                </div>
               </div>
-              {MOCK_COMMITS.map((c) => (
-                <CommitRow key={c.hash}>
-                  <GitCommit size={13} style={{ color: '#48d64c', flexShrink: 0 }} />
-                  <span className="hash">{c.hash}</span>
-                  <span className="msg">{c.msg}</span>
-                  <span className="time">{c.time}</span>
-                </CommitRow>
-              ))}
-            </div>
+            </SubmitBanner>
           )}
 
-          <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+          {pastDeadline && (
+            <SubmitBanner $variant="warn">
+              <Lock size={18} />
+              <div>
+                <div className="t">Submissions are closed</div>
+                <div className="s">The deadline has passed. Your last saved submission is final.</div>
+              </div>
+            </SubmitBanner>
+          )}
+
+          {!pastDeadline && (
+            <SubmitBanner $variant="info">
+              <Clock size={18} />
+              <div>
+                <div className="t">Deadline: {DEADLINE.toLocaleString()}</div>
+                <div className="s">Submit your GitHub repo and live demo before time runs out.</div>
+              </div>
+            </SubmitBanner>
+          )}
+
+          <Card style={{ marginTop: '1.25rem' }}>
             <Field>
-              <label>Live Demo URL</label>
+              <label>Project name</label>
               <input
-                value={liveUrl}
-                onChange={(e) => setLiveUrl(e.target.value)}
-                placeholder="https://your-project.vercel.app"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                placeholder="Your project name"
+                disabled={pastDeadline}
+                maxLength={80}
               />
             </Field>
-            {liveUrl.trim() ? (
-              <a
-                href={liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.45rem',
-                  fontSize: '0.8rem',
-                  fontWeight: 600,
-                  color: '#48d64c',
-                  textDecoration: 'none',
-                }}
-              >
-                <Globe size={14} /> {liveUrl.replace(/^https?:\/\//, '')}
-                <ExternalLink size={13} />
-              </a>
-            ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)' }}>
-                <Globe size={14} /> No live deployment linked yet
+            <Field>
+              <label>Short description</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="What does it do? What problem does it solve?"
+                disabled={pastDeadline}
+                maxLength={600}
+              />
+            </Field>
+            <Field>
+              <label>GitHub repository URL</label>
+              <input
+                value={github}
+                onChange={(e) => setGithub(e.target.value)}
+                placeholder="https://github.com/team/project"
+                disabled={pastDeadline}
+              />
+            </Field>
+            <Field>
+              <label>Live demo URL</label>
+              <input
+                value={live}
+                onChange={(e) => setLive(e.target.value)}
+                placeholder="https://your-project.vercel.app"
+                disabled={pastDeadline}
+              />
+            </Field>
+
+            {(submission?.github_url || submission?.live_url) && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', margin: '0.25rem 0 1rem' }}>
+                {submission.github_url && (
+                  <a
+                    href={submission.github_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                  >
+                    <GitBranch size={14} /> Repository <ExternalLink size={12} />
+                  </a>
+                )}
+                {submission.live_url && (
+                  <a
+                    href={submission.live_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                  >
+                    <Globe size={14} /> Live demo <ExternalLink size={12} />
+                  </a>
+                )}
               </div>
             )}
-          </div>
-        </Card>
 
-        <Card>
-          <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff', marginBottom: '1rem' }}>
-            Demo Showcase Video
-          </div>
-          <Field>
-            <label>Loom / YouTube / Vimeo URL</label>
-            <input
-              value={video}
-              onChange={(e) => setVideo(e.target.value)}
-              placeholder="https://youtube.com/watch?v=..."
-            />
-          </Field>
-          <div
-            style={{
-              marginTop: '0.5rem',
-              aspectRatio: '16 / 9',
-              borderRadius: 12,
-              border: '1px solid rgba(255,255,255,0.08)',
-              background: 'rgba(0,0,0,0.3)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.6rem',
-              color: 'rgba(255,255,255,0.4)',
-            }}
-          >
-            <Video size={28} />
-            <span style={{ fontSize: '0.8rem' }}>
-              {video ? 'Video linked · ready to submit' : 'No video linked yet'}
-            </span>
-          </div>
-        </Card>
-      </SubmitGrid>
+            {error && (
+              <div style={{ color: '#ff6b6b', fontSize: '0.8rem', marginBottom: '1rem' }}>{error}</div>
+            )}
 
-      <Card style={{ marginTop: '1.25rem' }}>
-        <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff', marginBottom: '1rem' }}>
-          README Editor
-        </div>
-        <MdEditor>
-          <div className="tabs">
-            <div className={`tab ${tab === 'write' ? 'active' : ''}`} onClick={() => setTab('write')}>
-              Write
-            </div>
-            <div className={`tab ${tab === 'preview' ? 'active' : ''}`} onClick={() => setTab('preview')}>
-              Preview
-            </div>
-          </div>
-          {tab === 'write' ? (
-            <textarea value={md} onChange={(e) => setMd(e.target.value)} />
-          ) : (
-            <div
-              className="preview"
-              dangerouslySetInnerHTML={{ __html: '<p>' + renderMd(md) + '</p>' }}
-            />
-          )}
-        </MdEditor>
-        <div style={{ marginTop: '1.25rem', maxWidth: 280 }}>
-          <Btn disabled={!synced || !liveUrl.trim()}>
-            <CheckCircle2 size={15} /> Submit Project
-          </Btn>
-          {(!synced || !liveUrl.trim()) && (
-            <div style={{ marginTop: '0.5rem', fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)' }}>
-              Sync your GitHub repo and add a live demo URL to submit.
-            </div>
-          )}
-        </div>
-      </Card>
+            {!pastDeadline && (
+              <div style={{ maxWidth: 280 }}>
+                <Btn onClick={save} disabled={busy} $variant={justSaved ? 'ghost' : 'solid'}>
+                  {justSaved ? (
+                    <>
+                      <CheckCircle2 size={15} /> Saved
+                    </>
+                  ) : submission ? (
+                    <>
+                      <CheckCircle2 size={15} /> Update Submission
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 size={15} /> Submit Project
+                    </>
+                  )}
+                </Btn>
+              </div>
+            )}
+          </Card>
+        </>
+      )}
     </Block>
   );
 }
+
+const linkStyle: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.45rem',
+  fontSize: '0.8rem',
+  fontWeight: 600,
+  color: '#48d64c',
+  textDecoration: 'none',
+};

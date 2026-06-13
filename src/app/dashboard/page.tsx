@@ -3,13 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import {
-  LayoutDashboard,
-  Trophy,
-  Users,
-  ListChecks,
-  Rocket,
-} from 'lucide-react';
+import { LayoutDashboard, Ticket, Users, Rocket } from 'lucide-react';
 import { useAuth } from '@/components/AuthProvider';
 import { supabase } from '@/libs/supabaseClient';
 import {
@@ -27,10 +21,9 @@ import {
   Btn,
 } from './styles';
 import Cockpit from './components/Cockpit';
-import LeaderboardHub from './components/LeaderboardHub';
 import TeamHub from './components/TeamHub';
-import Milestones from './components/Milestones';
 import SubmissionSuite from './components/SubmissionSuite';
+import PassPanel from './components/PassPanel';
 
 interface RegData {
   name: string;
@@ -39,11 +32,10 @@ interface RegData {
 }
 
 const NAV = [
-  { id: 'cockpit', label: 'Mission Control', Icon: LayoutDashboard },
-  { id: 'leaderboard', label: 'XP & Leaderboard', Icon: Trophy },
-  { id: 'team', label: 'Team & Matchmaking', Icon: Users },
-  { id: 'milestones', label: 'Milestones', Icon: ListChecks },
-  { id: 'submission', label: 'Submission Suite', Icon: Rocket },
+  { id: 'overview', label: 'Overview', Icon: LayoutDashboard },
+  { id: 'pass', label: 'Your Pass', Icon: Ticket },
+  { id: 'team', label: 'Your Team', Icon: Users },
+  { id: 'submission', label: 'Submission', Icon: Rocket },
 ];
 
 export default function DashboardPage() {
@@ -51,7 +43,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [reg, setReg] = useState<RegData | null>(null);
-  const [active, setActive] = useState('cockpit');
+  const [active, setActive] = useState('overview');
 
   useEffect(() => {
     let cancelled = false;
@@ -112,9 +104,6 @@ export default function DashboardPage() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  // Derived gamified values (stable per user)
-  const xp = 2640;
-  const rank = 4;
   const firstName = reg?.name?.split(' ')[0] || 'Builder';
   const initials =
     reg?.name
@@ -129,7 +118,7 @@ export default function DashboardPage() {
       <Page>
         <Loading>
           <div className="spinner" />
-          <div className="txt">Loading your mission control…</div>
+          <div className="txt">Loading your dashboard…</div>
         </Loading>
       </Page>
     );
@@ -142,7 +131,7 @@ export default function DashboardPage() {
           <Banner initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="t">Sign in to access your dashboard</div>
             <div className="s">
-              Your hackathon cockpit, XP, team hub and submission suite live here.
+              Your pass, team and project submission live here.
             </div>
             <div style={{ maxWidth: 220, margin: '0 auto' }}>
               <Btn onClick={() => router.push('/register')}>Go to Register / Sign In</Btn>
@@ -160,7 +149,7 @@ export default function DashboardPage() {
           <Banner initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="t">You haven&apos;t registered yet</div>
             <div className="s">
-              Complete your registration to unlock the full participant dashboard.
+              Complete your registration to unlock your participant dashboard.
             </div>
             <div style={{ maxWidth: 220, margin: '0 auto' }}>
               <Btn onClick={() => router.push('/register')}>Complete Registration</Btn>
@@ -179,7 +168,7 @@ export default function DashboardPage() {
             <div className="av">{initials}</div>
             <div className="meta">
               <div className="n">{firstName}</div>
-              <div className="r">Rank #{rank} · {xp.toLocaleString()} XP</div>
+              <div className="r">{reg.track} Track</div>
             </div>
           </SideProfile>
 
@@ -203,20 +192,17 @@ export default function DashboardPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <SectionAnchor id="cockpit">
-              <Cockpit name={reg.name} track={reg.track} xp={xp} rank={rank} />
+            <SectionAnchor id="overview">
+              <Cockpit name={reg.name} track={reg.track} />
             </SectionAnchor>
-            <SectionAnchor id="leaderboard">
-              <LeaderboardHub name={reg.name} xp={xp} rank={rank} />
+            <SectionAnchor id="pass">
+              <PassPanel name={reg.name} track={reg.track} serial={reg.serial} />
             </SectionAnchor>
             <SectionAnchor id="team">
-              <TeamHub name={reg.name} track={reg.track} />
-            </SectionAnchor>
-            <SectionAnchor id="milestones">
-              <Milestones />
+              <TeamHub userId={user.id} name={reg.name} track={reg.track} />
             </SectionAnchor>
             <SectionAnchor id="submission">
-              <SubmissionSuite serial={reg.serial} />
+              <SubmissionSuite userId={user.id} serial={reg.serial} track={reg.track} />
             </SectionAnchor>
           </motion.div>
         </MainCol>

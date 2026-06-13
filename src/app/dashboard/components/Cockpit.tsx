@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Calendar, Flag, Code2, Trophy } from 'lucide-react';
 import {
   Cockpit as CockpitWrap,
   CockpitTop,
@@ -8,24 +9,26 @@ import {
   StatusBadge,
   Countdown,
   TimeUnit,
-  Ticker,
   StatStrip,
   Stat,
+  Timeline,
+  TimelineItem,
 } from '../styles';
 
-const ANNOUNCEMENTS = [
-  'Workshop on AI Agents starts in 10 minutes in Hall B!',
-  'Midnight snacks are now available at the food court.',
-  'Reminder: Code-freeze checkpoint at 02:00 AM tonight.',
-  'Sponsor booth: grab your free OpenAI credits now.',
-  'Mentor queue is open — average wait under 5 minutes.',
+// Hacking start target — 18 July 2026
+const KICKOFF = new Date('2026-07-18T10:00:00');
+// Submission deadline — 20 July 2026
+const DEADLINE = new Date('2026-07-20T14:00:00');
+
+const SCHEDULE = [
+  { Icon: Calendar, date: 'Jul 18, 10:00 AM', title: 'Opening Ceremony & Kickoff', note: 'Hacking begins' },
+  { Icon: Code2, date: 'Jul 18 – 20', title: 'Build Window', note: '52 hours to ship' },
+  { Icon: Flag, date: 'Jul 20, 02:00 PM', title: 'Submission Deadline', note: 'Repo + live link due' },
+  { Icon: Trophy, date: 'Jul 20, 05:00 PM', title: 'Judging & Awards', note: 'Winners announced' },
 ];
 
-// Hacking start target — 18 July 2026
-const TARGET = new Date('2026-07-18T10:00:00');
-
 function getRemaining() {
-  const diff = Math.max(0, TARGET.getTime() - Date.now());
+  const diff = Math.max(0, DEADLINE.getTime() - Date.now());
   return {
     days: Math.floor(diff / 86400000),
     hours: Math.floor((diff / 3600000) % 24),
@@ -37,11 +40,9 @@ function getRemaining() {
 interface Props {
   name: string;
   track: string;
-  xp: number;
-  rank: number;
 }
 
-export default function Cockpit({ name, track, xp, rank }: Props) {
+export default function Cockpit({ name, track }: Props) {
   const [time, setTime] = useState(getRemaining());
   const firstName = name?.split(' ')[0] || 'Builder';
 
@@ -50,6 +51,14 @@ export default function Cockpit({ name, track, xp, rank }: Props) {
     return () => clearInterval(id);
   }, []);
 
+  const now = Date.now();
+  const status: { variant: 'live' | 'warn' | 'info'; label: string } =
+    now < KICKOFF.getTime()
+      ? { variant: 'info', label: 'Starts Soon' }
+      : now < DEADLINE.getTime()
+      ? { variant: 'live', label: 'Hacking Live' }
+      : { variant: 'warn', label: 'Submissions Closed' };
+
   const units: [string, number][] = [
     ['Days', time.days],
     ['Hours', time.hours],
@@ -57,20 +66,23 @@ export default function Cockpit({ name, track, xp, rank }: Props) {
     ['Seconds', time.seconds],
   ];
 
+  const deadlineLabel = DEADLINE.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+  });
+
   return (
     <CockpitWrap>
       <CockpitTop>
         <Greeting>
-          <div className="eyebrow">Mission Control</div>
+          <div className="eyebrow">Dashboard</div>
           <h1>
             Welcome back, <span>{firstName}</span>
           </h1>
-          <div className="sub">
-            {track} Track · Nortable Global Hackathon 2026
-          </div>
+          <div className="sub">{track} Track · Nortable Global Hackathon 2026</div>
         </Greeting>
-        <StatusBadge $variant="live">
-          <span className="dot" /> Hacking Live
+        <StatusBadge $variant={status.variant}>
+          <span className="dot" /> {status.label}
         </StatusBadge>
       </CockpitTop>
 
@@ -86,43 +98,38 @@ export default function Cockpit({ name, track, xp, rank }: Props) {
         </div>
       </Countdown>
 
-      <Ticker>
-        <span className="pill">Live</span>
-        <div className="track">
-          <div className="scroll">
-            {[...ANNOUNCEMENTS, ...ANNOUNCEMENTS].map((a, i) => (
-              <span key={i}>
-                <b>›</b> {a}
-              </span>
-            ))}
-          </div>
-        </div>
-      </Ticker>
-
       <StatStrip>
         <Stat>
-          <div className="v">
-            {xp.toLocaleString()} <span>XP</span>
-          </div>
-          <div className="k">Total Experience</div>
+          <div className="v">{track}</div>
+          <div className="k">Your Track</div>
         </Stat>
         <Stat>
-          <div className="v">#{rank}</div>
-          <div className="k">Leaderboard Rank</div>
-        </Stat>
-        <Stat>
-          <div className="v">
-            3<span>/5</span>
-          </div>
-          <div className="k">Milestones Done</div>
+          <div className="v">{deadlineLabel}</div>
+          <div className="k">Submission Due</div>
         </Stat>
         <Stat>
           <div className="v">
-            4<span> badges</span>
+            52<span> hrs</span>
           </div>
-          <div className="k">Collected</div>
+          <div className="k">Build Window</div>
         </Stat>
       </StatStrip>
+
+      <Timeline>
+        <div className="head">Event Schedule</div>
+        {SCHEDULE.map((s, i) => (
+          <TimelineItem key={i}>
+            <div className="ic">
+              <s.Icon size={16} />
+            </div>
+            <div className="body">
+              <div className="title">{s.title}</div>
+              <div className="note">{s.note}</div>
+            </div>
+            <div className="date">{s.date}</div>
+          </TimelineItem>
+        ))}
+      </Timeline>
     </CockpitWrap>
   );
 }
