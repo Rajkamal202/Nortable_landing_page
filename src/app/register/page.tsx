@@ -487,6 +487,13 @@ export default function RegisterPage() {
 
         // Mark user as registered so the hub CTA switches to "View Ticket".
         setExistingReg({ ...payload, created_at: new Date().toISOString() });
+
+        // Fire-and-forget confirmation email (won't block the success screen).
+        fetch('/api/send-confirmation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ serial, email }),
+        }).catch(() => {});
       } else {
         setRegErrors({ auth: 'You must be signed in to submit this registration.' });
         setRegSubmitting(false);

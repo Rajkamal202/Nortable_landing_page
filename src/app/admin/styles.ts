@@ -90,6 +90,248 @@ export const Section = styled.section`
   margin-bottom: 2.75rem;
 `;
 
+/* ---- Tabs ---- */
+export const Tabs = styled.nav`
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0;
+`;
+
+export const Tab = styled.a<{ $active?: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.7rem 1rem;
+  border-radius: 9px 9px 0 0;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+  color: ${({ $active }) => ($active ? '#fff' : 'rgba(255,255,255,0.5)')};
+  background: ${({ $active }) => ($active ? 'rgba(72,214,76,0.08)' : 'transparent')};
+  border-bottom: 2px solid
+    ${({ $active }) => ($active ? '#48d64c' : 'transparent')};
+  &:hover {
+    color: #fff;
+  }
+`;
+
+/* ---- Filter bar ---- */
+export const FilterBar = styled.form`
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1.25rem;
+
+  input,
+  select {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    padding: 0.6rem 0.8rem;
+    color: #fff;
+    font-size: 0.85rem;
+    outline: none;
+    font-family: inherit;
+    &:focus {
+      border-color: rgba(72, 214, 76, 0.5);
+    }
+  }
+  input[type='search'] {
+    flex: 1;
+    min-width: 200px;
+  }
+  select {
+    cursor: pointer;
+  }
+  option {
+    background: #0c0f13;
+  }
+`;
+
+export const FilterBtn = styled.button<{ $variant?: 'solid' | 'ghost' }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: inherit;
+  transition: filter 0.15s ease, background 0.15s ease;
+  ${({ $variant }) =>
+    $variant === 'ghost'
+      ? `background:rgba(255,255,255,0.06); color:#fff; border:1px solid rgba(255,255,255,0.12); &:hover{background:rgba(255,255,255,0.12);}`
+      : `background:#48d64c; color:#06210a; border:none; &:hover{filter:brightness(1.08);}`}
+`;
+
+/* ---- Pagination ---- */
+export const Pager = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.1rem;
+  flex-wrap: wrap;
+
+  .info {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.45);
+  }
+  .controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+  a,
+  span {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.5rem 0.85rem;
+    border-radius: 9px;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  a {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+  }
+  span.disabled {
+    color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+`;
+
+/* ---- Charts ---- */
+export const ChartGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const ChartCard = styled.div`
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.4rem;
+
+  h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0 0 1.25rem;
+  }
+  .chart {
+    width: 100%;
+    height: 260px;
+  }
+`;
+
+/* ---- Announcements ---- */
+export const AnnForm = styled.form`
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.4rem;
+  margin-bottom: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+
+  input,
+  textarea {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    padding: 0.7rem 0.9rem;
+    color: #fff;
+    font-size: 0.9rem;
+    outline: none;
+    font-family: inherit;
+    &:focus {
+      border-color: rgba(72, 214, 76, 0.5);
+    }
+  }
+  textarea {
+    min-height: 90px;
+    resize: vertical;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  label.check {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: none;
+    letter-spacing: 0;
+    cursor: pointer;
+  }
+`;
+
+export const AnnItem = styled.div`
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 0.85rem;
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .body {
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.4rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  .meta {
+    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.35);
+    margin-top: 0.55rem;
+  }
+  .del {
+    background: none;
+    border: none;
+    color: rgba(255, 107, 107, 0.7);
+    cursor: pointer;
+    font-size: 0.78rem;
+    padding: 0.2rem;
+    &:hover {
+      color: #ff6b6b;
+    }
+  }
+`;
+
 export const SectionHead = styled.div`
   display: flex;
   align-items: baseline;

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Ticket, Users, Rocket } from 'lucide-react';
+import { LayoutDashboard, Ticket, Users, Rocket, Megaphone } from 'lucide-react';
 import { useAuth } from '@/components/AuthProvider';
 import { supabase } from '@/libs/supabaseClient';
 import {
@@ -24,6 +24,7 @@ import Cockpit from './components/Cockpit';
 import TeamHub from './components/TeamHub';
 import SubmissionSuite from './components/SubmissionSuite';
 import PassPanel from './components/PassPanel';
+import AnnouncementsFeed from './components/AnnouncementsFeed';
 
 type Teammate = { name: string; email: string };
 
@@ -38,6 +39,7 @@ interface RegData {
 
 const NAV = [
   { id: 'overview', label: 'Overview', Icon: LayoutDashboard },
+  { id: 'announcements', label: 'Announcements', Icon: Megaphone },
   { id: 'pass', label: 'Your Pass', Icon: Ticket },
   { id: 'team', label: 'Your Team', Icon: Users },
   { id: 'submission', label: 'Submission', Icon: Rocket },
@@ -202,6 +204,9 @@ export default function DashboardPage() {
           >
             <SectionAnchor id="overview">
               <Cockpit name={reg.name} track={reg.track} />
+            </SectionAnchor>
+            <SectionAnchor id="announcements">
+              <AnnouncementsFeed />
             </SectionAnchor>
             <SectionAnchor id="pass">
               <PassPanel name={reg.name} track={reg.track} serial={reg.serial} />
