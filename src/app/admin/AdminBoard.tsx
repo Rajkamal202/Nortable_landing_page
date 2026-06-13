@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import { LogOut, Users, UserCheck, FolderGit2, Layers } from 'lucide-react';
-import { adminLogout } from './actions';
 import {
   Page,
   Inner,
@@ -71,7 +70,7 @@ export default function AdminBoard({ registrations, teams, submissions }: Props)
 
   const logout = () =>
     startTransition(async () => {
-      await adminLogout();
+      await fetch('/api/admin/logout', { method: 'POST' });
       router.refresh();
     });
 

@@ -1,4 +1,4 @@
-import { isAdminAuthed } from './actions';
+import { isAdminAuthed } from './auth';
 import { supabaseAdmin } from '@/libs/supabaseAdmin';
 import AdminLogin from './AdminLogin';
 import AdminBoard, {
