@@ -1,19 +1,14 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { Users, Copy, Check, LogOut, Plus, LogIn, Crown } from 'lucide-react';
-import { supabase } from '@/libs/supabaseClient';
-import { MAX_TEAM_SIZE } from '@/libs/eventConfig';
+import { Users, Crown, Search, User as UserIcon, Pencil } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import {
   Block,
   SectionTitle,
-  TwoCol,
   TeamCard,
   MemberRow,
-  Card,
-  Field,
   Btn,
-  JoinCodeBox,
+  SubmitBanner,
 } from '../styles';
 
 const AV = [
@@ -31,251 +26,62 @@ const initials = (n: string) =>
     .join('')
     .toUpperCase();
 
-function genCode() {
-  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
-  let out = '';
-  for (let i = 0; i < 6; i++) out += chars[Math.floor(Math.random() * chars.length)];
-  return out;
-}
-
-interface Team {
-  id: string;
-  name: string;
-  join_code: string;
-  track: string | null;
-  owner_id: string | null;
-}
-
-interface Member {
-  user_id: string;
-  full_name: string | null;
-  role: string;
-}
+type Teammate = { name: string; email: string };
 
 interface Props {
-  userId: string;
   name: string;
   track: string;
+  teamStatus: 'solo' | 'looking' | 'have_team';
+  teamBio: string | null;
+  teammates: Teammate[];
 }
 
-export default function TeamHub({ userId, name, track }: Props) {
-  const [loading, setLoading] = useState(true);
-  const [busy, setBusy] = useState(false);
-  const [team, setTeam] = useState<Team | null>(null);
-  const [members, setMembers] = useState<Member[]>([]);
-  const [teamName, setTeamName] = useState('');
-  const [joinCode, setJoinCode] = useState('');
-  const [error, setError] = useState('');
-  const [copied, setCopied] = useState(false);
+export default function TeamHub({ name, track, teamStatus, teamBio, teammates }: Props) {
+  const router = useRouter();
 
-  const loadTeam = useCallback(async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const { data: membership } = await supabase
-        .from('team_members')
-        .select('team_id')
-        .eq('user_id', userId)
-        .limit(1)
-        .maybeSingle();
+  // Full roster = the registrant (lead) + the teammates they added at registration.
+  const roster = [
+    { name, role: 'lead' as const },
+    ...teammates.filter((t) => t.name?.trim()).map((t) => ({ name: t.name, role: 'member' as const })),
+  ];
 
-      if (!membership) {
-        setTeam(null);
-        setMembers([]);
-        return;
-      }
-
-      const { data: teamRow } = await supabase
-        .from('teams')
-        .select('*')
-        .eq('id', membership.team_id)
-        .maybeSingle();
-
-      const { data: memberRows } = await supabase
-        .from('team_members')
-        .select('user_id, full_name, role')
-        .eq('team_id', membership.team_id)
-        .order('created_at', { ascending: true });
-
-      setTeam(teamRow as Team);
-      setMembers((memberRows as Member[]) || []);
-    } catch (err) {
-      console.error('[v0] loadTeam failed', err);
-      setError('Could not load your team. Please retry.');
-    } finally {
-      setLoading(false);
-    }
-  }, [userId]);
-
-  useEffect(() => {
-    loadTeam();
-  }, [loadTeam]);
-
-  const createTeam = async () => {
-    if (!teamName.trim()) return;
-    setBusy(true);
-    setError('');
-    try {
-      const code = genCode();
-      const { data: created, error: teamErr } = await supabase
-        .from('teams')
-        .insert({ name: teamName.trim(), join_code: code, track, owner_id: userId })
-        .select()
-        .single();
-      if (teamErr) throw teamErr;
-
-      const { error: memErr } = await supabase.from('team_members').insert({
-        team_id: created.id,
-        user_id: userId,
-        full_name: name,
-        role: 'owner',
-      });
-      if (memErr) throw memErr;
-
-      await loadTeam();
-    } catch (err) {
-      console.error('[v0] createTeam failed', err);
-      setError('Could not create team. Try a different name.');
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const joinTeam = async () => {
-    const code = joinCode.trim().toUpperCase();
-    if (!code) return;
-    setBusy(true);
-    setError('');
-    try {
-      const { data: found } = await supabase
-        .from('teams')
-        .select('id')
-        .eq('join_code', code)
-        .maybeSingle();
-
-      if (!found) {
-        setError('No team found with that code.');
-        return;
-      }
-
-      // Reject if the team is already full (enforced again by a DB trigger).
-      const { count } = await supabase
-        .from('team_members')
-        .select('user_id', { count: 'exact', head: true })
-        .eq('team_id', found.id);
-
-      if ((count ?? 0) >= MAX_TEAM_SIZE) {
-        setError(`That team is full (max ${MAX_TEAM_SIZE} members).`);
-        return;
-      }
-
-      const { error: memErr } = await supabase.from('team_members').insert({
-        team_id: found.id,
-        user_id: userId,
-        full_name: name,
-        role: 'member',
-      });
-      if (memErr) {
-        if (memErr.code === '23505') {
-          setError('You are already in this team.');
-        } else if (memErr.message?.toLowerCase().includes('full')) {
-          setError(`That team is full (max ${MAX_TEAM_SIZE} members).`);
-        } else {
-          throw memErr;
-        }
-        return;
-      }
-
-      await loadTeam();
-    } catch (err) {
-      console.error('[v0] joinTeam failed', err);
-      setError('Could not join team. Check the code and try again.');
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const leaveTeam = async () => {
-    if (!team) return;
-    setBusy(true);
-    setError('');
-    try {
-      // Owner leaving removes the whole team (cascade clears members + submission).
-      if (team.owner_id === userId) {
-        const { error: delErr } = await supabase.from('teams').delete().eq('id', team.id);
-        if (delErr) throw delErr;
-      } else {
-        const { error: delErr } = await supabase
-          .from('team_members')
-          .delete()
-          .eq('team_id', team.id)
-          .eq('user_id', userId);
-        if (delErr) throw delErr;
-      }
-      setTeamName('');
-      setJoinCode('');
-      await loadTeam();
-    } catch (err) {
-      console.error('[v0] leaveTeam failed', err);
-      setError('Could not leave the team. Please retry.');
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const copyCode = () => {
-    if (!team) return;
-    navigator.clipboard?.writeText(team.join_code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
-  };
+  const tag =
+    teamStatus === 'have_team'
+      ? `${roster.length} member${roster.length > 1 ? 's' : ''}`
+      : teamStatus === 'looking'
+      ? 'Looking for teammates'
+      : 'Solo';
 
   return (
     <Block>
       <SectionTitle>
-        Your Team{' '}
-        <span className="tag">{team ? `${members.length} member${members.length > 1 ? 's' : ''}` : 'Not in a team'}</span>
+        Your Team <span className="tag">{tag}</span>
       </SectionTitle>
 
-      {loading ? (
-        <Card>
-          <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>
-            Loading your team…
-          </div>
-        </Card>
-      ) : team ? (
+      {teamStatus === 'have_team' && roster.length > 1 ? (
         <TeamCard>
           <div className="head">
-            <div className="logo">{initials(team.name)}</div>
+            <div className="logo">{initials(name)}</div>
             <div className="meta">
-              <h3>{team.name}</h3>
-              <div className="track">{team.track || track} Track</div>
+              <h3>{name.split(' ')[0]}&apos;s Team</h3>
+              <div className="track">{track} Track</div>
             </div>
           </div>
 
-          <JoinCodeBox>
-            <div className="label">Invite code</div>
-            <div className="code">{team.join_code}</div>
-            <button onClick={copyCode} aria-label="Copy invite code">
-              {copied ? <Check size={14} /> : <Copy size={14} />}
-              {copied ? 'Copied' : 'Copy'}
-            </button>
-          </JoinCodeBox>
-
           <div style={{ marginTop: '0.5rem' }}>
-            {members.map((m, i) => (
-              <MemberRow key={m.user_id}>
+            {roster.map((m, i) => (
+              <MemberRow key={i}>
                 <div className="av" style={{ background: AV[i % AV.length] }}>
-                  {initials(m.full_name || 'NT')}
+                  {initials(m.name)}
                 </div>
                 <div className="info">
                   <div className="n">
-                    {m.full_name || 'Member'}
-                    {m.user_id === userId ? ' (You)' : ''}
+                    {m.name}
+                    {i === 0 ? ' (You)' : ''}
                   </div>
-                  <div className="r">{m.role === 'owner' ? 'Team Lead' : 'Member'}</div>
+                  <div className="r">{m.role === 'lead' ? 'Team Lead' : 'Member'}</div>
                 </div>
-                {m.role === 'owner' && (
+                {m.role === 'lead' && (
                   <div className="stat on" style={{ color: '#ffb347' }}>
                     <Crown size={14} style={{ color: '#ffb347' }} />
                   </div>
@@ -283,64 +89,45 @@ export default function TeamHub({ userId, name, track }: Props) {
               </MemberRow>
             ))}
           </div>
-
-          {error && (
-            <div style={{ color: '#ff6b6b', fontSize: '0.8rem', marginTop: '1rem' }}>{error}</div>
-          )}
-
-          <div style={{ maxWidth: 200, marginTop: '1.25rem' }}>
-            <Btn $variant="danger" onClick={leaveTeam} disabled={busy}>
-              <LogOut size={15} /> {team.owner_id === userId ? 'Disband Team' : 'Leave Team'}
-            </Btn>
-          </div>
         </TeamCard>
+      ) : teamStatus === 'looking' ? (
+        <SubmitBanner $variant="info">
+          <Search size={18} />
+          <div>
+            <div className="t">You&apos;re looking for teammates</div>
+            <div className="s">
+              {teamBio?.trim()
+                ? teamBio
+                : 'You opted to find teammates. Organizers and other solo participants can match with you.'}
+            </div>
+          </div>
+        </SubmitBanner>
       ) : (
-        <>
-          <TwoCol>
-            <Card>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem' }}>
-                <Plus size={18} style={{ color: '#48d64c' }} />
-                <span style={{ fontSize: '0.95rem', fontWeight: 700, color: '#fff' }}>Create a team</span>
-              </div>
-              <Field>
-                <label>Team name</label>
-                <input
-                  value={teamName}
-                  onChange={(e) => setTeamName(e.target.value)}
-                  placeholder="e.g. Neon Builders"
-                  maxLength={40}
-                />
-              </Field>
-              <Btn onClick={createTeam} disabled={busy || !teamName.trim()}>
-                <Users size={15} /> Create Team
-              </Btn>
-            </Card>
-
-            <Card>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem' }}>
-                <LogIn size={18} style={{ color: '#48d64c' }} />
-                <span style={{ fontSize: '0.95rem', fontWeight: 700, color: '#fff' }}>Join a team</span>
-              </div>
-              <Field>
-                <label>Invite code</label>
-                <input
-                  value={joinCode}
-                  onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-                  placeholder="6-character code"
-                  maxLength={6}
-                  style={{ textTransform: 'uppercase', letterSpacing: '0.2em' }}
-                />
-              </Field>
-              <Btn $variant="ghost" onClick={joinTeam} disabled={busy || !joinCode.trim()}>
-                <LogIn size={15} /> Join Team
-              </Btn>
-            </Card>
-          </TwoCol>
-          {error && (
-            <div style={{ color: '#ff6b6b', fontSize: '0.8rem', marginTop: '1rem' }}>{error}</div>
-          )}
-        </>
+        <SubmitBanner $variant="info">
+          <UserIcon size={18} />
+          <div>
+            <div className="t">You registered solo</div>
+            <div className="s">You&apos;re competing on your own — best of luck, {name.split(' ')[0]}!</div>
+          </div>
+        </SubmitBanner>
       )}
+
+      <SubmitBanner $variant="info" style={{ marginTop: '1rem' }}>
+        <Users size={18} />
+        <div>
+          <div className="t">Your team is set at registration</div>
+          <div className="s">
+            Team members and the per-person entry fee are confirmed during sign-up. Need to change your
+            team? Update your registration details.
+          </div>
+        </div>
+      </SubmitBanner>
+
+      <div style={{ maxWidth: 220, marginTop: '1rem' }}>
+        <Btn $variant="ghost" onClick={() => router.push('/register')}>
+          <Pencil size={15} /> Edit Registration
+        </Btn>
+      </div>
     </Block>
   );
 }

@@ -6,7 +6,6 @@ import {
   Globe,
   CheckCircle2,
   ExternalLink,
-  Users,
   Lock,
   Clock,
 } from 'lucide-react';
@@ -23,7 +22,7 @@ import { DEADLINE } from '@/libs/eventConfig';
 
 interface Submission {
   id: string;
-  team_id: string;
+  user_id: string;
   project_name: string;
   description: string | null;
   github_url: string;
@@ -43,7 +42,6 @@ const isUrl = (v: string) => /^https?:\/\/.+\..+/.test(v.trim());
 export default function SubmissionSuite({ userId, serial, track }: Props) {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
-  const [teamId, setTeamId] = useState<string | null>(null);
   const [submission, setSubmission] = useState<Submission | null>(null);
   const [justSaved, setJustSaved] = useState(false);
   const [error, setError] = useState('');
@@ -58,24 +56,10 @@ export default function SubmissionSuite({ userId, serial, track }: Props) {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const { data: membership } = await supabase
-        .from('team_members')
-        .select('team_id')
-        .eq('user_id', userId)
-        .limit(1)
-        .maybeSingle();
-
-      if (!membership) {
-        setTeamId(null);
-        setSubmission(null);
-        return;
-      }
-      setTeamId(membership.team_id);
-
       const { data: sub } = await supabase
         .from('submissions')
         .select('*')
-        .eq('team_id', membership.team_id)
+        .eq('user_id', userId)
         .maybeSingle();
 
       if (sub) {
@@ -100,7 +84,6 @@ export default function SubmissionSuite({ userId, serial, track }: Props) {
 
   const save = async () => {
     setError('');
-    if (!teamId) return;
     if (!projectName.trim()) return setError('Project name is required.');
     if (!isUrl(github)) return setError('Enter a valid GitHub URL (https://…).');
     if (!isUrl(live)) return setError('Enter a valid live demo URL (https://…).');
@@ -108,7 +91,7 @@ export default function SubmissionSuite({ userId, serial, track }: Props) {
     setBusy(true);
     try {
       const payload = {
-        team_id: teamId,
+        user_id: userId,
         project_name: projectName.trim(),
         description: description.trim() || null,
         github_url: github.trim(),
@@ -119,7 +102,7 @@ export default function SubmissionSuite({ userId, serial, track }: Props) {
       };
       const { data, error: upErr } = await supabase
         .from('submissions')
-        .upsert(payload, { onConflict: 'team_id' })
+        .upsert(payload, { onConflict: 'user_id' })
         .select()
         .single();
       if (upErr) throw upErr;
@@ -145,14 +128,6 @@ export default function SubmissionSuite({ userId, serial, track }: Props) {
         <Card>
           <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>Loading…</div>
         </Card>
-      ) : !teamId ? (
-        <SubmitBanner $variant="info">
-          <Users size={18} />
-          <div>
-            <div className="t">Join or create a team first</div>
-            <div className="s">Project submissions are made by a team. Head to the Team section to set one up.</div>
-          </div>
-        </SubmitBanner>
       ) : (
         <>
           {submission && (

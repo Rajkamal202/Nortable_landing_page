@@ -32,7 +32,7 @@ export interface Registration {
 export interface TeamRow {
   id: string;
   name: string;
-  join_code: string;
+  lead: string;
   track: string | null;
   member_count: number;
   members: string[];
@@ -172,13 +172,13 @@ export default function AdminBoard({ registrations, teams, submissions }: Props)
           </SectionHead>
           <TableWrap>
             {teams.length === 0 ? (
-              <Empty>No teams created yet.</Empty>
+              <Empty>No teams registered yet.</Empty>
             ) : (
               <Table>
                 <thead>
                   <tr>
                     <th>Team</th>
-                    <th>Code</th>
+                    <th>Lead</th>
                     <th>Track</th>
                     <th>Members</th>
                     <th>Roster</th>
@@ -188,7 +188,7 @@ export default function AdminBoard({ registrations, teams, submissions }: Props)
                   {teams.map((t) => (
                     <tr key={t.id}>
                       <td>{t.name}</td>
-                      <td className="muted">{t.join_code}</td>
+                      <td className="muted">{t.lead}</td>
                       <td>{t.track || '—'}</td>
                       <td>
                         <Pill $tone="green">{t.member_count}</Pill>
@@ -215,7 +215,7 @@ export default function AdminBoard({ registrations, teams, submissions }: Props)
                 <thead>
                   <tr>
                     <th>Project</th>
-                    <th>Team</th>
+                    <th>Submitted by</th>
                     <th>Repo</th>
                     <th>Live</th>
                     <th>Updated</th>

@@ -25,10 +25,15 @@ import TeamHub from './components/TeamHub';
 import SubmissionSuite from './components/SubmissionSuite';
 import PassPanel from './components/PassPanel';
 
+type Teammate = { name: string; email: string };
+
 interface RegData {
   name: string;
   track: string;
   serial: string;
+  teamStatus: 'solo' | 'looking' | 'have_team';
+  teamBio: string | null;
+  teammates: Teammate[];
 }
 
 const NAV = [
@@ -67,6 +72,9 @@ export default function DashboardPage() {
               name: data.full_name,
               track: data.track_selection,
               serial: data.ticket_serial,
+              teamStatus: (data.team_status as RegData['teamStatus']) || 'solo',
+              teamBio: data.team_bio ?? null,
+              teammates: Array.isArray(data.teammates) ? data.teammates : [],
             });
           }
         }
@@ -199,7 +207,13 @@ export default function DashboardPage() {
               <PassPanel name={reg.name} track={reg.track} serial={reg.serial} />
             </SectionAnchor>
             <SectionAnchor id="team">
-              <TeamHub userId={user.id} name={reg.name} track={reg.track} />
+              <TeamHub
+                name={reg.name}
+                track={reg.track}
+                teamStatus={reg.teamStatus}
+                teamBio={reg.teamBio}
+                teammates={reg.teammates}
+              />
             </SectionAnchor>
             <SectionAnchor id="submission">
               <SubmissionSuite userId={user.id} serial={reg.serial} track={reg.track} />
