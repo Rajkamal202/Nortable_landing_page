@@ -26,16 +26,17 @@ const PassWrapper = styled.div`
 /* Participant name - placed in the large empty area on the left */
 const NameText = styled.h1`
   position: absolute;
-  top: 28%;
+  top: 26%;
   left: 7%;
-  right: 34%;
+  right: 33%;
   margin: 0;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.2rem, 8vw, 5rem);
+  font-size: clamp(1.8rem, 6.4vw, 4.4rem);
   font-weight: 400;
-  line-height: 0.9;
+  line-height: 0.86;
   letter-spacing: 0.01em;
   text-transform: uppercase;
+  word-break: break-word;
   background: linear-gradient(
     100deg,
     #fff7e6 0%,
@@ -83,9 +84,12 @@ const QRSlot = styled.div`
   top: 73.5%;
   width: 10.5%;
   aspect-ratio: 1;
-  padding: 3.5%;
-  background: linear-gradient(135deg, #ffe39a, #fff7c2);
-  border-radius: 4px;
+  padding: 7%;
+  background: rgba(8, 4, 10, 0.55);
+  border: 1px solid rgba(255, 170, 120, 0.28);
+  border-radius: 3px;
+  backdrop-filter: blur(2px);
+  box-shadow: inset 0 0 18px rgba(255, 120, 60, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -126,7 +130,14 @@ export default function TicketPass({ name, serial }: TicketPassProps) {
       </RegSection>
 
       <QRSlot>
-        <QRCodeSVG value={qrValue} level="H" size={120} includeMargin={false} />
+        <QRCodeSVG
+          value={qrValue}
+          level="H"
+          size={120}
+          includeMargin={false}
+          bgColor="transparent"
+          fgColor="#ffd9a0"
+        />
       </QRSlot>
 
       <EventDetails>
