@@ -2,6 +2,7 @@
 
 import styled from 'styled-components';
 import { QRCodeSVG } from 'qrcode.react';
+import { Globe, ArrowUpRight, Asterisk } from 'lucide-react';
 
 interface TicketPassProps {
   name: string;
@@ -31,11 +32,30 @@ const CardBg = styled.div`
   position: absolute;
   inset: 0;
   background: 
-    radial-gradient(ellipse 800px 600px at 50% 30%, rgba(255, 50, 20, 0.3), transparent),
-    radial-gradient(ellipse 600px 500px at 70% 60%, rgba(138, 43, 255, 0.25), transparent),
-    radial-gradient(ellipse 700px 400px at 30% 70%, rgba(30, 100, 255, 0.15), transparent),
+    radial-gradient(ellipse 800px 600px at 45% 30%, rgba(255, 50, 20, 0.32), transparent),
+    radial-gradient(ellipse 600px 500px at 75% 75%, rgba(138, 43, 255, 0.3), transparent),
+    radial-gradient(ellipse 700px 400px at 25% 80%, rgba(30, 100, 255, 0.18), transparent),
     linear-gradient(135deg, #1a0a1f, #0a0515);
   background-size: cover, cover, cover, cover;
+`;
+
+/* Dramatic diagonal light beam sweeping across the pass */
+const LightBeam = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      118deg,
+      transparent 30%,
+      rgba(255, 120, 40, 0.18) 44%,
+      rgba(255, 60, 30, 0.55) 52%,
+      rgba(255, 180, 120, 0.35) 56%,
+      transparent 66%
+    );
+  mix-blend-mode: screen;
+  filter: blur(2px);
 `;
 
 /* Textured overlay */
@@ -54,7 +74,7 @@ const TextureOverlay = styled.div`
 const NotchTop = styled.div`
   position: absolute;
   top: -18px;
-  left: 50%;
+  left: 72%;
   transform: translateX(-50%);
   width: 70px;
   height: 36px;
@@ -68,7 +88,7 @@ const NotchTop = styled.div`
 const NotchBottom = styled.div`
   position: absolute;
   bottom: -18px;
-  left: 50%;
+  left: 72%;
   transform: translateX(-50%);
   width: 70px;
   height: 36px;
@@ -82,7 +102,7 @@ const NotchBottom = styled.div`
 /* Perforated center line */
 const PerforatedLine = styled.div`
   position: absolute;
-  left: 50%;
+  left: 72%;
   top: 5%;
   bottom: 5%;
   width: 1.5px;
@@ -103,7 +123,7 @@ const Content = styled.div`
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 72% 28%;
   padding: 2.5rem 2.5rem 2rem;
   gap: 0;
 `;
@@ -117,6 +137,13 @@ const Left = styled.div`
 `;
 
 /* Top branding */
+const HeaderRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+`;
+
 const Branding = styled.div`
   display: flex;
   align-items: center;
@@ -271,16 +298,24 @@ const EventDetails = styled.div`
   .accent {
     color: #ffdd99;
   }
+
+  .icon-row {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: 0.6rem;
+    color: rgba(180, 170, 200, 0.75);
+  }
 `;
 
-/* Right section - vertical branding */
+/* Right section - vertical branding stub */
 const Right = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding-left: 1rem;
+  justify-content: center;
+  align-items: center;
   position: relative;
+  height: 100%;
 `;
 
 const TopRight = styled.div`
@@ -292,8 +327,8 @@ const TopRight = styled.div`
 `;
 
 const Badge = styled.div`
-  width: 95px;
-  height: 95px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   background: radial-gradient(
     circle at 35% 35%,
@@ -311,7 +346,7 @@ const Badge = styled.div`
   justify-content: center;
   color: #8b0000;
   font-weight: bold;
-  font-size: 48px;
+  font-size: 36px;
   flex-shrink: 0;
 `;
 
@@ -347,10 +382,10 @@ const VerticalText = styled.div`
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(1.6rem, 3.5vw, 2rem);
+  font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 400;
-  letter-spacing: 0.12em;
-  line-height: 0.85;
+  letter-spacing: 0.1em;
+  line-height: 0.9;
   background: linear-gradient(
     180deg,
     #ff6b35 0%,
@@ -366,18 +401,32 @@ const VerticalText = styled.div`
   background-clip: text;
   -webkit-text-stroke: 0.3px rgba(255, 100, 50, 0.4);
   filter: drop-shadow(0 0 6px rgba(255, 100, 0, 0.4));
-  word-spacing: 0.25em;
+  word-spacing: 0.2em;
   text-transform: uppercase;
-  margin-top: 1rem;
+`;
+
+/* Stub footer tagline */
+const StubFoot = styled.div`
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(180, 130, 220, 0.7);
+  white-space: nowrap;
 `;
 
 const BottomBar = styled.div`
   position: absolute;
-  bottom: 1.2rem;
+  bottom: 1.4rem;
   left: 2.5rem;
-  right: 2.5rem;
+  width: 62%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   z-index: 5;
 
@@ -387,26 +436,9 @@ const BottomBar = styled.div`
     letter-spacing: 0.12em;
     color: rgba(200, 100, 150, 0.6);
     line-height: 1.2;
+    overflow: hidden;
+    white-space: nowrap;
   }
-
-  .icons {
-    display: flex;
-    gap: 0.7rem;
-    font-size: 0.9rem;
-    color: rgba(150, 150, 180, 0.7);
-  }
-`;
-
-const BottomText = styled.div`
-  position: absolute;
-  bottom: 1.5rem;
-  right: 2.5rem;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(138, 100, 200, 0.7);
-  z-index: 5;
 `;
 
 export default function TicketPass({
@@ -420,6 +452,7 @@ export default function TicketPass({
   return (
     <PassWrapper>
       <CardBg />
+      <LightBeam />
       <TextureOverlay />
       <NotchTop />
       <NotchBottom />
@@ -428,14 +461,25 @@ export default function TicketPass({
       <Content>
         <Left>
           <div>
-            <Branding>
-              <div className="logo">N</div>
-              <div className="text">
-                <div className="line1">NORTABLE</div>
-                <div className="line2">PRESENTS</div>
-                <div className="line3">GLOBAL HACKATHON 2026</div>
-              </div>
-            </Branding>
+            <HeaderRow>
+              <Branding>
+                <div className="logo">N</div>
+                <div className="text">
+                  <div className="line1">NORTABLE</div>
+                  <div className="line2">PRESENTS</div>
+                  <div className="line3">GLOBAL HACKATHON 2026</div>
+                </div>
+              </Branding>
+
+              <TopRight>
+                <Tagline>
+                  <div className="tag-line">CODE. <span className="dash" /></div>
+                  <div className="tag-line">INNOVATE. <span className="dash" /></div>
+                  <div className="tag-line">DISRUPT. <span className="dash" /></div>
+                </Tagline>
+                <Badge>N</Badge>
+              </TopRight>
+            </HeaderRow>
 
             <NameText>{name}</NameText>
 
@@ -457,34 +501,24 @@ export default function TicketPass({
               <div>MUMBAI • INDIA</div>
               <div>JULY 18-20</div>
               <div>ADMIT <span className="accent">ONE</span></div>
+              <div className="icon-row">
+                <Globe size={16} strokeWidth={1.5} />
+                <ArrowUpRight size={16} strokeWidth={1.5} />
+                <Asterisk size={16} strokeWidth={1.5} />
+              </div>
             </EventDetails>
           </BottomLeft>
         </Left>
 
         <Right>
-          <TopRight>
-            <Tagline>
-              <div className="tag-line">CODE. <span className="dash" /></div>
-              <div className="tag-line">INNOVATE. <span className="dash" /></div>
-              <div className="tag-line">DISRUPT. <span className="dash" /></div>
-            </Tagline>
-            <Badge>N</Badge>
-          </TopRight>
-
           <VerticalText>NORTABLE HACKATHON 2026</VerticalText>
+          <StubFoot>BE EXCEPTIONAL OR BE FORGOTTEN</StubFoot>
         </Right>
       </Content>
 
       <BottomBar>
         <div className="barcode">|||||||||||||||||||||||||||||||||||||||||||||||</div>
-        <div className="icons">
-          <span>◉</span>
-          <span>📋</span>
-          <span>✦</span>
-        </div>
       </BottomBar>
-
-      <BottomText>BE EXCEPTIONAL OR BE FORGOTTEN</BottomText>
     </PassWrapper>
   );
 }
