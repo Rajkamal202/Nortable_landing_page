@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Upload, X } from 'lucide-react';
 import { useAuth } from '@/components';
 import TicketPass from '@/components/TicketPass';
 import { supabase } from '@/libs/supabaseClient';
+import TeamMemberModal from './components/TeamMemberModal';
 import {
   PageWrapper,
   HeroBanner,
@@ -197,6 +199,15 @@ const hearAboutOptions = ['Social Media', 'Friend / Referral', 'College / Univer
 const goalOptions = ['Build & learn new tech', 'Win prizes', 'Networking & career growth', 'Portfolio project', 'Fun & community'];
 
 type Teammate = { name: string; email: string };
+
+type TeamMemberDetail = {
+  id?: string;
+  full_name: string;
+  email: string;
+  occupation: string;
+  experience: string;
+  profile_photo_url?: string;
+};
 type PageView = 'overview' | 'auth' | 'register' | 'success';
 
 const BASE_FEE = 100;
@@ -246,6 +257,12 @@ export default function RegisterPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editPrefilled, setEditPrefilled] = useState(false);
 
+  // Profile photo and team member details
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState('');
+  const [profilePhotoUploading, setProfilePhotoUploading] = useState(false);
+  const [showTeamMemberModal, setShowTeamMemberModal] = useState(false);
+  const [teamMembersPaid, setTeamMembersPaid] = useState<TeamMemberDetail[]>([]);
+
   // On load (and whenever the user changes), check if they already registered.
   useEffect(() => {
     let cancelled = false;
@@ -268,7 +285,18 @@ export default function RegisterPage() {
             console.error('[v0] Registration lookup error:', error.message);
             setExistingReg(null);
           } else {
-            setExistingReg(data ?? null);
+            if (data) {
+              setExistingReg(data);
+              setProfilePhotoUrl(data.profile_photo_url || '');
+              // Load team members for this registration
+              const { data: members } = await supabase
+                .from('team_members_details')
+                .select('*')
+                .eq('registration_id', data.id);
+              if (members) setTeamMembersPaid(members);
+            } else {
+              setExistingReg(null);
+            }
           }
         }
       } catch (err) {
@@ -314,13 +342,77 @@ export default function RegisterPage() {
     }
   }, [existingReg, editPrefilled]);
 
-  // Auto-fill registration form with authenticated user details
-  useEffect(() => {
-    if (user) {
-      if (!fullName) setFullName(user.user_metadata?.full_name || '');
-      if (!email) setEmail(user.email || '');
+  // Upload photo to blob and return URL
+  const uploadPhoto = useCallback(
+    async (file: File): Promise<string> => {
+      const reader = new FileReader();
+      return new Promise((resolve, reject) => {
+        reader.onload = async () => {
+          try {
+            const base64 = (reader.result as string).split(',')[1];
+            const timestamp = Date.now();
+            const filename = `photos/${timestamp}-${file.name}`;
+            const res = await fetch('/api/upload-photo', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ filename, base64Content: base64 }),
+            });
+            const data = await res.json();
+            if (data.url) resolve(data.url);
+            else reject(new Error('Upload failed'));
+          } catch (err) {
+            reject(err);
+          }
+        };
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      });
+    },
+    []
+  );
+
+  const handleProfilePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setProfilePhotoUploading(true);
+    try {
+      const url = await uploadPhoto(file);
+      setProfilePhotoUrl(url);
+    } catch (err) {
+      console.error('[v0] photo upload error:', err);
+      setRegErrors({ ...regErrors, photo: 'Photo upload failed' });
+    } finally {
+      setProfilePhotoUploading(false);
     }
-  }, [user, fullName, email]);
+  };
+
+  // Save a team member detail to DB and add to paid list
+  const saveTeamMember = async (memberData: TeamMemberDetail) => {
+    if (!user || !existingReg) return;
+
+    try {
+      const { error } = await supabase.from('team_members_details').insert({
+        registration_id: existingReg.id,
+        user_id: user.id,
+        full_name: memberData.full_name,
+        email: memberData.email,
+        occupation: memberData.occupation,
+        experience: memberData.experience,
+        profile_photo_url: memberData.profile_photo_url,
+      });
+
+      if (error) throw error;
+
+      // Add to paid members list
+      setTeamMembersPaid([...teamMembersPaid, memberData]);
+      // Close modal and reset
+      setShowTeamMemberModal(false);
+    } catch (err) {
+      console.error('[v0] save team member error:', err);
+      setRegErrors({ ...regErrors, teamMember: 'Failed to save team member' });
+    }
+  };
 
   // Transition to register view if user logs in while viewing auth modal
   useEffect(() => {
@@ -330,7 +422,10 @@ export default function RegisterPage() {
   }, [user, pageView]);
 
   // Computed pricing
-  const totalPrice = BASE_FEE + teammates.length * PER_TEAMMATE_FEE;
+  // Cost calculation includes basic fee, teammates added at registration, and detailed team members paid separately
+  const registrationTeammatesCost = teamStatus === 'have_team' ? teammates.length * PER_TEAMMATE_FEE : 0;
+  const totalPrice = BASE_FEE + registrationTeammatesCost;
+  const totalTeamCost = totalPrice + teamMembersPaid.length * PER_TEAMMATE_FEE;
 
   // Auth handlers
   const handleJoinClick = () => {
@@ -512,8 +607,9 @@ export default function RegisterPage() {
           experience: experience,
           hear_about: hearAbout || null,
           primary_goal: primaryGoal,
-          total_price: totalPrice,
+          total_price: totalTeamCost,
           ticket_serial: serial,
+          profile_photo_url: profilePhotoUrl || null,
         };
 
         const { error } = editing
@@ -829,6 +925,55 @@ export default function RegisterPage() {
               />
               {regErrors.college && <RegErrorText>{regErrors.college}</RegErrorText>}
             </RegFieldGroup>
+
+            {/* Profile Photo Upload */}
+            <RegFieldGroup>
+              <RegLabel>Profile Photo (Optional)</RegLabel>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+                <div style={{ flex: 1 }}>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleProfilePhotoChange}
+                    disabled={profilePhotoUploading}
+                    style={{ display: 'none' }}
+                    id="profile-photo-input"
+                  />
+                  <label
+                    htmlFor="profile-photo-input"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      background: 'rgba(72, 214, 76, 0.1)',
+                      border: '1px solid rgba(72, 214, 76, 0.3)',
+                      borderRadius: '10px',
+                      padding: '0.75rem 1rem',
+                      color: '#48d64c',
+                      cursor: profilePhotoUploading ? 'not-allowed' : 'pointer',
+                      fontWeight: 600,
+                      fontSize: '0.85rem',
+                      opacity: profilePhotoUploading ? 0.6 : 1,
+                    }}
+                  >
+                    <Upload size={16} /> {profilePhotoUploading ? 'Uploading...' : 'Upload Photo'}
+                  </label>
+                </div>
+                {profilePhotoUrl && (
+                  <img
+                    src={profilePhotoUrl}
+                    alt="profile"
+                    style={{
+                      width: '80px',
+                      height: '80px',
+                      borderRadius: '10px',
+                      objectFit: 'cover',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                    }}
+                  />
+                )}
+              </div>
+            </RegFieldGroup>
                 </StepSection>
 
                 {/* ── STEP 2: Team ── */}
@@ -918,6 +1063,95 @@ export default function RegisterPage() {
             )}
                 </StepSection>
 
+                {/* ── Team Members with Details (paid separately) ── */}
+                {isEditing && existingReg && (
+                  <StepSection style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                    <StepHeading><span className="num">+</span> Team Members (Paid Separately)</StepHeading>
+                    <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', marginBottom: '1rem' }}>
+                      Add detailed team members here. Each member costs ₹100. You&apos;ll be charged when you add them.
+                    </p>
+
+                    {teamMembersPaid.length > 0 && (
+                      <div style={{ marginBottom: '1.5rem' }}>
+                        <h4 style={{ color: '#fff', marginBottom: '0.75rem' }}>Added Members ({teamMembersPaid.length})</h4>
+                        {teamMembersPaid.map((member, idx) => (
+                          <div
+                            key={member.id || idx}
+                            style={{
+                              background: 'rgba(72, 214, 76, 0.08)',
+                              border: '1px solid rgba(72, 214, 76, 0.2)',
+                              borderRadius: '10px',
+                              padding: '1rem',
+                              marginBottom: '0.75rem',
+                              display: 'flex',
+                              gap: '1rem',
+                              alignItems: 'flex-start',
+                            }}
+                          >
+                            {member.profile_photo_url && (
+                              <img
+                                src={member.profile_photo_url}
+                                alt={member.full_name}
+                                style={{
+                                  width: '60px',
+                                  height: '60px',
+                                  borderRadius: '8px',
+                                  objectFit: 'cover',
+                                }}
+                              />
+                            )}
+                            <div style={{ flex: 1 }}>
+                              <div style={{ fontWeight: 600, color: '#fff' }}>{member.full_name}</div>
+                              <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>{member.email}</div>
+                              <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', marginTop: '0.25rem' }}>
+                                {member.occupation} • {member.experience.substring(0, 40)}...
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                if (member.id) {
+                                  await supabase.from('team_members_details').delete().eq('id', member.id);
+                                  setTeamMembersPaid(teamMembersPaid.filter((m) => m.id !== member.id));
+                                }
+                              }}
+                              style={{
+                                background: 'rgba(255, 107, 107, 0.1)',
+                                border: 'none',
+                                color: '#ff6b6b',
+                                borderRadius: '6px',
+                                padding: '0.5rem 0.75rem',
+                                cursor: 'pointer',
+                                fontSize: '0.8rem',
+                                fontWeight: 600,
+                              }}
+                            >
+                              <X size={14} style={{ marginRight: '0.25rem' }} /> Remove
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => setShowTeamMemberModal(true)}
+                      style={{
+                        background: '#48d64c',
+                        color: '#06210a',
+                        border: 'none',
+                        borderRadius: '10px',
+                        padding: '0.8rem 1.2rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        fontSize: '0.9rem',
+                      }}
+                    >
+                      + Add Team Member (₹100)
+                    </button>
+                  </StepSection>
+                )}
+
                 {/* ── STEP 3: Project & experience ── */}
                 <StepSection>
                   <StepHeading><span className="num">3</span> Track &amp; experience</StepHeading>
@@ -999,13 +1233,21 @@ export default function RegisterPage() {
                   ? 'Processing...'
                   : isEditing
                   ? 'Save Changes'
-                  : `Register — Pay ₹${totalPrice}`}
+                  : `Register — Pay ₹${totalTeamCost}`}
               </RegSubmitBtn>
               <RegCancelBtn type="button" onClick={handleCancelReg}>Cancel</RegCancelBtn>
             </RegActions>
                 </StepSection>
               </RegForm>
             </RegMain>
+
+            {/* Team Member Modal */}
+            <TeamMemberModal
+              isOpen={showTeamMemberModal}
+              onClose={() => setShowTeamMemberModal(false)}
+              onSave={saveTeamMember}
+              onUploadPhoto={uploadPhoto}
+            />
 
             {/* ── Sticky Order Summary ── */}
             <RegAside>
@@ -1022,6 +1264,12 @@ export default function RegisterPage() {
                       <span className="amount">₹{teammates.length * PER_TEAMMATE_FEE}</span>
                     </div>
                   )}
+                  {teamMembersPaid.length > 0 && (
+                    <div className="os-row">
+                      <span>Team members ({teamMembersPaid.length} × ₹{PER_TEAMMATE_FEE})</span>
+                      <span className="amount">₹{teamMembersPaid.length * PER_TEAMMATE_FEE}</span>
+                    </div>
+                  )}
                   <div className="os-row">
                     <span>Track</span>
                     <span className="amount" style={{ textAlign: 'right', maxWidth: '60%' }}>{trackSelection.split(' ')[0]}…</span>
@@ -1030,7 +1278,7 @@ export default function RegisterPage() {
                 <div className="os-divider" />
                 <div className="os-total">
                   <span>Total</span>
-                  <span className="total-amount">₹{totalPrice}</span>
+                  <span className="total-amount">₹{totalTeamCost}</span>
                 </div>
                 <SecureNote>
                   <li>
