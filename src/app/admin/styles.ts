@@ -286,6 +286,15 @@ export const AnnForm = styled.form`
     text-transform: none;
     letter-spacing: 0;
     cursor: pointer;
+    white-space: nowrap;
+
+    input[type='checkbox'] {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+      accent-color: #48d64c;
+      cursor: pointer;
+    }
   }
 `;
 
